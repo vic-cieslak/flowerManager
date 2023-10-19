@@ -33,7 +33,7 @@ if not SECRET_KEY:
 DEBUG = strtobool(os.getenv('DEBUG', "True"))
 
 # Hosts Settings
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com', '0.0.0.0']
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://localhost:5085', 'http://127.0.0.1:8000', 'http://127.0.0.1:5085', 'https://rocket-django.onrender.com']
 
 # Used by DEBUG-Toolbar 
@@ -184,7 +184,7 @@ CELERY_TASK_SERIALIZER    = 'json'
 CELERY_RESULT_SERIALIZER  = 'json'
 
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/tables'
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
