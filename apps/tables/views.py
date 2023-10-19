@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from apps.tables.utils import product_filter
 
 # Create your views here.
-
+@login_required(login_url='/users/signin/')
 def datatables(request):
   filters = product_filter(request)
   product_list = Product.objects.filter(**filters)
