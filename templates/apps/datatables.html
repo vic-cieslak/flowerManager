@@ -9,7 +9,15 @@
 {% endcomment %}
 
 {% block content %}
-
+<link
+href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+rel="stylesheet"
+/>
+<link
+href="https://unpkg.com/@yaireo/tagify/dist/tagify.css"
+rel="stylesheet"
+type="text/css"
+/>
 
 <main>
   <div
@@ -59,15 +67,15 @@
       <div class="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
         <div class="flex items-center mb-4 sm:mb-0">
           <form class="sm:pr-3" method="GET">
-            <label for="products-search" class="sr-only">Search</label>
+            <label for="products-search" class="sr-only">Szukaj</label>
             <div class="relative w-48 mt-1 sm:w-64 xl:w-96">
               <input type="text" name="search" id="products-search"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Search for products">
+                placeholder="szukaj kwiatów">
             </div>
           </form>
           <div class="flex items-center w-full sm:justify-end">
-            <div class="flex pl-2 space-x-1">
+            <!-- <div class="flex pl-2 space-x-1">
               <a href="#"
                 class="inline-flex justify-center p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -100,7 +108,7 @@
                   </path>
                 </svg>
               </a>
-            </div>
+            </div> -->
           </div>
         </div>
         <button id="createProductButton"
@@ -128,7 +136,7 @@
                   </div>
                 </th>
                 <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                  Product Name
+                  Nazwa
                 </th>
                 <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                   Description
@@ -140,7 +148,7 @@
                   Price
                 </th>
                 <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                  Actions
+                  Akcje
                 </th>
               </tr>
             </thead>
@@ -328,8 +336,8 @@
         </svg>
       </a>
       {% endif %}
-      <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span
-          class="font-semibold text-gray-900 dark:text-white">{{ products.start_index }}-{{ products.end_index }}</span> of <span
+      <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Pokazuję <span
+          class="font-semibold text-gray-900 dark:text-white">{{ products.start_index }}-{{ products.end_index }}</span> z <span
           class="font-semibold text-gray-900 dark:text-white">{{ products.paginator.count }}</span></span>
     </div>
     <div class="flex items-center space-x-3">
@@ -388,7 +396,16 @@
           {{ field }}
         </div>
         {% endfor %}
-    
+        <div class="flex items-center justify-center mt-20">
+            <label for="Tags" class="block mb-2 text-sm text-gray-600"></label>
+            <input
+              type="text"
+              class="w-full px-4 py-6 text-sm border border-gray-300 rounded outline-none "
+              name="tags"
+              value=""
+              autofocus
+            />
+        </div>
 
         <div class="bottom-0 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
           <button type="submit"
@@ -411,6 +428,62 @@
 
 </main>
 
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<script>
+  // The DOM element you wish to replace with Tagify
+  var input = document.querySelector('input[name=tags]');
+  var tagify = new Tagify(input, {
+    addTagOnBlur: false,
+    dropdown: {
+      enabled: 0,
+      closeOnSelect: false,
+    },
+    whitelist: [
+      'Java',
+      'Python',
+      'PHP',
+      'Ruby',
+      'NodeJs',
+      'DotNet',
+      'Laravel',
+    ],
+    templates: {
+      dropdownItem(item) {
+        return `<div ${this.getAttributes(item)}
+                class='tagify__dropdown__item ${item.class ? item.class : ''}'
+                tabindex="0"
+                role="option">
+        ${item.value}
+        <button tabindex="0" data-value="${
+          item.value
+        }" </button>
+      </div>`;
+      },
+    },
+    hooks: {
+      suggestionClick(e) {
+        var isAction = e.target.classList.contains('removeBtn'),
+          suggestionElm = e.target.closest('.tagify__dropdown__item'),
+          value = suggestionElm.getAttribute('value');
+
+        return new Promise(function (resolve, reject) {
+          if (isAction) {
+            removeWhitelistItem(value);
+            tagify.dropdown.refilter.call(tagify);
+            reject();
+          }
+          resolve();
+        });
+      },
+    },
+  });
+
+  function removeWhitelistItem(value) {
+    var index = tagify.settings.whitelist.indexOf(value);
+    if (value && index > -1) tagify.settings.whitelist.splice(index, 1);
+  }
+</script>
 
 {% endblock content %}
 
