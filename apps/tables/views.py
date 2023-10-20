@@ -20,7 +20,7 @@ def datatables(request):
 
   for kwiat in kwiaty_list:
     kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
-    
+
 
   page = request.GET.get('page', 1)
 #   paginator = Paginator(kwiaty_list, 5)
@@ -94,6 +94,13 @@ def post_request_handling(request, form):
 def delete_product(request, id):
     product = Product.objects.get(id=id)
     product.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required(login_url='/users/signin/')
+def delete_kwiat(request, id):
+    kwiat = Kwiat.objects.get(id=id)
+    kwiat.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
