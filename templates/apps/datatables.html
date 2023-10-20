@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 {% load static %}
-
+{% load color_tags %}
 {% comment %} {% block extrastyle %}
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.tailwindcss.min.css">
@@ -153,12 +153,11 @@
                 </td>
                 <td
                   class="max-w-sm p-4  text-base font-normal text-gray-500  xl:max-w-xs dark:text-gray-400">
-                  {{kwiat.kategorie_i_kolory_list}}
                   {% for kat_kol in kwiat.kategorie_i_kolory_list %}
                     <p class="font-bold">{{kat_kol.nazwa}}</p>
                     <ul>
                       {% for kolor in kat_kol.kolory %}
-                      <li class="pl-2 text-">-{{kolor}} {{kolor_hex}}</li>
+                      <li class="pl-2 text-black" style="background-color: {{kolor_hex|get_item:kolor}};">-{{kolor}} </li>
                       {% endfor %}
                     </ul>
                   {% endfor %}
