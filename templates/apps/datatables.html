@@ -10,12 +10,12 @@
 
 {% block content %}
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<script src="https://unpkg.com/@johmun/vue-tags-input/dist/vue-tags-input.js"></script>
-
 
 <main>
+    
+  <div id="app">
+
   <div
-    id="app"
     class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
     <div class="w-full mb-1">
       <div class="mb-4">
@@ -58,22 +58,12 @@
           </ol>
         </nav>
         <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Wszystkie kwiaty
-          <button @click="dodajGrupe">Add another previous visa</button>
-          {% verbatim %}
-          {{grupy}}
-          {% endverbatim %}
+  
         </h1>
       </div>
       <div class="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
-        <div class="flex items-center mb-4 sm:mb-0">
-          <form class="sm:pr-3" method="GET">
-            <label for="products-search" class="sr-only">Szukaj</label>
-            <div class="relative w-48 mt-1 sm:w-64 xl:w-96">
-              <input type="text" name="search" id="products-search"
-                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="szukaj kwiatów">
-            </div>
-          </form>
+        <div class="flex items-center  sm:mb-0">
+       
           <div class="flex items-center w-full sm:justify-end">
             <!-- <div class="flex pl-2 space-x-1">
               <a href="#"
@@ -139,14 +129,9 @@
                   Nazwa
                 </th>
                 <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                  Description
+                  rodzaje i kolory
                 </th>
-                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                  ID
-                </th>
-                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                  Price
-                </th>
+              
                 <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                   Akcje
                 </th>
@@ -154,7 +139,7 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
 
-              {% for product in products %}
+              {% for kwiat in kwiaty %}
               <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                 <td class="w-4 p-4">
                   <!-- <div class="flex items-center">
@@ -164,20 +149,24 @@
                   </div> -->
                 </td>
                 <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                  <div class="text-base font-semibold text-gray-900 dark:text-white">{{ product.name }}</div>
+                  <div class="text-base font-semibold text-gray-900 dark:text-white">{{ kwiat.name }}</div>
                 </td>
                 <td
-                  class="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
-                  {{ product.info }}
+                  class="max-w-sm p-4  text-base font-normal text-gray-500  xl:max-w-xs dark:text-gray-400">
+                  {{kwiat.kategorie_i_kolory_list}}
+                  {% for kat_kol in kwiat.kategorie_i_kolory_list %}
+                    <p class="font-bold">{{kat_kol.nazwa}}</p>
+                    <ul>
+                      {% for kolor in kat_kol.kolory %}
+                      <li class="pl-2 text-">-{{kolor}} {{kolor_hex}}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endfor %}
                 </td>
-                <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  #{{ product.id }}</td>
-                <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  ${{ product.price }}</td>
 
                 <td class="p-4 space-x-2 whitespace-nowrap">
-                  <button type="button" id="updateProductButton" data-drawer-target="drawer-update-product-default{{product.id}}"
-                    data-drawer-show="drawer-update-product-default{{product.id}}" aria-controls="drawer-update-product-default{{product.id}}"
+                  <button type="button" id="updateProductButton" data-drawer-target="drawer-update-product-default{{kwiat.id}}"
+                    data-drawer-show="drawer-update-product-default{{kwiat.id}}" aria-controls="drawer-update-product-default{{kwiat.id}}"
                     data-drawer-placement="right"
                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">
                     <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
@@ -190,8 +179,8 @@
                     </svg>
                     Edytuj
                   </button>
-                  <button type="button" id="deleteProductButton" data-drawer-target="drawer-delete-product-default{{product.id}}"
-                    data-drawer-show="drawer-delete-product-default{{product.id}}" aria-controls="drawer-delete-product-default{{product.id}}"
+                  <button type="button" id="deleteProductButton" data-drawer-target="drawer-delete-product-default{{kwiat.id}}"
+                    data-drawer-show="drawer-delete-product-default{{kwiat.id}}" aria-controls="drawer-delete-product-default{{kwiat.id}}"
                     data-drawer-placement="right"
                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
                     <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
@@ -206,14 +195,14 @@
               </tr>
 
               <!-- Delete Product Drawer -->
-              <div id="drawer-delete-product-default{{product.id}}"
+              <div id="drawer-delete-product-default{{kwiat.id}}"
                 class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
                 tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
                 <h5 id="drawer-label"
                   class="inline-flex items-center text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">Delete
                   item</h5>
-                <button type="button" data-drawer-dismiss="drawer-delete-product-default{{product.id}}"
-                  aria-controls="drawer-delete-product-default{{product.id}}"
+                <button type="button" data-drawer-dismiss="drawer-delete-product-default{{kwiat.id}}"
+                  aria-controls="drawer-delete-product-default{{kwiat.id}}"
                   class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                   <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg">
@@ -229,7 +218,7 @@
                     d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <h3 class="mb-6 text-lg text-gray-500 dark:text-gray-400">Czy jesteś pewien że chcesz usunąć ten kwiat?</h3>
-                <a href="{% url "delete_product" product.id %}"
+                <a href="{% url "delete_product" kwiat.id %}"
                   class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2.5 text-center mr-2 dark:focus:ring-red-900">
                   Tak, usuń
                 </a>
@@ -242,14 +231,14 @@
 
 
               <!-- Edit Product Drawer -->
-              <div id="drawer-update-product-default{{product.id}}"
+              <div id="drawer-update-product-default{{kwiat.id}}"
                 class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
                 tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
                 <h5 id="drawer-label"
                   class="inline-flex items-center mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">
                   Update Product</h5>
-                <button type="button" data-drawer-dismiss="drawer-update-product-default{{product.id}}"
-                  aria-controls="drawer-update-product-default{{product.id}}"
+                <button type="button" data-drawer-dismiss="drawer-update-product-default{{kwiat.id}}"
+                  aria-controls="drawer-update-product-default{{kwiat.id}}"
                   class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                   <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg">
@@ -259,7 +248,7 @@
                   </svg>
                   <span class="sr-only">Close menu</span>
                 </button>
-                <form method="post" action="{% url "update_product" product.id %}">
+                <form method="post" action="{% url "update_product" kwiat.id %}">
                   {% csrf_token %}
 
                   <div class="space-y-4">
@@ -267,21 +256,16 @@
                       <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nazwa</label>
                       <input type="text" name="name" id="name"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        value="{{ product.name }}" placeholder="Type product name" required="">
+                        value="{{ kwiat.name }}" placeholder="Type product name">
                     </div>
                     <div>
                       <label for="info"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Info</label>
                       <textarea id="info" rows="4" name="info"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Enter event info here">{{ product.info }}</textarea>
+                        placeholder="Enter event info here">{{ kwiat.kategorie_i_kolory }}</textarea>
                     </div>
-                    <div>
-                      <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                      <input type="number" name="price" id="price"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        value="{{ product.price }}" placeholder="$149" required="">
-                    </div>
+                    
                   </div>
                   <div class="bottom-0 left-0 flex justify-center w-full pb-4 mt-4 space-x-4 sm:absolute sm:px-4 sm:mt-0">
                     <button type="submit"
@@ -289,7 +273,7 @@
                       Update
                     </button>
                     <a 
-                      href="{% url "delete_product" product.id %}"
+                      href="{% url "delete_product" kwiat.id %}"
                       class="w-full justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                       <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
@@ -336,9 +320,7 @@
         </svg>
       </a>
       {% endif %}
-      <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Pokazuję <span
-          class="font-semibold text-gray-900 dark:text-white">{{ products.start_index }}-{{ products.end_index }}</span> z <span
-          class="font-semibold text-gray-900 dark:text-white">{{ products.paginator.count }}</span></span>
+    
     </div>
     <div class="flex items-center space-x-3">
       {% if products.has_previous %}
@@ -373,6 +355,9 @@
     tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
     <h5 id="drawer-label"
       class="inline-flex items-center mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">Nowy kwiat</h5>
+
+  
+
     <button type="button" data-drawer-dismiss="drawer-create-product-default"
       aria-controls="drawer-create-product-default"
       class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -384,10 +369,26 @@
       </svg>
       <span class="sr-only">Close menu</span>
     </button>
-    <form method="post">
+    <form method="post" class="" >
+    <div class="pb-16 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
+      <button 
+        type="submit"
+        class="text-white w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">
+        Dodaj kwiat
+      </button>
+      <button type="button" data-drawer-dismiss="drawer-create-product-default"
+        aria-controls="drawer-create-product-default"
+        class="inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+        <svg aria-hidden="true" class="w-5 h-5 -ml-1 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+        Anuluj
+      </button>
+    </div>
       {% csrf_token %}
 
-      <div class="space-y-4">
+      <div class="space-y-4 pt-16">
 
         <!-- {% for field in form %}
         <div>
@@ -395,59 +396,59 @@
           {{ field }}
         </div>
         {% endfor %} -->
-
+        <input hidden v-model="grupy"  name="grupy_i_kolory" />
         <div class="mb-6">
           <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nazwa kwiatu</label>
-          <input type="text" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
+          <input type="text" id="email" name="nazwa_kwiatu" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" >
         </div>
 
+
+        <input type="text" hidden name="grupy-json" v-model="grupy_string">
+        <div v-for="(grupa, counter) in grupy"
+          v-bind:key="counter"> 
+          <div class="mb-6">
+            <label for="password"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rodzaj</label>
+            <input v-model="grupa.nazwa" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+          </div>
+  
+
+          {% for kolor in kolory %}
+          <div class="flex items-center mr-4">
+            <input v-model="grupa.kolory" style="background-color: {{kolor.hex_kolor}};" id="{{kolor.name}}-checkbox" type="checkbox" value="{{kolor.name}}" name="kolor" class="w-4 h-4 text-white  border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
+            <label for="{{kolor.name}}-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{kolor.name}}</label>
+          </div>
+          {% endfor %}
+
+
+        </div>
         
-        <div class="mb-6">
-          <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rodzaj</label>
-          <input  id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-        </div>
-       
-        <div class="mb-6">
-          <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kolory</label>
-          <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-        </div>
-       
-        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Dodaj rodzaj</button>
+   
+        <div @click="dodajGrupe" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Dodaj rodzaj</div>
 
-
-        <div class="bottom-0 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
-          <button type="submit"
-            class="text-white w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">
-            Dodaj kwiat
-          </button>
-          <button type="button" data-drawer-dismiss="drawer-create-product-default"
-            aria-controls="drawer-create-product-default"
-            class="inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-            <svg aria-hidden="true" class="w-5 h-5 -ml-1 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-            Anuluj
-          </button>
-        </div>
+   
     </form>
   </div>
 
+</div>
 
 </main>
 
 <script defer>
-  const { createApp, ref, reactive } = Vue
+  const { createApp, ref, reactive, computed } = Vue
 
   createApp({
     setup() {
       const message = ref('Hello vue!');
-      const grupy = reactive([{'nazwa': "ESG", 'kolory': ['czerw', 'blue']}]);
+      const nazwa_kwiatu = ref('');
+      const grupy = reactive([]);
 
-      function dodajGrupe() {
+      const grupy_string = computed(() => {
+        return JSON.stringify(grupy)
+      })
+      function dodajGrupe(nazwa_grupy, kolory_grupy) {
           grupy.push({
-          nazwa: 'Test',
-          kolory: ['czer', 'blue']
+          nazwa: '',
+          kolory: []
         })
       }
       function usunGrupe(counter){
@@ -456,6 +457,8 @@
       return {
         message,
         grupy,
+        grupy_string,
+        nazwa_kwiatu,
         dodajGrupe,
         usunGrupe
       }

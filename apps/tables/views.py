@@ -1,32 +1,45 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, reverse
 from apps.tables.forms import ProductForm, KoloryForm
-from apps.common.models import Product, Kolory
+from apps.common.models import Product, Kolory, Kwiat
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from apps.tables.utils import product_filter
+import json
 
 # Create your views here.
 # @login_required(login_url='/users/signin/')
 def datatables(request):
-  filters = product_filter(request)
-  product_list = Product.objects.filter(**filters)
-  form = ProductForm()
+#   filters = product_filter(request)
+  kwiaty_list = Kwiat.objects.all()
+  kolory = Kolory.objects.all()
+  
+  kolor_hex = {}
+  for kolor in kolory:
+    kolor_hex[kolor.name] = kolor.hex_kolor
+
+  for kwiat in kwiaty_list:
+    kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+    
 
   page = request.GET.get('page', 1)
-  paginator = Paginator(product_list, 5)
-  products = paginator.page(page)
+#   paginator = Paginator(kwiaty_list, 5)
+#   products = paginator.page(page)
 
   if request.method == 'POST':
-      form = ProductForm(request.POST)
-      if form.is_valid():
-          return post_request_handling(request, form)
+    nazwa_kwiatu = request.POST.get('nazwa_kwiatu')
+    grupy_json = request.POST.get('grupy-json')
+    grupy_json_string = json.dumps(grupy_json)
+    nowy_kwiat = Kwiat(name=nazwa_kwiatu, kategorie_i_kolory=grupy_json_string)
+    nowy_kwiat.save()
+    return HttpResponseRedirect(reverse('datatables'))
 
   context = {
     'segment'  : 'datatables',
     'parent'   : 'apps',
-    'form'     : form,
-    'products' : products
+    'kwiaty' : kwiaty_list,
+    'kolory' : kolory,
+    'kolor_hex' : kolor_hex,
   }
   
   return render(request, 'apps/datatables.html', context)
