@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from apps.tables.utils import product_filter
 import json
+from django.contrib import messages
 
 # Create your views here.
 # @login_required(login_url='/users/signin/')
@@ -116,6 +117,31 @@ def delete_kwiat(request, id):
     kwiat = Kwiat.objects.get(id=id)
     kwiat.delete()
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+
+# @login_required(login_url='/users/signin/')
+def edytuj_kwiat(request, id):
+    if request.method == 'GET':
+        kwiat = Kwiat.objects.get(id=id)
+        kolory = Kolory.objects.all()
+        kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+        kolor_hex = {}
+        for kolor in kolory:
+            kolor_hex[kolor.name] = kolor.hex_kolor
+
+        return render(request, 'apps/edytuj_kwiat.html', {'kwiat': kwiat, 'kolory': kolory})
+    elif request.method == 'POST':
+        nazwa_kwiatu = request.POST.get('nazwa_kwiatu')
+        grupy_json = request.POST.get('grupy-json')
+        grupy_json_string = json.dumps(grupy_json)
+        kwiat = Kwiat.objects.filter(id=id).first()
+        kwiat.name = nazwa_kwiatu
+        kwiat.kategorie_i_kolory = grupy_json_string
+        kwiat.save()
+        messages.success(request, 'Kwiat zaktualizowany!')
+        return HttpResponseRedirect(reverse('datatables'))
+
 
 
 @login_required(login_url='/users/signin/')

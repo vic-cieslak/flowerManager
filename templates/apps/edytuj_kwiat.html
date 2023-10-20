@@ -1,0 +1,192 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load color_tags %}
+{% comment %} {% block extrastyle %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.tailwindcss.min.css">
+{% endblock extrastyle %} 
+
+{% endcomment %}
+
+{% block content %}
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<main>
+    
+  <div id="app">
+
+  <div
+    class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
+    <div class="w-full mb-1">
+      <div class="mb-4">
+        <nav class="flex mb-5" aria-label="Breadcrumb">
+          <ol class="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
+            <li class="inline-flex items-center">
+              <a href="#"
+                class="inline-flex items-center text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-white">
+                <svg class="w-5 h-5 mr-2.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                  </path>
+                </svg>
+                Główna
+              </a>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <a href="#"
+                  class="ml-1 text-gray-700 hover:text-primary-600 md:ml-2 dark:text-gray-300 dark:hover:text-white">Edytuj</a>
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="ml-1 text-gray-400 md:ml-2 dark:text-gray-500" aria-current="page">{{kwiat.name}}</span>
+              </div>
+            </li>
+          </ol>
+        </nav>
+        <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Edytuj {{kwiat.name}}
+  
+        </h1>
+      </div>
+      <div class="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
+        <div class="flex items-center  sm:mb-0">
+        
+          <div class="flex items-center w-full sm:justify-end">
+            
+          </div>
+        </div>
+     
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <div class="overflow-x-auto">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden shadow container mx-auto px-96">
+            <form method="post" class="px-16" >
+                <div class="pt-8 px-16 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
+                  <button 
+                    type="submit"
+                    class="text-white justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-primary-800">
+                    Potwierdź zmiany
+                  </button>
+                  <!-- <a href="/">
+                  <button type="button" data-drawer-dismiss="drawer-create-product-default"
+                    aria-controls="drawer-create-product-default"
+                    class="inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                    <svg aria-hidden="true" class="w-5 h-5 -ml-1 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                    Anuluj
+                  </button>
+                </a> -->
+
+                </div>
+                  {% csrf_token %}
+            
+                  <div class="space-y-4 pt-24 px-8">
+            
+                    <!-- {% for field in form %}
+                    <div>
+                      <label for="{{ field.name }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ field.label }}</label>
+                      {{ field }}
+                    </div>
+                    {% endfor %} -->
+                    <input hidden v-model="grupy"  name="grupy_i_kolory" />
+                    <div class="mb-6">
+                      <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nazwa kwiatu</label>
+                      <input type="text" id="email" name="nazwa_kwiatu" value="{{kwiat.name}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" >
+                    </div>
+            
+            
+                    <input type="text" hidden name="grupy-json" v-model="grupy_string">
+                    <div v-for="(grupa, counter) in grupy"
+                      v-bind:key="counter"> 
+                      <div class="mb-6">
+                        <label for="password"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rodzaj</label>
+                        <input v-model="grupa.nazwa" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                      </div>
+              
+            
+                      {% for kolor in kolory %}
+                      <div class="flex items-center mr-4">
+                        <input v-model="grupa.kolory" style="background-color: {{kolor.hex_kolor}};" id="{{kolor.name}}-checkbox" type="checkbox" value="{{kolor.name}}" name="kolor" class="w-4 h-4 text-white  border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
+                        <label for="{{kolor.name}}-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{kolor.name}}</label>
+                      </div>
+                      {% endfor %}
+
+                      <div @click="usunGrupe(counter)" class=" text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  sm:w-auto px-5 py-2.5 my-4 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Usuń rodzaj</div>
+            
+            
+                    </div>
+                    
+               
+                    <div @click="dodajGrupe" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Dodaj rodzaj</div>
+            
+               
+                </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</main>
+
+<script defer>
+  const { createApp, ref, reactive, computed } = Vue
+
+  createApp({
+    setup() {
+      const message = ref('Hello vue!');
+      const nazwa_kwiatu = ref('');
+      const grupy = reactive( {{ kwiat.kategorie_i_kolory_list |safe}} );
+
+      const grupy_string = computed(() => {
+        return JSON.stringify(grupy)
+      })
+      function dodajGrupe(nazwa_grupy, kolory_grupy) {
+          grupy.push({
+          nazwa: '',
+          kolory: []
+        })
+      }
+      function usunGrupe(counter){
+        grupy.splice(counter, 1);
+      }
+      return {
+        message,
+        grupy,
+        grupy_string,
+        nazwa_kwiatu,
+        dodajGrupe,
+        usunGrupe
+      }
+    }
+  }).mount('#app')
+</script>
+
+{% endblock content %}
+
+{% comment %} {% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.tailwindcss.min.js"></script>
+<script src="https://cdn.tailwindcss.com/3.3.3"></script>
+
+{% endcomment %}
