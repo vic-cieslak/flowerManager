@@ -10,8 +10,8 @@ import json
 # Create your views here.
 # @login_required(login_url='/users/signin/')
 def datatables(request):
-#   filters = product_filter(request)
-  kwiaty_list = Kwiat.objects.all()
+  filters = product_filter(request)
+  kwiaty_list = Kwiat.objects.filter(**filters)
   kolory = Kolory.objects.all()
   
   kolor_hex = {}
