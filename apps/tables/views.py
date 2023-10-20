@@ -9,7 +9,7 @@ import json
 from django.contrib import messages
 
 # Create your views here.
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def datatables(request):
   filters = product_filter(request)
   kwiaty_list = Kwiat.objects.filter(**filters)
@@ -46,7 +46,7 @@ def datatables(request):
   return render(request, 'apps/datatables.html', context)
 
 # Create your views here.
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def kolory(request):
   kolory_list = Kolory.objects.all()
   form = KoloryForm()
@@ -70,14 +70,14 @@ def kolory(request):
   return render(request, 'apps/kolory.html', context)
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def delete_kolor(request, id):
     kolor = Kolory.objects.get(id=id)
     kolor.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def update_kolor(request, id):
     update_kolor = Kolory.objects.get(id=id)
     if request.method == 'POST':
@@ -120,7 +120,7 @@ def delete_kwiat(request, id):
 
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def edytuj_kwiat(request, id):
     if request.method == 'GET':
         kwiat = Kwiat.objects.get(id=id)
