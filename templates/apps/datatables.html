@@ -135,6 +135,9 @@
                 <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                   Akcje
                 </th>
+                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                  Status
+                </th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
@@ -190,6 +193,24 @@
                     </svg>
                     Usuń
                   </button>
+                </td>
+                <td class="p-4 space-x-2 whitespace-nowrap">
+                  <form method="post" action="{% url "zmien_status" kwiat.id %}">
+                  {% csrf_token %}
+
+                  {% if kwiat.aktywny %}
+                  <button type="submit" 
+                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-600 rounded-lg hover:bg-green-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+                    Aktywny
+                  </button>
+                  {% else %}
+                    <button type="submit" 
+                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+                    Nieaktywny
+                    </button>
+                  {% endif %}
+                </form>
+
                 </td>
               </tr>
 

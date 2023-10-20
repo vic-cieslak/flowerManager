@@ -90,11 +90,25 @@ def post_request_handling(request, form):
     form.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
+
 @login_required(login_url='/users/signin/')
 def delete_product(request, id):
     product = Product.objects.get(id=id)
     product.delete()
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required(login_url='/users/signin/')
+def zmien_status(request, id):
+    kwiat = Kwiat.objects.get(id=id)
+    if kwiat.aktywny:
+        kwiat.aktywny = False
+    else:
+        kwiat.aktywny = True
+
+    kwiat.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+
 
 
 @login_required(login_url='/users/signin/')
