@@ -12,7 +12,7 @@ env
 db.sqlite3
 
 #src
-#*.sqlite*
+*.sqlite*
 
 .env
 node_modules
