@@ -9,6 +9,8 @@ build/
 env
 /staticfiles/
 
+db.sqlite3
+
 #src
 #*.sqlite*
 
