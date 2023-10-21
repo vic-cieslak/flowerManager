@@ -175,10 +175,11 @@
                 <td
                   class="max-w-sm p-4  text-base font-normal text-gray-500  xl:max-w-xs dark:text-gray-400">
                   {% for kat_kol in kwiat.kategorie_i_kolory_list %}
-                    <p class="font-bold text-xl text-center py-2">{{kat_kol.nazwa}}</p>
+                    <p class="font-bold text-xl text-center py-2 dark:text-white">{{kat_kol.nazwa}}</p>
                     <ul>
                       {% for kolor in kat_kol.kolory %}
-                      <li class="pl-2 text-center text-white" style="background-color: {{kolor_hex|get_item:kolor}};">{{kolor}} </li>
+                      <li class="pl-2 text-center text-black font-bold" style="background-color: {{kolor_hex|get_item:kolor}};">{{kolor}} </li>
+                      
                       {% endfor %}
                     </ul>
                   {% endfor %}
