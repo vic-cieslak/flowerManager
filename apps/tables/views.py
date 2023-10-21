@@ -1,18 +1,19 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse
 from apps.tables.forms import ProductForm, KoloryForm
-from apps.common.models import Product, Kolory, Kwiat
+from apps.common.models import Product, Kolory, Kwiat, Raport
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from apps.tables.utils import product_filter
 import json
 from django.contrib import messages
+from django.db.models.functions import Lower
 
 # Create your views here.
-@login_required(login_url='/users/signin/')
+# @login_required(login_url='/users/signin/')
 def datatables(request):
   filters = product_filter(request)
-  kwiaty_list = Kwiat.objects.filter(**filters)
+  kwiaty_list = Kwiat.objects.filter(**filters).order_by(Lower('name'))
   kolory = Kolory.objects.all()
   
   kolor_hex = {}
@@ -47,7 +48,7 @@ def datatables(request):
 
 
 # Create your views here.
-@login_required(login_url='/users/signin/')
+# @login_required(login_url='/users/signin/')
 def kolory(request):
   kolory = Kolory.objects.all()
   form = KoloryForm()
@@ -71,7 +72,7 @@ def kolory(request):
   return render(request, 'apps/kolory.html', context)
 
 
-@login_required(login_url='/users/signin/')
+# @login_required(login_url='/users/signin/')
 def raport_start(request):
     # złap wszystkie aktywne kwiaty
     # render dla VUEJS
@@ -83,15 +84,21 @@ def raport_start(request):
     return render(request, 'apps/raport.html', {'kwiaty': kwiaty})
 
 
+# @login_required(login_url='/users/signin/')
+def lista_raportow(request):
+  raporty = Raport.objects.all()
 
-@login_required(login_url='/users/signin/')
+  return render(request, 'apps/lista_raportow.html', {'raporty': raporty})
+
+
+# @login_required(login_url='/users/signin/')
 def delete_kolor(request, id):
     kolor = Kolory.objects.get(id=id)
     kolor.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-@login_required(login_url='/users/signin/')
+# @login_required(login_url='/users/signin/')
 def update_kolor(request, id):
     update_kolor = Kolory.objects.get(id=id)
     if request.method == 'POST':
@@ -100,20 +107,20 @@ def update_kolor(request, id):
         update_kolor.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
-@login_required(login_url='/users/signin/')
+# @login_required(login_url='/users/signin/')
 def post_request_handling(request, form):
     form.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-@login_required(login_url='/users/signin/')
+# @login_required(login_url='/users/signin/')
 def delete_product(request, id):
     product = Product.objects.get(id=id)
     product.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-@login_required(login_url='/users/signin/')
+# @login_required(login_url='/users/signin/')
 def zmien_status(request, id):
     kwiat = Kwiat.objects.get(id=id)
     if kwiat.aktywny:
@@ -126,7 +133,7 @@ def zmien_status(request, id):
 
 
 
-@login_required(login_url='/users/signin/')
+# @login_required(login_url='/users/signin/')
 def delete_kwiat(request, id):
     kwiat = Kwiat.objects.get(id=id)
     kwiat.delete()
@@ -134,7 +141,7 @@ def delete_kwiat(request, id):
 
 
 
-@login_required(login_url='/users/signin/')
+# @login_required(login_url='/users/signin/')
 def edytuj_kwiat(request, id):
     if request.method == 'GET':
         kwiat = Kwiat.objects.get(id=id)
@@ -158,7 +165,7 @@ def edytuj_kwiat(request, id):
 
 
 
-@login_required(login_url='/users/signin/')
+# @login_required(login_url='/users/signin/')
 def update_product(request, id):
     product = Product.objects.get(id=id)
     if request.method == 'POST':
