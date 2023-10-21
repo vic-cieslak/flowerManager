@@ -9,7 +9,7 @@ import json
 from django.contrib import messages
 
 # Create your views here.
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def datatables(request):
   filters = product_filter(request)
   kwiaty_list = Kwiat.objects.filter(**filters)
@@ -47,7 +47,7 @@ def datatables(request):
 
 
 # Create your views here.
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def kolory(request):
   kolory = Kolory.objects.all()
   form = KoloryForm()
@@ -71,7 +71,7 @@ def kolory(request):
   return render(request, 'apps/kolory.html', context)
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def raport_start(request):
     # złap wszystkie aktywne kwiaty
     # render dla VUEJS
@@ -84,14 +84,14 @@ def raport_start(request):
 
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def delete_kolor(request, id):
     kolor = Kolory.objects.get(id=id)
     kolor.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def update_kolor(request, id):
     update_kolor = Kolory.objects.get(id=id)
     if request.method == 'POST':
@@ -100,20 +100,20 @@ def update_kolor(request, id):
         update_kolor.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def post_request_handling(request, form):
     form.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def delete_product(request, id):
     product = Product.objects.get(id=id)
     product.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def zmien_status(request, id):
     kwiat = Kwiat.objects.get(id=id)
     if kwiat.aktywny:
@@ -126,7 +126,7 @@ def zmien_status(request, id):
 
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def delete_kwiat(request, id):
     kwiat = Kwiat.objects.get(id=id)
     kwiat.delete()
@@ -134,7 +134,7 @@ def delete_kwiat(request, id):
 
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def edytuj_kwiat(request, id):
     if request.method == 'GET':
         kwiat = Kwiat.objects.get(id=id)
@@ -158,7 +158,7 @@ def edytuj_kwiat(request, id):
 
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def update_product(request, id):
     product = Product.objects.get(id=id)
     if request.method == 'POST':
