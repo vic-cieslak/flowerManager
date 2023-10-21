@@ -167,7 +167,7 @@
                     <p class="font-bold">{{kat_kol.nazwa}}</p>
                     <ul>
                       {% for kolor in kat_kol.kolory %}
-                      <li class="pl-2 text-black" style="background-color: {{kolor_hex|get_item:kolor}};">-{{kolor}} </li>
+                      <li class="pl-2 text-black" style="background-color: {{kolor_hex|get_item:kolor}};">{{kolor}} </li>
                       {% endfor %}
                     </ul>
                   {% endfor %}
@@ -258,14 +258,13 @@
 
 
               <!-- Edit Product Drawer -->
-              <div id="drawer-update-product-default{{kwiat.id}}"
+              <div 
                 class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
                 tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
                 <h5 id="drawer-label"
                   class="inline-flex items-center mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">
                   Edytuj kwiat</h5>
-                <button type="button" data-drawer-dismiss="drawer-update-product-default{{kwiat.id}}"
-                  aria-controls="drawer-update-product-default{{kwiat.id}}"
+                <button type="button" 
                   class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                   <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg">
@@ -443,7 +442,7 @@
 
           {% for kolor in kolory %}
           <div class="flex items-center mr-4">
-            <input v-model="grupa.kolory" style="background-color: {{kolor.hex_kolor}};" id="{{kolor.name}}-checkbox" type="checkbox" value="{{kolor.name}}" name="kolor" class="w-4 h-4 text-white  border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
+            <input v-model="grupa.kolory" style="{% if kolor.hex_kolor != '#ffffff' %} background-color: {{kolor.hex_kolor}}; {% else %} background-color: #9e9a99; {% endif %}" id="{{kolor.name}}-checkbox" type="checkbox" value="{{kolor.name}}" name="kolor" class="w-4 h-4 text-white  border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
             <label for="{{kolor.name}}-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{kolor.name}}</label>
           </div>
           {% endfor %}
@@ -503,7 +502,7 @@
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.tailwindcss.min.js"></script>
 <script src="https://cdn.tailwindcss.com/3.3.3"></script>
 
-<script>
+<!-- <script>
 
   fetch('/api/product/')
     .then(response => response.json())
@@ -543,6 +542,6 @@
 
     })
 
-</script>
+</script> -->
 
 {% endcomment %}
