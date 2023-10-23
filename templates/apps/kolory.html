@@ -161,7 +161,16 @@
                 <td
                   class="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
                   
-                  <button type="button" style="background-color: {{ kolor.hex_kolor }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">{{ kolor.hex_kolor }}</button>
+                  
+                  {% if kolor.custom_background %} 
+                  <img width="70px" src="{{kolor.custom_background.url}}">
+
+                  {% else %}
+                  <button type="button" style="background-color: {{ kolor.hex_kolor }}" 
+                  class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">{{ kolor.hex_kolor }}</button>
+
+                  {% endif %}
+                  
                 </td>
                
                 <td class="p-4 space-x-2 whitespace-nowrap">
@@ -248,7 +257,7 @@
                   </svg>
                   <span class="sr-only">Close menu</span>
                 </button>
-                <form method="post" action="{% url "update_kolor" kolor.id %}">
+                <form method="post" enctype="multipart/form-data" action="{% url "update_kolor" kolor.id %}">
                   {% csrf_token %}
 
                   <div class="space-y-4">
@@ -262,6 +271,10 @@
                     <div class="flex justify-center space-x-2">
                       <input id="nativeColorPicker1" name="hex_kolor" type="color" value="{{kolor.hex_kolor}}" />
                     </div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Dodaj customowe tło (hex będzie ignorowany)</label>
+                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="tlo" name="tlo" type="file">
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+            
                   </div>
                   <div class="bottom-0 left-0 flex justify-center w-full pb-4 mt-4 space-x-4 sm:absolute sm:px-4 sm:mt-0">
                     <button type="submit"
@@ -364,7 +377,7 @@
       </svg>
       <span class="sr-only">Close menu</span>
     </button>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
 
       <div class="space-y-4">
@@ -372,8 +385,13 @@
         <input type="text" name="name" maxlength="100" placeholder="Nazwa koloru" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" id="id_name">
 
         <div class="flex justify-center space-x-2">
-          <input id="nativeColorPicker1" name="hex_kolor" type="color" value="#6590D5" />
+          <input id="nativeColorPicker1" name="hex_kolor" type="color" value="#878787" />
         </div>
+
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Dodaj customowe tło (hex będzie ignorowany)</label>
+        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="tlo" name="tlo" type="file">
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+
 
         <div class="bottom-0 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
           <button type="submit"

@@ -59,8 +59,18 @@ def kolory(request):
 
   if request.method == 'POST':
       form = KoloryForm(request.POST)
-      if form.is_valid():
-          return post_request_handling(request, form)
+      
+      nazwa = request.POST.get('name')
+      hex_kolor = request.POST.get('hex_kolor')
+      kolor = Kolory()
+      kolor.custom_background = request.FILES.get('tlo')
+      kolor.name = nazwa
+      kolor.hex_kolor = hex_kolor
+      
+      kolor.save()
+      return HttpResponseRedirect(reverse('kolory'))
+      # if form.is_valid():
+          # return post_request_handling(request, form)
 
   context = {
     'segment'  : 'datatables',
@@ -117,6 +127,11 @@ def update_kolor(request, id):
     if request.method == 'POST':
         update_kolor.name = request.POST.get('name')
         update_kolor.hex_kolor = request.POST.get('hex_kolor')
+        tlo = request.FILES.get('tlo')
+        # print(request.POST.get('tlo'))
+        # print(type(request.POST.get('tlo')))
+        update_kolor.custom_background = tlo
+      
         update_kolor.save()
     return redirect(request.META.get('HTTP_REFERER'))
 

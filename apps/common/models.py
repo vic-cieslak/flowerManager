@@ -22,6 +22,7 @@ class Kwiat(models.Model):
 class Kolory(models.Model):
     id                  = models.AutoField(primary_key=True)
     name                = models.CharField(max_length = 100) 
+    custom_background   = models.ImageField(upload_to='tla', null=True, blank=True)
     hex_kolor           = models.CharField(max_length = 100, default = '')
 
     def __str__(self):
