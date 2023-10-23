@@ -80,8 +80,21 @@ def raport_start(request):
         # robi post
         # raport sie dodaje
         # raport do wyswietenia w liscie raportow
-    kwiaty = Kwiat.objects.all()
-    return render(request, 'apps/raport.html', {'kwiaty': kwiaty})
+
+    kolory = Kolory.objects.all()
+    
+    kolor_hex = {}
+    for kolor in kolory:
+      kolor_hex[kolor.name] = kolor.hex_kolor
+
+
+    kwiaty = Kwiat.objects.filter(aktywny=True)
+    for kwiat in kwiaty:
+      kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+
+    # jakbym mial tu gotowego jsona do raportu to moze by bylo łatwiej?
+
+    return render(request, 'apps/raport.html', {'kwiaty': kwiaty, 'kolor_hex': kolor_hex})
 
 
 # @login_required(login_url='/users/signin/')
