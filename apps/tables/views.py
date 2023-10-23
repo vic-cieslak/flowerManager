@@ -91,17 +91,14 @@ def kolejnosc(request):
       kwiat = Kwiat.objects.filter(id=int(idk_kwiatu)).first()
       kwiat.kolejnosc = int(nowe_kolejnosc)
       kwiat.save()
-
     kwiaty = Kwiat.objects.filter(aktywny=True).order_by('kolejnosc')
-
     return render(request, 'apps/kolejnosc.html', {'kwiaty': kwiaty})
-
   else:
     pass
 
 # @login_required(login_url='/users/signin/')
 def raport_start(request):
-    kolory = Kolory.objects.all().order_by('kolejnosc')
+    kolory = Kolory.objects.all()
     
     kolor_hex = {}
     for kolor in kolory:
@@ -111,7 +108,7 @@ def raport_start(request):
         kolor_hex[kolor.name] = kolor.hex_kolor
 
 
-    kwiaty = Kwiat.objects.filter(aktywny=True)
+    kwiaty = Kwiat.objects.filter(aktywny=True).order_by('kolejnosc')
     for kwiat in kwiaty:
       kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
 
