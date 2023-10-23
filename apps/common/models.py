@@ -16,6 +16,7 @@ class Kwiat(models.Model):
     name                = models.CharField(max_length = 100) 
     kategorie_i_kolory  = models.CharField(max_length = 50000, default = '')
     aktywny             = models.BooleanField(default=True)
+    kolejnosc           = models.IntegerField(null=True)
     def __str__(self):
         return self.name
 

@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path("", views.datatables, name="datatables"),
     path("kolory", views.kolory, name="kolory"),
+    path("kolejnosc", views.kolejnosc, name="kolejnosc"),
     path("raport_start", views.raport_start, name="raport_start"),
     path("lista_raportow", views.lista_raportow, name="lista_raportow"),
     path("delete-kolor/<int:id>/", views.delete_kolor, name="delete_kolor"),

@@ -81,17 +81,27 @@ def kolory(request):
   
   return render(request, 'apps/kolory.html', context)
 
+def kolejnosc(request):
+  if request.method == "GET":
+    kwiaty = Kwiat.objects.filter(aktywny=True).order_by('kolejnosc')
+    return render(request, 'apps/kolejnosc.html', {'kwiaty': kwiaty})
+  elif request.method == "POST":
+    kolejnosc_idkow = request.POST.get('kolejnosc').split(',')
+    for nowe_kolejnosc, idk_kwiatu in enumerate(kolejnosc_idkow):
+      kwiat = Kwiat.objects.filter(id=int(idk_kwiatu)).first()
+      kwiat.kolejnosc = int(nowe_kolejnosc)
+      kwiat.save()
+
+    kwiaty = Kwiat.objects.filter(aktywny=True).order_by('kolejnosc')
+
+    return render(request, 'apps/kolejnosc.html', {'kwiaty': kwiaty})
+
+  else:
+    pass
 
 # @login_required(login_url='/users/signin/')
 def raport_start(request):
-    # złap wszystkie aktywne kwiaty
-    # render dla VUEJS
-    # user wypełnia jsona na froncie
-        # robi post
-        # raport sie dodaje
-        # raport do wyswietenia w liscie raportow
-
-    kolory = Kolory.objects.all()
+    kolory = Kolory.objects.all().order_by('kolejnosc')
     
     kolor_hex = {}
     for kolor in kolory:
