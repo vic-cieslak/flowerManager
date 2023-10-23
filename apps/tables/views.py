@@ -95,7 +95,10 @@ def raport_start(request):
     
     kolor_hex = {}
     for kolor in kolory:
-      kolor_hex[kolor.name] = kolor.hex_kolor
+      if kolor.custom_background:
+        kolor_hex[kolor.name] = kolor.custom_background.url
+      else:
+        kolor_hex[kolor.name] = kolor.hex_kolor
 
 
     kwiaty = Kwiat.objects.filter(aktywny=True)
