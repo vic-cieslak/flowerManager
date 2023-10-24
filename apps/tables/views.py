@@ -100,31 +100,109 @@ def kolejnosc(request):
   else:
     pass
 
+
+# @login_required(login_url='/users/signin/')
+def czytaj_raport(request, id):
+  raport = Raport.objects.get(id=id)
+  dane = json.loads(raport.wartosc)
+
+  klucze_do_usuniecia = []
+  # remove kolors with 0
+  for klucz in dane:
+    for rodzaj in dane[klucz]:
+      for kolor in dane[klucz][rodzaj]:
+        if dane[klucz][rodzaj][kolor] == '0':
+          klucze_do_usuniecia.append([klucz, rodzaj, kolor])
+
+  # jezeli kwiat nie ma koloru tez usun 
+  print(klucze_do_usuniecia)
+  for klucze in klucze_do_usuniecia:
+    klucz, rodzaj, kolor = klucze 
+    del dane[klucz][rodzaj][kolor]
+
+
+  klucze_do_usuniecia = []
+  for klucz in dane:
+    for rodzaj in dane[klucz]:
+      if len(dane[klucz][rodzaj]) == 0:
+          klucze_do_usuniecia.append([klucz, rodzaj])
+
+  print(klucze_do_usuniecia)
+  for klucze in klucze_do_usuniecia:
+    klucz, rodzaj = klucze 
+    del dane[klucz][rodzaj]
+
+  print(dane)
+  klucze_do_usuniecia = []
+  for key in dane:
+    if dane[key] == {}:
+      klucze_do_usuniecia.append(key)
+
+  for klucz in klucze_do_usuniecia:
+    del dane[klucz]
+
+  kolory = Kolory.objects.all()
+  kolor_hex = {}
+  for kolor in kolory:
+    if kolor.custom_background:
+      kolor_hex[kolor.name] = kolor.custom_background.url
+    else:
+      kolor_hex[kolor.name] = kolor.hex_kolor
+      
+  return render(request, 'apps/czytaj_raport.html', {'raport': raport, 'dane': dane, 'kolor_hex': kolor_hex})
+
+
 # @login_required(login_url='/users/signin/')
 def raport_start(request):
-    kolory = Kolory.objects.all()
-    
-    kolor_hex = {}
-    for kolor in kolory:
-      if kolor.custom_background:
-        kolor_hex[kolor.name] = kolor.custom_background.url
-      else:
-        kolor_hex[kolor.name] = kolor.hex_kolor
+    if request.method == "GET":
+
+      kolory = Kolory.objects.all()
+      
+      kolor_hex = {}
+      for kolor in kolory:
+        if kolor.custom_background:
+          kolor_hex[kolor.name] = kolor.custom_background.url
+        else:
+          kolor_hex[kolor.name] = kolor.hex_kolor
 
 
-    kwiaty = Kwiat.objects.filter(aktywny=True).order_by('kolejnosc')
-    for kwiat in kwiaty:
-      kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+      kwiaty = Kwiat.objects.filter(aktywny=True).order_by('kolejnosc')
+      for kwiat in kwiaty:
+        kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
 
-    # jakbym mial tu gotowego jsona do raportu to moze by bylo łatwiej?
+      # jakbym mial tu gotowego jsona do raportu to moze by bylo łatwiej?
 
-    return render(request, 'apps/raport.html', {'kwiaty': kwiaty, 'kolor_hex': kolor_hex})
+      return render(request, 'apps/raport.html', {'kwiaty': kwiaty, 'kolor_hex': kolor_hex})
+    elif request.method == "POST":
+      print(request.POST)
+      dane = {}
+      for field in request.POST:
+        if field == 'csrfmiddlewaretoken':
+          continue
+        kwiat, rodzaj, kolor = field.split('_')
+        ilosc = request.POST.get(field)
+        if kwiat in dane:
+          if rodzaj in dane[kwiat]:
+            dane[kwiat][rodzaj][kolor] = ilosc
+          else:
+            dane[kwiat][rodzaj] = {}
+            dane[kwiat][rodzaj][kolor] = ilosc
+        else:
+          dane[kwiat] = {}
+          dane[kwiat][rodzaj] = {}
+          dane[kwiat][rodzaj][kolor] = ilosc
+      print(dane)
+      dane_json = json.dumps(dane)
+      raport = Raport(wartosc=dane_json)
+      raport.save()
+      return HttpResponseRedirect(reverse('lista_raportow'))
 
-
+    else:
+        pass
 # @login_required(login_url='/users/signin/')
 def lista_raportow(request):
-  raporty = Raport.objects.all()
-
+  raporty = Raport.objects.all().order_by('-data_utworzenia')
+  print(raporty)
   return render(request, 'apps/lista_raportow.html', {'raporty': raporty})
 
 

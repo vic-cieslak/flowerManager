@@ -52,30 +52,16 @@
                     d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                     clip-rule="evenodd"></path>
                 </svg>
-                <span class="ml-1 text-gray-400 md:ml-2 dark:text-gray-500" aria-current="page">Raporty</span>
+                <span class="ml-1 text-gray-400 md:ml-2 dark:text-gray-500" aria-current="page">Raport</span>
               </div>
             </li>
           </ol>
         </nav>
-        <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Raporty
+        <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Czytaj
   
         </h1>
       </div>
-      <div class="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
-        <div class="flex items-center  sm:mb-0">
-          <div class="flex items-center w-full sm:justify-end">
-            
-          </div>
-        </div>
-        <a href="{% url 'raport_start'%}">
-
-          <button id="createProductButton"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800"
-          type="button">
-          Zacznij nowy raport
-        </button>
-        </a>
-      </div>
+  
     </div>
   </div>
   <div class="flex flex-col">
@@ -85,45 +71,61 @@
           <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
             <thead class="bg-gray-100 dark:bg-gray-700">
               <tr>
-                <th scope="col" class="p-4">
-                 
+                <th scope="col" class="w-24 p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                  Nazwa
                 </th>
                 <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                  ID
-                </th>
-                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                  Data utworzenia
+                  rodzaje i kolory
                 </th>
               
-                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                  Akcje
-                </th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                <!-- <p class="dark:text-white">{{dane}}</p> -->
+                <!-- {% for kwiat in dane %}
+                    {% for rodzaj in dane|get_item:kwiat %}
+                        {% for kolor in dane|get_item:kwiat|get_item:rodzaj %}
+                        <p class="dark:text-white">{{kwiat}} -- {{rodzaj}} - {{kolor}} - {{dane|get_item:kwiat|get_item:rodzaj|get_item:kolor}}</p>
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %} -->
 
-              {% for raport in raporty %}
+
+
+              {% for kwiat in dane %}
               <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                <td class="w-4 p-4">
-                 
-                </td>
+              
                 <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                  <div class="text-base font-semibold text-gray-900 dark:text-white">{{ raport.id }}</div>
+                  <div class="text-base font-semibold text-gray-900 dark:text-white">{{ kwiat }}</div>
                 </td>
                 <td
-                  class="max-w-sm p-4  text-base font-normal text-gray-500  xl:max-w-xs dark:text-gray-400">
-                  {{ raport.data_utworzenia }}
-                </td>
+                class="max-w-sm p-4  text-base font-normal text-gray-500  xl:max-w-xs dark:text-gray-400">
+                {% for rodzaj in dane|get_item:kwiat %}
+                     
+                    <p class="font-bold text-xl text-center py-2 dark:text-white">{{rodzaj}}</p>
+                    <ul>
+                        {% for kolor in dane|get_item:kwiat|get_item:rodzaj %}
+                        <li class="pl-2 text-center text-black font-bold" 
+                        
+                        {% if 'tla' in kolor_hex|get_item:kolor %}
+                            style="background-image: url('{{kolor_hex|get_item:kolor}}');"
+                        {% else %}
+                            style="background-color: {{kolor_hex|get_item:kolor}};"
+                        {% endif %}
+                        
+                        >{{kolor}}  {{dane|get_item:kwiat|get_item:rodzaj|get_item:kolor }} </li>
+                        
+                        {% endfor %}
+                        </ul>
 
-                <td class="p-4 space-x-2 whitespace-nowrap">
-                  <a href="{% url 'czytaj_raport' raport.id%}">
-
-                    <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800">czytaj</button>
-                  </a>
-                  </td>
+                {% endfor %}
+              </td>
                
+
+              
               </tr>
 
+          
               {% endfor %}
 
             </tbody>
@@ -133,7 +135,7 @@
     </div>
   </div>
 
-  
+
 
 </div>
 
@@ -142,10 +144,6 @@
 {% endblock content %}
 
 {% comment %} {% block extra_js %}
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.tailwindcss.min.js"></script>
-<script src="https://cdn.tailwindcss.com/3.3.3"></script>
 
 
 {% endcomment %}

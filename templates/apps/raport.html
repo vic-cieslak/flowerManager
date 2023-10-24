@@ -35,7 +35,7 @@
        </ul>
       </div>
    </aside>
-   <form>
+   <form method="POST">
 
    <div class="p-4 sm:ml-64">
 
@@ -109,7 +109,7 @@
                       <input
                         type="hidden"
                         class="md:p-2 p-1 text-xs md:text-base border-gray-400 focus:outline-none text-center iloscDoPokazaniaInput"
-                        name="{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}"
+                        name="{{kwiat.name}}_{{kat_kol.nazwa}}_{{kolor}}"
                         id="{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}"
                         value="0"
                         readonly
@@ -162,7 +162,6 @@
    </div>
 
   </div>
-</form>
 <div id="drawer-create-product-default"
 class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
 tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
@@ -180,7 +179,6 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
   </svg>
   <span class="sr-only">Close menu</span>
 </button>
-<form method="post" class="" >
 <div class="pb-16 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
   <button 
     type="submit"
@@ -199,8 +197,8 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
 </div>
   {% csrf_token %}
   <div class="space-y-4 pt-16">
-    <input hidden v-model="grupy"  name="grupy_i_kolory" />
-    <input type="text" hidden name="grupy-json" v-model="grupy_string">
+    <!-- <input hidden v-model="grupy"  name="grupy_i_kolory" /> -->
+    <!-- <input type="text" hidden name="grupy-json" v-model="grupy_string"> -->
   </form>
 </div>
 
