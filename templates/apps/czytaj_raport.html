@@ -3,13 +3,16 @@
 {% load color_tags %}
 {% comment %} {% block extrastyle %}
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.tailwindcss.min.css">
 {% endblock extrastyle %} 
 
 {% endcomment %}
 
 {% block content %}
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 
 <main>
     
@@ -68,7 +71,7 @@
     <div class="overflow-x-auto">
       <div class="inline-block min-w-full align-middle">
         <div class="overflow-hidden shadow">
-          <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+          <table id="dataTable" class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
             <thead class="bg-gray-100 dark:bg-gray-700">
               <tr>
                 <th scope="col" class="w-24 p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
@@ -120,12 +123,7 @@
 
                 {% endfor %}
               </td>
-               
-
-              
               </tr>
-
-          
               {% endfor %}
 
             </tbody>
@@ -134,13 +132,38 @@
       </div>
     </div>
   </div>
-
-
-
 </div>
 
 </main>
+<style>
+.dataTables_wrapper .dataTables_filter {
+    float: none;
+    text-align: center;
+    color: white;
+}
+.dataTables_wrapper div.dataTables_filter input {
+      width: 50%;
+}
+</style>
 
+<script defer>
+$(document).ready( function () {
+    var table = $('#dataTable').DataTable({
+      info: false,
+      ordering: false,
+
+      language: { 
+        search: "",
+        searchPlaceholder: "Szukaj kwiatu lub rodzaju"
+      },
+      paging: false
+    });
+    
+  
+
+    $('.dataTables_wrapper .dataTables_filter').addClass('py-5')
+} );
+</script>
 {% endblock content %}
 
 {% comment %} {% block extra_js %}

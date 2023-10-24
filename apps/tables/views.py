@@ -90,6 +90,7 @@ def kolejnosc(request):
     kwiaty = Kwiat.objects.filter(aktywny=True).order_by('kolejnosc')
     return render(request, 'apps/kolejnosc.html', {'kwiaty': kwiaty})
   elif request.method == "POST":
+    print(request.POST.get('kolejnosc'))
     kolejnosc_idkow = request.POST.get('kolejnosc').split(',')
     for nowe_kolejnosc, idk_kwiatu in enumerate(kolejnosc_idkow):
       kwiat = Kwiat.objects.filter(id=int(idk_kwiatu)).first()
@@ -115,7 +116,6 @@ def czytaj_raport(request, id):
           klucze_do_usuniecia.append([klucz, rodzaj, kolor])
 
   # jezeli kwiat nie ma koloru tez usun 
-  print(klucze_do_usuniecia)
   for klucze in klucze_do_usuniecia:
     klucz, rodzaj, kolor = klucze 
     del dane[klucz][rodzaj][kolor]
@@ -127,8 +127,7 @@ def czytaj_raport(request, id):
       if len(dane[klucz][rodzaj]) == 0:
           klucze_do_usuniecia.append([klucz, rodzaj])
 
-  print(klucze_do_usuniecia)
-  for klucze in klucze_do_usuniecia:
+  for klucze in klucze_do_usuniecia:  
     klucz, rodzaj = klucze 
     del dane[klucz][rodzaj]
 
