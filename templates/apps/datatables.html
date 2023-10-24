@@ -178,7 +178,15 @@
                     <p class="font-bold text-xl text-center py-2 dark:text-white">{{kat_kol.nazwa}}</p>
                     <ul>
                       {% for kolor in kat_kol.kolory %}
-                      <li class="pl-2 text-center text-black font-bold" style="background-color: {{kolor_hex|get_item:kolor}};">{{kolor}} </li>
+                      <li class="pl-2 text-center text-black font-bold" 
+                      
+                      {% if 'tla' in kolor_hex|get_item:kolor %}
+                      style="background-image: url('{{kolor_hex|get_item:kolor}}');"
+                    {% else %}
+                      style="background-color: {{kolor_hex|get_item:kolor}};"
+                    {% endif %}
+                      
+                      >{{kolor}} </li>
                       
                       {% endfor %}
                     </ul>

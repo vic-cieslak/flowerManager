@@ -16,10 +16,14 @@ def datatables(request):
   kwiaty_list = Kwiat.objects.filter(**filters).order_by(Lower('name'))
   kolory = Kolory.objects.all()
   
+  
   kolor_hex = {}
   for kolor in kolory:
-    kolor_hex[kolor.name] = kolor.hex_kolor
-
+    if kolor.custom_background:
+      kolor_hex[kolor.name] = kolor.custom_background.url
+    else:
+      kolor_hex[kolor.name] = kolor.hex_kolor
+      
   for kwiat in kwiaty_list:
     kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
 
