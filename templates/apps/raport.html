@@ -93,7 +93,7 @@
                   {% endif %}
                   >
 
-                    <div class="flex-initial w-96">
+                    <div class="flex-initial w-40">
                       <span class="bg-gray-100  opacity-85 text-black text-xs font-medium mr-2 px-1.5 py-0.5 rounded dark:bg-gray-100 "> {{kolor}} </span>
                     </div>
                     
@@ -143,6 +143,22 @@
                           class="font-semibold border-l  bg-blue-700 hover:bg-blue-600 text-white border-gray-400 h-full w-12 flex  focus:outline-none cursor-pointer"
                         >
                           <span class="m-auto">+4</span>
+                        </button>
+
+                        <button
+                          @click.prevent="dodajIlosc('{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}', 8)"
+
+                          class="font-semibold border-l  bg-blue-700 hover:bg-blue-600 text-white border-gray-400 h-full w-12 flex  focus:outline-none cursor-pointer"
+                        >
+                          <span class="m-auto">+8</span>
+                        </button>
+
+                        <button
+                          @click.prevent="dodajIlosc('{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}', 16)"
+
+                          class="font-semibold border-l  bg-blue-700 hover:bg-blue-600 text-white border-gray-400 h-full w-12 flex  focus:outline-none cursor-pointer"
+                        >
+                          <span class="m-auto">+16</span>
                         </button>
 
                      

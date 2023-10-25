@@ -170,7 +170,7 @@
                   </div> -->
                 </td>
                 <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                  <div class="text-base font-semibold text-gray-900 dark:text-white">{{ kwiat.name }}</div>
+                  <div class="text-base text-xl font-semibold text-gray-900 dark:text-white">{{ kwiat.name }}</div>
                 </td>
                 <td
                   class="max-w-sm p-4  text-base font-normal text-gray-500  xl:max-w-xs dark:text-gray-400">
@@ -178,7 +178,7 @@
                     <p class="font-bold text-xl text-center py-2 dark:text-white">{{kat_kol.nazwa}}</p>
                     <ul>
                       {% for kolor in kat_kol.kolory %}
-                      <li class="pl-2 text-center text-black font-bold" 
+                      <li class="pl-2 text-center text-black font-bold my-2" 
                       
                       {% if 'tla' in kolor_hex|get_item:kolor %}
                       style="background-image: url('{{kolor_hex|get_item:kolor}}');"
