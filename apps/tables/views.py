@@ -198,6 +198,7 @@ def raport_start(request):
 
     else:
         pass
+
 # @login_required(login_url='/users/signin/')
 def lista_raportow(request):
   raporty = Raport.objects.all().order_by('-data_utworzenia')
@@ -209,6 +210,13 @@ def lista_raportow(request):
 def delete_kolor(request, id):
     kolor = Kolory.objects.get(id=id)
     kolor.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+# @login_required(login_url='/users/signin/')
+def usun_raport(request, id):
+    raport = Raport.objects.get(id=id)
+    raport.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
