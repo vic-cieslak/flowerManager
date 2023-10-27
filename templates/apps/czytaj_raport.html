@@ -8,11 +8,11 @@
 {% endcomment %}
 
 {% block content %}
-<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+<script src="{% static 'dist/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'dist/jquery.dataTables.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'dist/jquery.dataTables.min.css' %}" />
+
 <main>
     
   <div id="app">

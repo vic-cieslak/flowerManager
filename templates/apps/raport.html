@@ -2,15 +2,8 @@
 {% load static %}
 {% load color_tags %}
 
-{% comment %} {% block extrastyle %}
-
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.tailwindcss.min.css">
-{% endblock extrastyle %} 
-
-{% endcomment %}
-
 {% block content %}
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="{% static 'dist/vue.global.js' %}"></script>
 
 <main>
   <div id="app">

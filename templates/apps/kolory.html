@@ -1,15 +1,9 @@
 {% extends "layouts/base.html" %}
 {% load static %}
 
-{% comment %} {% block extrastyle %}
-
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.tailwindcss.min.css">
-{% endblock extrastyle %} 
-
-{% endcomment %}
 
 {% block content %}
-<script src="https://unpkg.com/@johmun/vue-tags-input/dist/vue-tags-input.js"></script>
+<script src="{% static 'dist/vue-tags-input.js' %}"></script>
 
 <main>
   <div
