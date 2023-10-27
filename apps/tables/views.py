@@ -173,27 +173,12 @@ def raport_start(request):
 
       return render(request, 'apps/raport.html', {'kwiaty': kwiaty, 'kolor_hex': kolor_hex})
     elif request.method == "POST":
-      print(request.POST)
-      dane = {}
-      for field in request.POST:
-        if field == 'csrfmiddlewaretoken':
-          continue
-        kwiat, rodzaj, kolor = field.split('_')
-        ilosc = request.POST.get(field)
-        if kwiat in dane:
-          if rodzaj in dane[kwiat]:
-            dane[kwiat][rodzaj][kolor] = ilosc
-          else:
-            dane[kwiat][rodzaj] = {}
-            dane[kwiat][rodzaj][kolor] = ilosc
-        else:
-          dane[kwiat] = {}
-          dane[kwiat][rodzaj] = {}
-          dane[kwiat][rodzaj][kolor] = ilosc
-      print(dane)
-      dane_json = json.dumps(dane)
-      raport = Raport(wartosc=dane_json)
+      data = json.loads(request.body)
+      print(data)
+      # dane_json = json.dumps(dane)
+      raport = Raport(wartosc=request.body)
       raport.save()
+      # TODO redirect to raport ?
       return HttpResponseRedirect(reverse('lista_raportow'))
 
     else:
@@ -202,7 +187,7 @@ def raport_start(request):
 # @login_required(login_url='/users/signin/')
 def lista_raportow(request):
   raporty = Raport.objects.all().order_by('-data_utworzenia')
-  print(raporty)
+  # print(raporty)
   return render(request, 'apps/lista_raportow.html', {'raporty': raporty})
 
 

@@ -35,7 +35,7 @@
        </ul>
       </div>
    </aside>
-   <form method="POST">
+   <form method="POST" @submit.prevent="handleSubmit">
 
    <div class="p-4 sm:ml-64">
 
@@ -101,9 +101,9 @@
                       class="flex flex-auto flex-row border h-10  rounded-lg border-gray-400 "
                     >
                       <button
-                        @click.prevent="dodajIlosc('{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}', -1)"
-                        class="font-semibold border-r bg-red-700 hover:bg-red-600 text-white border-gray-400 h-full w-12 flex rounded-l focus:outline-none cursor-pointer"
-                      >
+                      @click.prevent="dodajIlosc('{{kwiat.name}}', '{{kat_kol.nazwa}}', '{{kolor}}', -1)"
+                      class="font-semibold border-r bg-red-700 hover:bg-red-600 text-white border-gray-400 h-full w-12 flex rounded-l focus:outline-none cursor-pointer"
+                      > 
                         <span class="m-auto">-</span>
                       </button>
                       <input
@@ -111,18 +111,20 @@
                         class="md:p-2 p-1 text-xs md:text-base border-gray-400 focus:outline-none text-center iloscDoPokazaniaInput"
                         name="{{kwiat.name}}_{{kat_kol.nazwa}}_{{kolor}}"
                         id="{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}"
-                        value="0"
+                        v-model="formData['{{kwiat.name}}']['{{kat_kol.nazwa}}']['{{kolor}}']"
                         readonly
                         name="custom-input-number"
                       />
                       <div
                         class="bg-white w-24 text-xs md:text-base flex items-center justify-center cursor-default"
                       >
-                        <span id="{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}-span" class="iloscDoPokazaniaSpan">0</span>
+                        <span id="{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}-span" class="iloscDoPokazaniaSpan"
+                        v-text="formData['{{kwiat.name}}']['{{kat_kol.nazwa}}']['{{kolor}}']"
+                        ></span>
                       </div>
 
                       <button
-                        @click.prevent="dodajIlosc('{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}', 1)"
+                        @click.prevent="dodajIlosc('{{kwiat.name}}', '{{kat_kol.nazwa}}', '{{kolor}}', 1)"
                         class="font-semibold border-l  bg-green-700 hover:bg-green-600 text-white border-gray-400 h-full w-12 flex rounded-r focus:outline-none cursor-pointer"
                       >
                         <span class="m-auto">+</span>
@@ -130,15 +132,14 @@
                       <!-- <span class="pl-6"></span> -->
 
                       <button
-                        @click.prevent="dodajIlosc('{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}', 2)"
-
+                        @click.prevent="dodajIlosc('{{kwiat.name}}', '{{kat_kol.nazwa}}', '{{kolor}}', 2)"
                         class="font-semibold border-l  bg-blue-700 hover:bg-blue-600 text-white border-gray-400 h-full w-12 flex  focus:outline-none cursor-pointer"
                       >
                         <span class="m-auto">+2</span>
                       </button>
                      
                         <button
-                          @click.prevent="dodajIlosc('{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}', 4)"
+                          @click.prevent="dodajIlosc('{{kwiat.name}}', '{{kat_kol.nazwa}}', '{{kolor}}', 4)"
 
                           class="font-semibold border-l  bg-blue-700 hover:bg-blue-600 text-white border-gray-400 h-full w-12 flex  focus:outline-none cursor-pointer"
                         >
@@ -146,7 +147,7 @@
                         </button>
 
                         <button
-                          @click.prevent="dodajIlosc('{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}', 8)"
+                        @click.prevent="dodajIlosc('{{kwiat.name}}', '{{kat_kol.nazwa}}', '{{kolor}}', 8)"
 
                           class="font-semibold border-l  bg-blue-700 hover:bg-blue-600 text-white border-gray-400 h-full w-12 flex  focus:outline-none cursor-pointer"
                         >
@@ -154,8 +155,7 @@
                         </button>
 
                         <button
-                          @click.prevent="dodajIlosc('{{kwiat.name}}-{{kat_kol.nazwa}}-{{kolor}}', 16)"
-
+                        @click.prevent="dodajIlosc('{{kwiat.name}}', '{{kat_kol.nazwa}}', '{{kolor}}', 16)"
                           class="font-semibold border-l  bg-blue-700 hover:bg-blue-600 text-white border-gray-400 h-full w-12 flex  focus:outline-none cursor-pointer"
                         >
                           <span class="m-auto">+16</span>
@@ -172,7 +172,7 @@
               
   
             <label for="message" class="pt-8 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notatka</label>
-            <textarea id="message" name="{{kwiat.name}}_notatka" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Dodaj notatke..."></textarea>
+            <textarea id="message" name="{{kwiat.name}}_notatka" v-model="formData['{{kwiat.name}}']['notatka']" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Dodaj notatke..."></textarea>
               </div>
 
             </div>
@@ -218,8 +218,6 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
 </div>
   {% csrf_token %}
   <div class="space-y-4 pt-16">
-    <!-- <input hidden v-model="grupy"  name="grupy_i_kolory" /> -->
-    <!-- <input type="text" hidden name="grupy-json" v-model="grupy_string"> -->
   </form>
 </div>
 
@@ -231,6 +229,45 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
   createApp({
     setup() {
       var openTab = ref(1);
+      const formData = ref({
+        {% for kwiat in kwiaty %}
+          '{{kwiat.name}}': {
+            'notatka': '',
+            {% for kat_kol in kwiat.kategorie_i_kolory_list %}
+              '{{kat_kol.nazwa}}': {
+                {% for kolor in kat_kol.kolory %}
+                  '{{kolor}}': 0,
+                {% endfor %}
+              },
+            {% endfor %}
+          },
+        {% endfor %}
+      });
+      console.log(formData)
+      console.log(JSON.stringify(formData))
+
+      const handleSubmit = async () => {
+        const csrfInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
+        const csrfToken = csrfInput ? csrfInput.value : '';
+         try {
+          const response = await fetch('/tables/raport_start', {
+           method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': csrfToken  // Django expects this header for CSRF protection,
+            },
+            body: JSON.stringify(formData.value)
+          }); 
+
+        // If the server responds with a redirection URL, handle it here.
+        if (response.redirected) {
+          window.location.href = response.url;
+        }
+      } catch (error) {
+        console.error(`An error occurred: ${error.message}`);
+      }
+      };
+
       function toggleTabs(tabNumber){
         openTab.value = tabNumber;
       }
@@ -241,11 +278,8 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
         console.log(document.getElementByClass('iloscDoPokazaniaSpan'))
         
       }
-      function dodajIlosc(kwiatKey, ilosc){
-        console.log(kwiatKey, ilosc)
-        var new_val = new Number(document.getElementById(kwiatKey).value) + new Number(ilosc) 
-        document.getElementById(kwiatKey).value = new_val
-        document.getElementById(kwiatKey+'-span').innerHTML = new_val.toString()
+      function dodajIlosc(kwiatName, katKolName, kolorValue, ilosc){
+        formData.value[kwiatName][katKolName][kolorValue] += ilosc;
       }
       function chceKwiat(kwiatID){
         // pokaz nastepny rodzaj na froncie
@@ -260,6 +294,8 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
         openTab,
         chceKwiat,
         zerujKolor,
+        handleSubmit,
+        formData,
         dodajIlosc,
         toggleTabs
       }
