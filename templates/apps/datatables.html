@@ -53,21 +53,25 @@
               </div>
             </li>
           </ol>
+
+          <div class="items-end pl-4">
+            <button id="createProductButton"
+            class="text-white  text-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800"
+            type="button" data-drawer-target="drawer-create-product-default"
+            data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default"
+            data-drawer-placement="right">
+            Dodaj nowy kwiat
+            </button>
+          </div>
+
         </nav>
-      
       </div>
       
      
     </div>
   </div>
-  <div class="flex flex-col items-end">
-    <button id="createProductButton"
-                  class="text-white mx-4 my-4 text-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800"
-                  type="button" data-drawer-target="drawer-create-product-default"
-                  data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default"
-                  data-drawer-placement="right">
-                  Dodaj nowy kwiat
-                  </button>
+  <div class="flex flex-col">
+    
     <div class="overflow-x-auto">
       
       <div class="inline-block min-w-full align-middle">
@@ -84,7 +88,7 @@
                     <label for="checkbox-all" class="sr-only">checkbox</label>
                   </div> -->
                 </th>
-                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                <th scope="col" class="p-4 w-24 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                   Nazwa
                 </th>
                 <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
@@ -476,7 +480,7 @@
       color: white;
   }
   .dataTables_wrapper div.dataTables_filter input {
-        width: 50%;
+        width: 30%;
   }
   </style>
   
