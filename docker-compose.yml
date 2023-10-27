@@ -1,6 +1,8 @@
 version: '3.8'
 services:
   rocket-django:
+    volumes:
+       - media:/media/
     env_file:
       - ".env"
     container_name: rocket_django
@@ -45,3 +47,4 @@ networks:
 
 volumes:
   postgres: {}
+  media: {}
