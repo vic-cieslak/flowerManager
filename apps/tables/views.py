@@ -106,40 +106,7 @@ def kolejnosc(request):
 def czytaj_raport(request, id):
   raport = Raport.objects.get(id=id)
   dane = json.loads(raport.wartosc)
-
-  klucze_do_usuniecia = []
-  # remove kolors with 0
-  for klucz in dane:
-    for rodzaj in dane[klucz]:
-      for kolor in dane[klucz][rodzaj]:
-        if dane[klucz][rodzaj][kolor] == '0':
-          klucze_do_usuniecia.append([klucz, rodzaj, kolor])
-
-  # jezeli kwiat nie ma koloru tez usun 
-  for klucze in klucze_do_usuniecia:
-    klucz, rodzaj, kolor = klucze 
-    del dane[klucz][rodzaj][kolor]
-
-
-  klucze_do_usuniecia = []
-  for klucz in dane:
-    for rodzaj in dane[klucz]:
-      if len(dane[klucz][rodzaj]) == 0:
-          klucze_do_usuniecia.append([klucz, rodzaj])
-
-  for klucze in klucze_do_usuniecia:  
-    klucz, rodzaj = klucze 
-    del dane[klucz][rodzaj]
-
   print(dane)
-  klucze_do_usuniecia = []
-  for key in dane:
-    if dane[key] == {}:
-      klucze_do_usuniecia.append(key)
-
-  for klucz in klucze_do_usuniecia:
-    del dane[klucz]
-
   kolory = Kolory.objects.all()
   kolor_hex = {}
   for kolor in kolory:
@@ -175,8 +142,8 @@ def raport_start(request):
     elif request.method == "POST":
       data = json.loads(request.body)
       print(data)
-      # dane_json = json.dumps(dane)
-      raport = Raport(wartosc=request.body)
+      dane_json = json.dumps(data)
+      raport = Raport(wartosc=dane_json)
       raport.save()
       # TODO redirect to raport ?
       return HttpResponseRedirect(reverse('lista_raportow'))
