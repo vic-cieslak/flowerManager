@@ -26,6 +26,11 @@
                         </th>
                         <td class="px-6 py-4 text-white text-center bg-gray-500 text-xl font-semibold" colspan="{{ dane|get_item:kwiat|length }}">
                             {{kwiat}} 
+                            {% if dane|get_item:kwiat|get_item:'notatka' %}
+                              <div class="text-red-700 text-lg">{{dane|get_item:kwiat|get_item:'notatka'}}</div>
+                             
+                            {% endif %}
+
                         </td>
                     </tr>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -34,6 +39,7 @@
                         </th>
                         {% for rodzaj in dane|get_item:kwiat %}
                         {% if rodzaj == "notatka" %}
+                        
                         {% else %}
                              <td class="px-6 py-4 min-w-36 max-w-36 text-xl font-semibold">{{rodzaj}}</td>
                         {% endif %}
@@ -43,13 +49,9 @@
                         <th scope="row" class="px-6 py-4 font-medium bg-gray-500 text-gray-900 whitespace-nowrap dark:text-white">
                             Kolor / ilość
                         </th>
-
                         {% for rodzaj, kolory in dane|get_item:kwiat|items %}
                             {% if rodzaj != "notatka" %}
-
                                 <td class="px-6 py-4 min-w-36 max-w-36">
-
-
                                     <ul class="flex flex-wrap ">
 
                                         {% with non_zero_kolors=kolory|dict_values_neq:0 %}
@@ -69,16 +71,12 @@
                                                             <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{ value }}</div>
                                                         </button>
                                                     </li>
-
                                                 {% endfor %}
                                              {% endif %}
                                          {% endwith %}   
 
                                     </ul>
-
-
                                     <ul class="flex flex-wrap ">
-
                                         {% with zero_kolors=kolory|dict_values_eq:0 %}
                                         {% if zero_kolors %}
                                            
@@ -98,27 +96,13 @@
                                                             <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{value}}</div>
                                                         </button>
                                                     </li>
-
-
-
                                                 {% endfor %}
-
-
-
-
                                             {% endif %}
                                         {% endwith %}
-
-
-
-                                     
                                     </ul>
                                 </td>
                             {% endif %}
                         {% endfor  %}
-
-                       
-                        
                     </tr>
                 </tbody>
             </table>
