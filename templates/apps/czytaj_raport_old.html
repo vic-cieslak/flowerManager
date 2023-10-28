@@ -1,0 +1,142 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load color_tags %}
+{% comment %} {% block extrastyle %}
+
+{% endblock extrastyle %} 
+
+{% endcomment %}
+
+{% block content %}
+
+<script src="{% static 'dist/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'dist/jquery.dataTables.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'dist/jquery.dataTables.min.css' %}" />
+
+<main>
+    
+  <div id="app">
+  <div class="flex flex-col">
+    <div class="overflow-x-auto">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden shadow">
+
+<table id="dataTable" class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+    <thead class="bg-gray-100 dark:bg-gray-700">
+        <tr>
+            <th scope="col" class="w-24 p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                Nazwa
+            </th>
+            <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                Chce
+            </th>
+            <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                Nie Chce
+            </th>
+        </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+
+        {% for kwiat in dane %}
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                <div class="text-base font-semibold text-gray-900 dark:text-white">{{ kwiat }}</div>
+            </td>
+            <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
+                {% for rodzaj, kolory in dane|get_item:kwiat|items %}
+                    {% if rodzaj == "notatka" %}
+                        <div class="notatka-style text-red-600 font-bold">{{ kolory }}</div>
+                    {% else %}
+                        {% with non_zero_kolors=kolory|dict_values_neq:0 %}
+                            {% if non_zero_kolors %}
+                                <p class="font-bold text-xl text-center py-2 dark:text-white">{{rodzaj}}</p>
+                                <ul>
+                                    {% for kolor, value in non_zero_kolors.items %}
+                                        <li class="pl-2 my-2 text-center text-black font-bold"
+                                        {% if 'tla' in kolor_hex|get_item:kolor %}
+                                            style="background-image: url('{{kolor_hex|get_item:kolor}}');"
+                                        {% else %}
+                                            style="background-color: {{kolor_hex|get_item:kolor}};"
+                                        {% endif %}
+                                        >{{ kolor }} {{ value }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
+                {% for rodzaj, kolory in dane|get_item:kwiat|items %}
+                    {% if rodzaj != "notatka" %}
+                        {% with zero_kolors=kolory|dict_values_eq:0 %}
+                            {% if zero_kolors %}
+                                <p class="font-bold text-xl text-center py-2 dark:text-white">{{rodzaj}}</p>
+                                <ul>
+                                    {% for kolor, value in zero_kolors.items %}
+                                        <li class="pl-2 my-2 text-center text-black font-bold"
+                                        {% if 'tla' in kolor_hex|get_item:kolor %}
+                                            style="background-image: url('{{kolor_hex|get_item:kolor}}');"
+                                        {% else %}
+                                            style="background-color: {{kolor_hex|get_item:kolor}};"
+                                        {% endif %}
+                                        >{{ kolor }} {{ value }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+<style>
+.dataTables_wrapper .dataTables_filter {
+    float: none;
+    text-align: center;
+    color: white;
+}
+.dataTables_wrapper div.dataTables_filter input {
+      width: 50%;
+}
+</style>
+
+<script defer>
+$(document).ready( function () {
+    var table = $('#dataTable').DataTable({
+      info: false,
+      ordering: false,
+
+      language: { 
+        search: "",
+        searchPlaceholder: "Szukaj kwiatu lub rodzaju"
+      },
+      paging: false
+    });
+    
+  
+
+    $('.dataTables_wrapper .dataTables_filter').addClass('py-5')
+} );
+</script>
+{% endblock content %}
+
+{% comment %} {% block extra_js %}
+
+
+{% endcomment %}
