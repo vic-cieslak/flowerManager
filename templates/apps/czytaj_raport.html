@@ -24,7 +24,7 @@
                         <th scope="row" class="px-6 py-4 bg-gray-500 font-medium text-white whitespace-nowrap dark:text-white">
                             Produkt
                         </th>
-                        <td class="px-6 py-4 text-white text-center bg-gray-500" colspan="{{ dane|get_item:kwiat|length }}">
+                        <td class="px-6 py-4 text-white text-center bg-gray-500 text-xl font-semibold" colspan="{{ dane|get_item:kwiat|length }}">
                             {{kwiat}} 
                         </td>
                     </tr>
@@ -35,7 +35,7 @@
                         {% for rodzaj in dane|get_item:kwiat %}
                         {% if rodzaj == "notatka" %}
                         {% else %}
-                             <td class="px-6 py-4 min-w-36 max-w-36">{{rodzaj}}</td>
+                             <td class="px-6 py-4 min-w-36 max-w-36 text-xl font-semibold">{{rodzaj}}</td>
                         {% endif %}
                         {% endfor %}
                     </tr>
