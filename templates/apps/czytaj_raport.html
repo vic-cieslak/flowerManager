@@ -52,13 +52,13 @@
                                         {% for rodzaj, kolory in dane|get_item:kwiat|items %}
                                         {% if rodzaj == "notatka" %}
                                         <div
-                                            class="flex flex-row justify-center px-2 py-1 mr-6 text-white text-center bg-gray-500 text-md ">
+                                            class="flex flex-row justify-center px-2 py-1 mr-6 text-black text-center bg-gray-500 text-md ">
                                             {{ kolory }}</div>
                                         {% else %}
                                         {% endif %}
                                         {% endfor %}
 
-                                        <div class="flex flex-row">
+                                        <div class="flex flex-row mr-6">
 
                                             {% for rodzaj, kolory in dane|get_item:kwiat|items %}
                                             {% if rodzaj == "notatka" %}
