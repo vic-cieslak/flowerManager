@@ -1,117 +1,226 @@
 {% extends "layouts/base.html" %}
 {% load static %}
 {% load color_tags %}
+{% comment %} {% block extrastyle %}
+
+{% endblock extrastyle %} 
+
+{% endcomment %}
 
 {% block content %}
+
 <script src="{% static 'dist/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'dist/jquery.dataTables.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'dist/jquery.dataTables.min.css' %}" />
 
 <main>
+    
   <div id="app">
-    <div class="flex flex-col">
-      <div class="overflow-x-auto">
-        <div class="relative overflow-x-auto">
-            {% for kwiat in dane %}
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <colgroup>
-                    <col class="w-16"> <!-- fixed width for "Produkt" -->
-                    <col class="min-w-36 max-w-36">
-                    <col class="min-w-36 max-w-36">
-                </colgroup>
-                <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 bg-gray-500 font-medium text-white whitespace-nowrap dark:text-white">
-                            Produkt
-                        </th>
-                        <td class="px-6 py-4 text-white text-center bg-gray-500 text-xl font-semibold" colspan="{{ dane|get_item:kwiat|length }}">
-                            {{kwiat}} 
-                            {% if dane|get_item:kwiat|get_item:'notatka' %}
-                              <div class="text-red-700 text-lg">{{dane|get_item:kwiat|get_item:'notatka'}}</div>
-                             
-                            {% endif %}
+  <div class="flex flex-col">
+    <div class="overflow-x-auto">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden shadow">
 
-                        </td>
-                    </tr>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium bg-gray-500 text-gray-900 whitespace-nowrap dark:text-white">
-                            Rodzaj
-                        </th>
-                        {% for rodzaj in dane|get_item:kwiat %}
-                        {% if rodzaj == "notatka" %}
+<table id="dataTable" class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+    <thead class="bg-gray-100 dark:bg-gray-700">
+        <tr>
+            <th scope="col" class="w-2  text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                
+            </th>
+            <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                Rodzaj / ilość
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+
+        {% for kwiat in dane %}
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                <div class="text-base font-semibold text-gray-900 dark:text-white hidden">{{ kwiat }}</div>
+            </td>
+            <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
+                <div class="flex flex-row justify-center px-2 py-1 mr-6 text-white text-center bg-gray-500 text-xl font-semibold">{{ kwiat }}</div>
+
+                <div class="flex flex-row">
+
+                {% for rodzaj, kolory in dane|get_item:kwiat|items %}
+                    {% if rodzaj == "notatka" %}
+                        <div class="notatka-style text-red-600 font-bold">{{ kolory }}</div>
+                    {% else %}
+                   
+                        <div class="grow">
+
+                            <p class="font-bold text-xl  py-2 dark:text-white">{{rodzaj}}</p>
+
+                                {% for kolor, value in dane|get_item:kwiat|get_item:rodzaj|items %}
+                                    {% if value == 0 %}
+                                        <button type="button" 
+                                        {% if 'tla' in kolor_hex|get_item:kolor %}
+                                        style="background-image: url('{{kolor_hex|get_item:kolor}}');"
+                                        {% else %}
+                                            style="background-color: {{kolor_hex|get_item:kolor}};"
+                                        {% endif %}
+                                        
+                                        class="relative inline-flex items-center px-3 py-1  text-sm font-bold text-center text-black  rounded-lg hover:bg-green-800 focus:ring-4 ">
+                                            {{ kolor }} 
+                                            <span class="sr-only">Notifications</span>
+                                            <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{value}}</div>
+                                        </button>
+                                    {% else %}
+                                        <button type="button"
+                                        {% if 'tla' in kolor_hex|get_item:kolor %}
+                                        style="background-image: url('{{kolor_hex|get_item:kolor}}');"
+                                    {% else %}
+                                        style="background-color: {{kolor_hex|get_item:kolor}};"
+                                    {% endif %}
+
+                                        class="relative inline-flex items-center px-3 py-1 text-sm font-bold text-center text-black  rounded-lg focus:ring-4 focus:outline-none">
+                                            {{ kolor }} 
+                                            <span class="sr-only">Notifications</span>
+                                            <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{ value }}</div>
+                                        </button>
+                                    {% endif %}
+                                {% endfor %}
+                        </div>
+        
                         
-                        {% else %}
-                             <td class="px-6 py-4 min-w-36 max-w-36 text-xl font-semibold">{{rodzaj}}</td>
-                        {% endif %}
-                        {% endfor %}
-                    </tr>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium bg-gray-500 text-gray-900 whitespace-nowrap dark:text-white">
-                            Kolor / ilość
-                        </th>
-                        {% for rodzaj, kolory in dane|get_item:kwiat|items %}
-                            {% if rodzaj != "notatka" %}
-                                <td class="px-6 py-4 min-w-36 max-w-36">
-                                    <ul class="flex flex-wrap ">
 
-                                        {% with non_zero_kolors=kolory|dict_values_neq:0 %}
-                                        {% if non_zero_kolors %}
-                                                {% for kolor, value in non_zero_kolors.items %}
-                                                    <li class="px-1 text-center rounded font-bold my-1 " >
-                                                        <button type="button"
-                                                        {% if 'tla' in kolor_hex|get_item:kolor %}
-                                                        style="background-image: url('{{kolor_hex|get_item:kolor}}');"
-                                                    {% else %}
-                                                        style="background-color: {{kolor_hex|get_item:kolor}};"
-                                                    {% endif %}
+                    {% endif %}
+                {% endfor %}
 
-                                                        class="relative inline-flex items-center px-3 py-1 text-sm font-bold text-center text-black  rounded-lg focus:ring-4 focus:outline-none">
-                                                            {{ kolor }}
-                                                            <span class="sr-only">Notifications</span>
-                                                            <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{ value }}</div>
-                                                        </button>
-                                                    </li>
-                                                {% endfor %}
-                                             {% endif %}
-                                         {% endwith %}   
+            </div>
+            
+            </td>
+       
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-                                    </ul>
-                                    <ul class="flex flex-wrap ">
-                                        {% with zero_kolors=kolory|dict_values_eq:0 %}
-                                        {% if zero_kolors %}
-                                           
-                                                {% for kolor, value in zero_kolors.items %}
 
-                                                    <li class="px-1 text-center rounded font-bold my-1 " >
-                                                        <button type="button" 
-                                                        {% if 'tla' in kolor_hex|get_item:kolor %}
-                                                        style="background-image: url('{{kolor_hex|get_item:kolor}}');"
-                                                        {% else %}
-                                                            style="background-color: {{kolor_hex|get_item:kolor}};"
-                                                        {% endif %}
-                                                        
-                                                        class="relative inline-flex items-center px-3 py-1  text-sm font-bold text-center text-black  rounded-lg hover:bg-green-800 focus:ring-4 ">
-                                                            {{ kolor }}
-                                                            <span class="sr-only">Notifications</span>
-                                                            <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{value}}</div>
-                                                        </button>
-                                                    </li>
-                                                {% endfor %}
-                                            {% endif %}
-                                        {% endwith %}
-                                    </ul>
-                                </td>
-                            {% endif %}
-                        {% endfor  %}
-                    </tr>
-                </tbody>
-            </table>
-            {% endfor %}
+
+
+
 
         </div>
       </div>
     </div>
   </div>
-</main>
+</div>
 
+</main>
+<style>
+.dataTables_wrapper .dataTables_filter {
+    float: none;
+    text-align: center;
+    color: white;
+}
+.dataTables_wrapper div.dataTables_filter input {
+      width: 50%;
+}
+</style>
+
+<script defer>
+
+$(document).ready( function () {
+  $.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+
+      // Get the search input value
+      let search = $('.dataTables_filter input').val();
+      if ( search === undefined ) {
+        search = '';
+      }
+
+      if ( search === '' ) {
+        return true;
+      }
+
+      let re = new RegExp( '^' + search, 'i' );
+
+      // Look through each column to find a match
+      for (i=0; i<data.length; i++) {
+        // If any column matches then show row
+        if ( re.test( data[i] ) ) {
+          return true;
+        }
+      }
+      return false;
+    });
+  
+  
+    $('input[type = search]').attr('dir', 'left');
+  var table = $('#dataTable').DataTable({
+            info: false,
+            ordering: false,
+
+            language: { 
+            search: "",
+            searchPlaceholder: "Szukaj kwiatu lub rodzaju"
+            },
+            paging: false,
+            initComplete: function () {
+                $('.dt-buttons').removeClass('btn-group');
+                $('.dataTables_filter').children().appendTo('#mytable_length');
+                $("label").attr("id", function(arr) {
+                        return "button_size" + arr;
+                    });
+            },
+            columnDefs: [{
+                searchable: false,
+            }],
+            dom: 'Blfrtip',
+            "ordering": false,
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [5, 4, 3, 2, 0]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [5, 4, 3, 2, 0]
+                    },
+                    customize: function (doc) {
+                      doc.content[1].alignment = 'right';
+                    },
+                },
+            ],
+            "pagingType": "full_numbers",
+              
+        });
+        $('.dataTables_wrapper .dataTables_filter').addClass('py-5')
+
+         $('.dataTables_filter input').off();
+        
+                 $('input[type = search]').on( 'keyup', function (e) {
+                  table.draw();
+              });
+  
+
+} );
+
+// $(document).ready( function () {
+//     var table = $('#dataTable').DataTable({
+//       info: false,
+//       ordering: false,
+
+//       language: { 
+//         search: "",
+//         searchPlaceholder: "Szukaj kwiatu lub rodzaju"
+//       },
+//       paging: false
+//     });
+//     $('.dataTables_wrapper .dataTables_filter').addClass('py-5')
+// } );
+</script>
 {% endblock content %}
+
+{% comment %} {% block extra_js %}
+
+
+{% endcomment %}
