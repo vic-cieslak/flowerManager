@@ -228,9 +228,12 @@ def edytuj_kwiat(request, id):
         kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
         kolor_hex = {}
         for kolor in kolory:
+          if kolor.custom_background:
+            kolor_hex[kolor.name] = kolor.custom_background.url
+          else:
             kolor_hex[kolor.name] = kolor.hex_kolor
 
-        return render(request, 'apps/edytuj_kwiat.html', {'kwiat': kwiat, 'kolory': kolory})
+        return render(request, 'apps/edytuj_kwiat.html', {'kwiat': kwiat, 'kolory': kolory, 'kolor_hex':kolor_hex})
     elif request.method == 'POST':
         nazwa_kwiatu = request.POST.get('nazwa_kwiatu')
         grupy_json = request.POST.get('grupy-json')
