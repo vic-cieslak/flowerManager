@@ -61,40 +61,42 @@
                                         <div class="flex flex-row mr-6">
 
                                             {% for rodzaj, kolory in dane|get_item:kwiat|items %}
-                                            {% if rodzaj == "notatka" %}
-                                            {% else %}
+                                            {% if rodzaj != "notatka" %}
+                                        
                                             <div class="grow">
-
                                                 <p class="font-bold text-xl text-center py-2 dark:text-white">{{rodzaj}}</p>
-
-                                                {% for kolor, value in dane|get_item:kwiat|get_item:rodzaj|items %}
-                                                {% if value == 0 %}
-                                                <button type="button" {% if 'tla' in kolor_hex|get_item:kolor %}
-                                                    style="background-image: url('{{kolor_hex|get_item:kolor}}');" {% else %} style="background-color: {{kolor_hex|get_item:kolor}};" {% endif %}
-                                                    class="relative inline-flex items-center px-3 py-1  text-sm font-bold text-center text-black  rounded-lg hover:bg-green-800 focus:ring-4 ">
-                                                    {{ kolor }}
-                                                    <span class="sr-only">Notifications</span>
-                                                    <div
-                                                        class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
-                                                        {{value}}</div>
-                                                </button>
-                                                {% else %}
-                                                <button type="button" {% if 'tla' in kolor_hex|get_item:kolor %}
-                                                    style="background-image: url('{{kolor_hex|get_item:kolor}}');" {% else %} style="background-color: {{kolor_hex|get_item:kolor}};" {% endif %}
-                                                    class="relative inline-flex items-center px-3 py-1 text-sm font-bold text-center text-black  rounded-lg focus:ring-4 focus:outline-none">
-                                                    {{ kolor }}
-                                                    <span class="sr-only">Notifications</span>
-                                                    <div
-                                                        class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
-                                                        {{ value }}</div>
-                                                </button>
-                                                {% endif %}
-                                                {% endfor %}
+                                        
+                                                <div class="flex justify-center">
+                                                    {% for kolor, value in dane|get_item:kwiat|get_item:rodzaj|items %}
+                                                    {% if value == 0 %}
+                                                    <button type="button" {% if 'tla' in kolor_hex|get_item:kolor %}
+                                                        style="background-image: url('{{kolor_hex|get_item:kolor}}');" {% else %} style="background-color: {{kolor_hex|get_item:kolor}};" {% endif %}
+                                                        class="relative inline-flex items-center px-3 mx-1 py-1  text-sm font-bold text-center text-black  rounded-lg hover:bg-green-800 focus:ring-4 ">
+                                                        {{ kolor }}
+                                                        <span class="sr-only">Notifications</span>
+                                                        <div
+                                                            class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
+                                                            {{value}}</div>
+                                                    </button>
+                                                    {% else %}
+                                                    <button type="button" {% if 'tla' in kolor_hex|get_item:kolor %}
+                                                        style="background-image: url('{{kolor_hex|get_item:kolor}}');" {% else %} style="background-color: {{kolor_hex|get_item:kolor}};" {% endif %}
+                                                        class="relative inline-flex items-center px-3 mx-1 py-1 text-sm font-bold text-center text-black  rounded-lg focus:ring-4 focus:outline-none">
+                                                        {{ kolor }}
+                                                        <span class="sr-only">Notifications</span>
+                                                        <div
+                                                            class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
+                                                            {{ value }}</div>
+                                                    </button>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div>
                                             </div>
-
+                                        
                                             {% endif %}
                                             {% endfor %}
                                         </div>
+                                        
 
                                     </td>
 
