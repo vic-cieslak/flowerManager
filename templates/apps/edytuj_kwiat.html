@@ -116,11 +116,21 @@
                         <input v-model="grupa.nazwa" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                       </div>
               
-            
                       {% for kolor in kolory %}
-                      <div class="flex items-center mr-4">
-                        <input v-model="grupa.kolory" style="background-color: {{kolor.hex_kolor}};" id="{{kolor.name}}-checkbox" type="checkbox" value="{{kolor.name}}" name="kolor" class="w-4 h-4 text-white  border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
-                        <label for="{{kolor.name}}-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{kolor.name}}</label>
+                     
+                      <div class="flex items-center mb-4">
+                        <input v-model="grupa.kolory" id="{{kolor.name}}-checkbox" value="{{kolor.name}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="{{kolor.name}}-checkbox"   class="rounded ml-2 p-1"
+
+                        {% if 'tla' in kolor_hex|get_item:kolor.name %}
+                        style="background-image: url('{{kolor_hex|get_item:kolor.name}}');"
+                         {% else %} 
+                         style="background-color: {{kolor_hex|get_item:kolor.name}};"
+                          {% endif %}
+                        class="ml-2 text-sm font-medium ">
+                          <div class="bg-white opacity-50 rounded px-1 ">{{kolor.name}}</div>
+
+                        </label>
                       </div>
                       {% endfor %}
 
