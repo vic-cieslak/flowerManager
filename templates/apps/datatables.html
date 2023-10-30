@@ -82,10 +82,10 @@
             <thead class="bg-gray-100 dark:bg-gray-700 flex-row">
               <tr class=" justify-center">
                
-                <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                <th scope="col" class="p-4 w-24 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                   Produkt
                 </th>
-                <th scope="col" class="p-4  text-xs font-medium text-center  text-gray-500 uppercase dark:text-gray-400">
+                <th scope="col" class="p-4 w-24  text-xs font-medium text-center  text-gray-500 uppercase dark:text-gray-400">
                   Akcje
                 </th>
               
@@ -149,7 +149,7 @@
               </td>
                 <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
                   {% for kat_kol in kwiat.kategorie_i_kolory_list %}
-                  <ul class="flex flex-wrap ">
+                  <ul class="flex flex-wrap justify-center items-center ">
                     <p class="font-bold text-xl text-center py-2 dark:text-white">{{kat_kol.nazwa}}</p>
                       {% for kolor in kat_kol.kolory %}
                       <li class=" px-4 text-center rounded text-black font-bold my-2 mx-1" 
