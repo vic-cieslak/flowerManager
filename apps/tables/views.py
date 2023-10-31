@@ -25,6 +25,7 @@ def datatables(request):
       kolor_hex[kolor.name] = kolor.hex_kolor
       
   for kwiat in kwiaty_list:
+    print(kwiat)
     kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
 
 
@@ -232,7 +233,8 @@ def edytuj_kwiat(request, id):
             kolor_hex[kolor.name] = kolor.custom_background.url
           else:
             kolor_hex[kolor.name] = kolor.hex_kolor
-
+        print(kwiat.kategorie_i_kolory_list)
+        
         return render(request, 'apps/edytuj_kwiat.html', {'kwiat': kwiat, 'kolory': kolory, 'kolor_hex':kolor_hex})
     elif request.method == 'POST':
         nazwa_kwiatu = request.POST.get('nazwa_kwiatu')
@@ -245,7 +247,30 @@ def edytuj_kwiat(request, id):
         messages.success(request, 'Kwiat zaktualizowany!')
         return HttpResponseRedirect(reverse('datatables'))
 
+# @login_required(login_url='/users/signin/')
+def odswiez_kolory(request, id):
+  kwiat = Kwiat.objects.get(id=id)
+  kolory = Kolory.objects.all()
+  nazwy_kolorow = [kolor.name for kolor in kolory]
+  kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+  # print(kategorie_i_kolory_list)
+  for kwiat_ in kategorie_i_kolory_list:
+    for kolor in kwiat_['kolory']:
+      if kolor not in nazwy_kolorow:
+          print('removing ', kolor)
+          kwiat_['kolory'].remove(kolor)
 
+  print('nowe : ', kategorie_i_kolory_list)
+  nowe = json.dumps(kategorie_i_kolory_list)
+
+  print('nowe_string', nowe)
+  print(type(nowe))
+  print('nowe nowe ', json.dumps(nowe))
+  nowe_nowe = json.dumps(nowe)
+  kwiat.kategorie_i_kolory = nowe_nowe 
+  kwiat.save()
+
+  return HttpResponseRedirect(reverse('edytuj_kwiat', kwargs={'id': id}))
 
 # @login_required(login_url='/users/signin/')
 def update_product(request, id):

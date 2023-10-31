@@ -55,12 +55,19 @@
         <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Edytuj {{kwiat.name}}
   
         </h1>
+       
       </div>
       <div class="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
         <div class="flex items-center  sm:mb-0">
         
           <div class="flex items-center w-full sm:justify-end">
-            
+            <a href="{% url 'odswiez_kolory' kwiat.id %}">
+              <button 
+              type=""
+              class="text-white justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">
+              Odśwież kolory
+            </button>
+            </a>
           </div>
         </div>
      
@@ -71,6 +78,8 @@
     <div class="overflow-x-auto">
       <div class="inline-block min-w-full align-middle">
         <div class="overflow-hidden shadow container mx-auto px-96">
+       
+           
             <form method="post" class="px-16" >
                 <div class="pt-8 px-16 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
                   <button 
@@ -78,6 +87,7 @@
                     class="text-white justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-primary-800">
                     Potwierdź zmiany
                   </button>
+                 
                   <!-- <a href="/">
                   <button type="button" data-drawer-dismiss="drawer-create-product-default"
                     aria-controls="drawer-create-product-default"
