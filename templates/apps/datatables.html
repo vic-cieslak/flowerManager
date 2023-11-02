@@ -538,14 +538,21 @@
   // } );
 </script>
 <script defer>
-  const { createApp, ref, reactive, computed } = Vue
+  const { createApp, ref, reactive, computed, watch } = Vue
 
   createApp({
     setup() {
       const message = ref('Hello vue!');
       const nazwa_kwiatu = ref('');
       const grupy = reactive([]);
-
+      // Watch for changes in each grupa.nazwa and filter out '&'
+      watch(() => grupy.map(grupa => grupa.nazwa), (newValues, oldValues) => {
+        newValues.forEach((value, index) => {
+          if(value.includes('&')){
+            grupy[index].nazwa = value.replace(/&/g, ''); // replace '&' with empty string
+          }
+        });
+      }, { deep: true });
       const grupy_string = computed(() => {
         return JSON.stringify(grupy)
       })
