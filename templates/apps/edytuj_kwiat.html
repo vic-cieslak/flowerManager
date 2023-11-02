@@ -126,23 +126,31 @@
                         <input v-model="grupa.nazwa" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                       </div>
               
-                      {% for kolor in kolory %}
-                     
-                      <div class="flex items-center mb-4">
-                        <input v-model="grupa.kolory" id="{{kolor.name}}-checkbox" value="{{kolor.name}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                        <label for="{{kolor.name}}-checkbox"   class="rounded ml-2 p-1"
-
-                        {% if 'tla' in kolor_hex|get_item:kolor.name %}
-                        style="background-image: url('{{kolor_hex|get_item:kolor.name}}');"
-                         {% else %} 
-                         style="background-color: {{kolor_hex|get_item:kolor.name}};"
-                          {% endif %}
-                        class="ml-2 text-sm font-medium ">
-                          <div class="bg-white opacity-50 rounded px-1 ">{{kolor.name}}</div>
-
-                        </label>
+                      <div class="flex flex-wrap">
+                        {% for kolor in kolory %}
+                          <div class="flex items-center mb-4 mr-4">
+                            <input 
+                              v-model="grupa.kolory" 
+                              id="{{ kolor.name }}-checkbox" 
+                              value="{{ kolor.name }}" 
+                              type="checkbox" 
+                              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" 
+                            >
+                            <label 
+                              for="{{ kolor.name }}-checkbox" 
+                              class="ml-2 p-1 flex items-center"
+                              {% if 'tla' in kolor_hex|get_item:kolor.name %}
+                              style="background-image: url('{{ kolor_hex|get_item:kolor.name }}');"
+                              {% else %} 
+                              style="background-color: {{ kolor_hex|get_item:kolor.name }};"
+                              {% endif %}
+                            >
+                              <div class="bg-white opacity-50 rounded px-1">{{ kolor.name }}</div>
+                            </label>
+                          </div>
+                        {% endfor %}
                       </div>
-                      {% endfor %}
+                      
 
                       <div @click="usunGrupe(counter)" class=" text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  sm:w-auto px-5 py-2.5 my-4 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Usuń rodzaj</div>
             
