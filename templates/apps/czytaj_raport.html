@@ -23,7 +23,7 @@
 
                         <table id="dataTable"
                             class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
-                            <thead class="bg-gray-100 dark:bg-gray-700">
+                            <thead class="">
                                 <tr>
                                     <th scope="col"
                                         class="w-2  text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
@@ -31,7 +31,6 @@
                                     </th>
                                     <th scope="col"
                                         class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                        Rodzaj / ilość
                                     </th>
 
                                 </tr>
@@ -47,7 +46,7 @@
                                     <td
                                         class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
                                         <div
-                                            class="flex  flex-row justify-center px-2 py-1 mr-6 text-white text-center bg-gray-500 text-xl font-semibold">
+                                            class="flex  flex-row justify-center px-2 py-1 mr-6 text-white pt-3 text-center bg-gray-500 text-xl font-semibold">
                                             {{ kwiat }}</div>
                                         {% for rodzaj, kolory in dane|get_item:kwiat|items %}
                                         {% if rodzaj == "notatka" %}

@@ -55,7 +55,7 @@ def datatables(request):
 # Create your views here.
 # @login_required(login_url='/users/signin/')
 def kolory(request):
-  kolory = Kolory.objects.all()
+  kolory = Kolory.objects.all().order_by('name')
   form = KoloryForm()
 
 #   page = request.GET.get('page', 1)
