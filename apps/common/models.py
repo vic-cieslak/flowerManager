@@ -33,3 +33,17 @@ class Raport(models.Model):
     id                  = models.AutoField(primary_key=True)
     data_utworzenia     = models.DateTimeField(auto_now=True)
     wartosc             = models.CharField(max_length = 500000, default = '')
+
+
+class Zamowienie(models.Model):
+    id                  = models.AutoField(primary_key=True)
+    odbiorca            = models.CharField(max_length = 200) 
+    status              = models.CharField(max_length = 200) 
+    produkty            = models.JSONField()
+    termin_dostarczenia = models.DateTimeField(blank=True, null=True)
+    data_utworzenia     = models.DateTimeField(auto_now=True)
+    zdjecie             = models.ImageField(upload_to='zamowienia', null=True, blank=True)
+    notatka             = models.CharField(max_length = 5000, blank=True) 
+
+    def __str__(self):
+        return self.name

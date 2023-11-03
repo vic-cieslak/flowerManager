@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse
 from apps.tables.forms import ProductForm, KoloryForm
-from apps.common.models import Product, Kolory, Kwiat, Raport
+from apps.common.models import Product, Zamowienie, Kolory, Kwiat, Raport
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from apps.tables.utils import product_filter
@@ -50,6 +50,8 @@ def datatables(request):
   }
   
   return render(request, 'apps/datatables.html', context)
+
+
 
 
 # Create your views here.
@@ -246,6 +248,47 @@ def edytuj_kwiat(request, id):
         kwiat.save()
         messages.success(request, 'Kwiat zaktualizowany!')
         return HttpResponseRedirect(reverse('datatables'))
+        
+
+# @login_required(login_url='/users/signin/')
+def lista_zamowien(request):
+  zamowienia = Zamowienie.objects.all().order_by('termin_dostarczenia')
+  return render(request, 'apps/lista_zamowien.html', {'zamowienia': zamowienia})
+
+
+# @login_required(login_url='/users/signin/')
+def archiwum_zamowien(request):
+  zamowienia = Zamowienie.objects.all().order_by('termin_dostarczenia')
+  return render(request, 'apps/lista_zamowien.html', {'zamowienia': zamowienia})
+
+
+# @login_required(login_url='/users/signin/')
+def dodaj_zamowienie(request, id=None):
+    if request.method == 'GET':
+        # kwiat = Kwiat.objects.get(id=id)
+        # kolory = Kolory.objects.all()
+        # kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+        # kolor_hex = {}
+        # for kolor in kolory:
+          # if kolor.custom_background:
+            # kolor_hex[kolor.name] = kolor.custom_background.url
+          # else:
+            # kolor_hex[kolor.name] = kolor.hex_kolor
+        
+        return render(request, 'apps/dodaj_zamowienie.html')
+    elif request.method == 'POST':
+        z = Zamowienie()
+        produkty = request.POST.get('produkty')
+        p = {}
+        p = {'produkty': produkty}
+        z.odbiorca = request.POST.get('odbiorca')
+        z.produkty = p
+        z.status = 'Kupione'
+        z.termin_dostarczenia = request.POST.get('data')
+        z.notatka = request.POST.get('notatka')
+        z.zdjecie = request.FILES.get('zdjecie')
+        z.save()
+        return HttpResponseRedirect(reverse('lista_zamowien'))
 
 # @login_required(login_url='/users/signin/')
 def odswiez_kolory(request, id):
