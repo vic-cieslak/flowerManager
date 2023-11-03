@@ -6,7 +6,9 @@
 <script src="{% static 'dist/vue.global.js' %}"></script>
 
 <main>
-  <div id="app">
+
+
+  <div id="app" hidden>
 
     <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
       <span class="sr-only">Open sidebar</span>
@@ -69,12 +71,7 @@
                 <div id="dalej-{{forloop.counter}}" class="">
                   <button type="button" @click="openTab--" class="px-10 py-5 focus:outline-none text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm mr-2 mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Poprzedni</button>
                 </div>
-                
-                
-                
-                
               </div>
-
               <!-- <div id='kwiatydiv-{{forloop.counter}}' > -->
               <div id='kwiatydiv-{{forloop.counter}}' class="hidden">
                 {% for kat_kol in kwiat.kategorie_i_kolory_list %}
@@ -229,13 +226,72 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
 </div>
 
 </main>
+<style>
+.loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed; /* Use fixed or absolute as per your requirement */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(3, 2, 2, 0.7); /* Optional: for see-through background */
+  z-index: 1000; /* High z-index to ensure it's above other content */
+}
 
+.spinner {
+  width: 100px; /* Or any other size */
+  height: 100px; /* Maintain the same width and height for a circle */
+  fill: currentColor;
+  color: #2b6cb0; /* This color class will be used due to 'fill: currentColor' */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
 <script defer>
-  const { createApp, ref, reactive, computed } = Vue
+  const { createApp, ref, reactive, computed, onMounted } = Vue
 
   createApp({
     setup() {
+      // const isLoading = ref(true);
+      // const isHidden = ref(true);
+
+      const showApp = () => {
+        const appElement = document.getElementById('app');
+        if (appElement) {
+          appElement.removeAttribute('hidden');
+        }
+      };
+      // Method to remove the #loader element
+      const removeLoader = () => {
+        const loaderElement = document.getElementById('loader');
+        if (loaderElement) {
+          loaderElement.remove();
+        }
+      };
+      // You would then call this method when your app is initialized
+      // const hideLoader = () => {
+      //   isLoading.value = false;
+      // };
+
+      // When the component has been mounted, which means the app is initialized, hide the loader.
+      // onMounted(() => {
+      //   // Simulate a delay for initialization
+      //   setTimeout(() => {
+      //     hideLoader();
+      //   }, 1000); // Wait 1 second before hiding the loader, you can adjust this to your needs
+      // });
       var openTab = ref(1);
+      console.log('started fomrdata')
       const formData = ref({
         {% for kwiat in kwiaty %}
           '{{kwiat.name}}': {
@@ -250,6 +306,7 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
           },
         {% endfor %}
       });
+      
       console.log(formData)
       console.log(JSON.stringify(formData))
 
@@ -297,6 +354,11 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
         // remove class hidden kwiatydiv-kwiatID
         // openTab.value = tabNumber;
       }
+      // remove hidden from id=app
+      // remove div id loader
+      showApp();
+      removeLoader();
+      // hideLoader();
       return {
         openTab,
         chceKwiat,
@@ -312,11 +374,3 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
 
 {% endblock content %}
 
-{% comment %} {% block extra_js %}
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.tailwindcss.min.js"></script>
-<script src="https://cdn.tailwindcss.com/3.3.3"></script>
-<script src="https://preline.co/assets/vendor/preline/preline.js"></script>
-
-{% endcomment %}
