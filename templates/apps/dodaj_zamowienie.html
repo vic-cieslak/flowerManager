@@ -198,7 +198,7 @@
                           >{{kolor}}       
                            <div>
                             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ilość</label>
-                            <input type="number" id="first_name" v-model="formData['{{kwiat.name}}']['{{kat_kol.nazwa}}']['{{kolor}}']" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
+                            <input type="number" id="first_name" v-model="formData['{{kwiat.name}}']['{{kat_kol.nazwa}}']['{{kolor}}']['ilosc']" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
                             
                           </div> 
                          </li>
@@ -345,7 +345,10 @@
             {% for kat_kol in kwiat.kategorie_i_kolory_list %}
               '{{kat_kol.nazwa}}': {
                 {% for kolor in kat_kol.kolory %}
-                  '{{kolor}}': 0,
+                  '{{kolor}}': {
+                    'ilosc': 0,
+                    'status': 'brak',
+                    },
                 {% endfor %}
               },
             {% endfor %}

@@ -267,7 +267,15 @@ def edytuj_kwiat(request, id):
 # @login_required(login_url='/users/signin/')
 def lista_zamowien(request):
   zamowienia = Zamowienie.objects.all().order_by('termin_dostarczenia')
-  return render(request, 'apps/lista_zamowien.html', {'zamowienia': zamowienia})
+  kolory = Kolory.objects.all()
+  
+  kolor_hex = {}
+  for kolor in kolory:
+    if kolor.custom_background:
+      kolor_hex[kolor.name] = kolor.custom_background.url
+    else:
+      kolor_hex[kolor.name] = kolor.hex_kolor
+  return render(request, 'apps/lista_zamowien.html', {'zamowienia': zamowienia, 'kolor_hex': kolor_hex})
 
 
 # @login_required(login_url='/users/signin/')

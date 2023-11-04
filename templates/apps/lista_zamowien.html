@@ -86,19 +86,14 @@
             <thead class="bg-gray-100 dark:bg-gray-700 flex-row">
               <tr class=" justify-center">
                
-                <th scope="col" class="p-4 w-24 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                <th scope="col" class="p-4  text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                   
                   <div class="text-center">Kto</div>
                   
                 </th>
-                <th scope="col" class="p-4 w-24  text-xs font-medium text-center  text-gray-500 uppercase dark:text-gray-400">
+                <th scope="col" class="p-4   text-xs font-medium text-center  text-gray-500 uppercase dark:text-gray-400">
                   
                   <div class="text-center">Co</div>
-
-                </th>
-                <th scope="col" class="p-4 w-24  text-xs font-medium text-center  text-gray-500 uppercase dark:text-gray-400">
-                  
-                  <div class="text-center">Status</div>
 
                 </th>
               
@@ -106,9 +101,7 @@
                   <div class="text-left">Na kiedy</div>
                 </th>
                 
-                <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
-                  <div class="text-left">Ustal status</div>
-                </th>
+             
                 
               </tr>
             </thead>
@@ -121,67 +114,72 @@
                   <div class="text-base text-xl font-semibold text-center text-gray-900 dark:text-white">{{ zamowienie.odbiorca }}</div>
                 </td>     
 
-                <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
+             
                  
-                  {{zamowienie.produkty}}
+               
+
+                  {% for rodzaj, kolory in zamowienie.produkty.items %}
+                  <ul class="flex flex-wrap justify-left items-center ">
+                  <div class="grow  border-2 pb-4 border-[#6b7280] ">
+            
+                    <div class="flex justify-center flex-wrap">
+                        {% for rodzaj, details in kolory.items %}
+                          <p class="font-bold text-xl text-center py-2 dark:text-white">{{rodzaj}}</p>
+
+                          <!-- {{kolor}} -->
+                          {% for key, value in details.items %}
+                          
+                          {% if value.ilosc %}
+                          <li class=" px-4 text-center rounded text-black font-bold my-2 mx-1" >
+
+                          <span>status: {{ value.status }}</span>
+                           <button type="button" {% if 'tla' in kolor_hex|get_item:key %}
+                           style="background-image: url('{{kolor_hex|get_item:key}}');" {% else %} style="background-color: {{kolor_hex|get_item:key}};" {% endif %}
+                           class="relative inline-flex items-center px-3 mx-1 py-1 text-sm font-bold text-center text-black  rounded-lg focus:ring-4 focus:outline-none">
+                           {{ key }}
+                           <span class="sr-only">Notifications</span>
+                           <div
+                               class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
+                               {{ value.ilosc }}</div>
+                           </button>
+                          
+                           <button 
+                           class="text-white  text-center justify-center bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-primary-800"
+                           type="button" >
+                           odlozone
+                           </button>
+                           <button 
+                           class="text-white  text-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800"
+                           type="button" >
+                           kupione
+                           </button>
+                           <button 
+                           class="text-white  text-center justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-primary-800"
+                           type="button" >
+                           odebrane
+                           </button>
+                          </li>
+                          {% endif %}
+
+                           {% endfor %}
+                        
+                        {% endfor %}
+
+                    </div>
+                  </div>
+                </ul>
+
+                {% endfor %}
 
                 </td>
-                <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                 
-                  {{zamowienie.status}}
-
-                </td>
+                
            
                 <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
                   {{ zamowienie.termin_dostarczenia|date:"j E Y" }}
 
               </td>
-                <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
-                  <div class="text-base text-xl font-semibold text-gray-900 dark:text-white">
-                    <a href="">
-                      <button type="button" 
-                      class="mr-1 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-primary-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-primary-800">
-                          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg">
-                          <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
-                          </path>
-                          <path fill-rule="evenodd"
-                            d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                            clip-rule="evenodd"></path>
-                        </svg>
-                          Kupione
-                      </button>
-                  </a>
-                    <a href="">
-                      <button type="button" 
-                      class="mr-1 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:ring-primary-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-primary-800">
-                          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg">
-                          <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
-                          </path>
-                          <path fill-rule="evenodd"
-                            d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                            clip-rule="evenodd"></path>
-                        </svg>
-                          Dostarczone
-                      </button>
-                  </a>
-                    <a href="">
-                      <button type="button" 
-                      class="mr-1 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">
-                          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg">
-                          <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
-                          </path>
-                          <path fill-rule="evenodd"
-                            d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                            clip-rule="evenodd"></path>
-                        </svg>
-                          Odłożone
-                      </button>
-                  </a>
-                  </div>
-              </td>
+               
        
             
               </tr>
