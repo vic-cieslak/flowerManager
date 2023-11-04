@@ -9,6 +9,19 @@ import json
 from django.contrib import messages
 from django.db.models.functions import Lower
 
+
+def remove_zeros(d):
+    keys_to_delete = []
+    for key, value in d.items():
+        if isinstance(value, dict):
+            d[key] = remove_zeros(value)
+        elif value == 0:
+            keys_to_delete.append(key)
+    for key in keys_to_delete:
+        del d[key]
+    return {k: v for k, v in d.items() if v}  # Remove empty dictionaries
+
+
 # Create your views here.
 # @login_required(login_url='/users/signin/')
 def datatables(request):
@@ -140,7 +153,8 @@ def raport_start(request):
         kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
 
       # jakbym mial tu gotowego jsona do raportu to moze by bylo łatwiej?
-
+      # cloned_kwiaty = [kwiat for kwiat in kwiaty for _ in range(10)]
+      # kwiaty = cloned_kwiaty
       return render(request, 'apps/raport.html', {'kwiaty': kwiaty, 'kolor_hex': kolor_hex})
     elif request.method == "POST":
       data = json.loads(request.body)
@@ -265,25 +279,28 @@ def archiwum_zamowien(request):
 # @login_required(login_url='/users/signin/')
 def dodaj_zamowienie(request, id=None):
     if request.method == 'GET':
-        # kwiat = Kwiat.objects.get(id=id)
-        # kolory = Kolory.objects.all()
-        # kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
-        # kolor_hex = {}
-        # for kolor in kolory:
-          # if kolor.custom_background:
-            # kolor_hex[kolor.name] = kolor.custom_background.url
-          # else:
-            # kolor_hex[kolor.name] = kolor.hex_kolor
+        kwiaty = Kwiat.objects.all()
+        kolory = Kolory.objects.all()
         
-        return render(request, 'apps/dodaj_zamowienie.html')
+        kolor_hex = {}
+        for kolor in kolory:
+          if kolor.custom_background:
+            kolor_hex[kolor.name] = kolor.custom_background.url
+          else:
+            kolor_hex[kolor.name] = kolor.hex_kolor
+            
+        for kwiat in kwiaty:
+          kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+
+        return render(request, 'apps/dodaj_zamowienie.html', {'kwiaty': kwiaty, 'kolor_hex': kolor_hex})
     elif request.method == 'POST':
         z = Zamowienie()
         produkty = request.POST.get('produkty')
-        p = {}
-        p = {'produkty': produkty}
+        produkty = json.loads(produkty)
+        cleaned_produkty = remove_zeros(produkty)
         z.odbiorca = request.POST.get('odbiorca')
-        z.produkty = p
-        z.status = 'Kupione'
+        z.produkty = cleaned_produkty
+        # z.status = 'Kupione'
         z.termin_dostarczenia = request.POST.get('data')
         z.notatka = request.POST.get('notatka')
         z.zdjecie = request.FILES.get('zdjecie')

@@ -4,10 +4,6 @@
 
 
 {% block content %}
-<!-- <script src="{% static 'dist/vue.global.js' %}"></script> -->
-<!-- <script src="https://unpkg.com/vue@latest"></script>
-<script src="https://unpkg.com/@vuepic/vue-datepicker@latest"></script>
-<link rel="stylesheet" href="https://unpkg.com/@vuepic/vue-datepicker@latest/dist/main.css"> -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.min.css">
@@ -15,6 +11,12 @@
 
 <!-- Include Polish language pack -->
 <script src="https://cdn.jsdelivr.net/npm/air-datepicker/dist/js/i18n/datepicker.pl.js"></script>
+
+<script src="{% static 'dist/vue.global.js' %}"></script>
+<script src="{% static 'dist/jquery.dataTables.js' %}"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'dist/jquery.dataTables.min.css' %}" />
+
 
 <main>
     
@@ -76,6 +78,12 @@
       </div>
     </div>
   </div>
+
+  <button id="createProductButton" @click="show_data"
+  class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-primary-800"
+  type="button" >
+  show data
+</button>
   <div class="flex flex-col">
     <div class="overflow-x-auto">
       <div class="inline-block min-w-full align-middle">
@@ -113,7 +121,7 @@
                     
                     <div class="mb-6">
                       <label for="produkty" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Produkty</label>
-                      <textarea rows="5" type="textarea" id="produkty" name="produkty" value="" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" ></textarea>
+                      <textarea rows="5" type="textarea" v-model="formattedJson" id="produkty" name="produkty"  class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" ></textarea>
                     </div>
             
                     <div class="mb-6">
@@ -126,14 +134,88 @@
                       <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="zdjecie" name="zdjecie" type="file">
                       <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                      </div>
+
                   
                     <input type="text" hidden name="grupy-json" >
-                    
-<!--                
-                    <div  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Dodaj rodzaj</div>
-             -->
                
                 </form>
+        </div>
+        
+      </div>
+      <div class="">
+    
+        <div class="overflow-x-auto">
+          
+          <div class="w-full ">
+            
+            <div class="overflow-hidden shadow">
+              
+              <table id="dataTable" class=" divide-gray-200  dark:divide-gray-600">
+                <thead class="bg-gray-100 dark:bg-gray-700 flex-row">
+                  <tr class=" justify-center">
+                   
+                    <th scope="col" class="p-4 w-24 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                      
+                      <div class="text-center">Produkt</div>
+                      
+                    </th>
+                   
+                  
+                    <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
+                      <div class="text-left">Rodzaj i kolory</div>
+                    </th>
+                    
+                    <!-- <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
+                      <div class="text-left">akcje</div>
+                    </th>
+                     -->
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200  dark:bg-gray-800 dark:divide-gray-700">
+    
+                  {% for kwiat in kwiaty %}
+                  <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 ">
+                   
+                    <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                      <div class="text-base text-xl font-semibold text-center text-gray-900 dark:text-white">{{ kwiat.name }}</div>
+                    </td>     
+    
+                
+               
+                    <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
+                      {% for kat_kol in kwiat.kategorie_i_kolory_list %}
+                      <ul class="flex flex-wrap justify-left items-center ">
+                        <p class="font-bold text-xl text-center py-2 dark:text-white">{{kat_kol.nazwa}}</p>
+                          {% for kolor in kat_kol.kolory %}
+                          <li class=" px-4 text-center rounded text-black font-bold my-2 mx-1" 
+                  
+                          {% if 'tla' in kolor_hex|get_item:kolor %}
+                          style="background-image: url('{{kolor_hex|get_item:kolor}}');"
+                          {% else %}
+                              style="background-color: {{kolor_hex|get_item:kolor}};"
+                          {% endif %}
+                  
+                          >{{kolor}}       
+                           <div>
+                            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ilość</label>
+                            <input type="number" id="first_name" v-model="formData['{{kwiat.name}}']['{{kat_kol.nazwa}}']['{{kolor}}']" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
+                            
+                          </div> 
+                         </li>
+                          {% endfor %}
+                      </ul>
+                      {% endfor %}
+                  </td>
+             
+
+                  </tr>
+               
+                  {% endfor %}
+    
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -142,7 +224,16 @@
 </div>
 
 </main>
-
+<style>
+  .dataTables_wrapper .dataTables_filter {
+      float: none;
+      text-align: center;
+      color: white;
+  }
+  .dataTables_wrapper div.dataTables_filter input {
+        width: 30%;
+  }
+  </style>
 <script>
   // Initialize the datepicker with Polish language
   $(document).ready(function() {
@@ -155,47 +246,126 @@
 </script>
 
 
+<script defer>
+
+  $(document).ready(function () {
+      $.fn.dataTable.ext.search.push(
+          function (settings, data, dataIndex) {
+
+              // Get the search input value
+              let search = $('.dataTables_filter input').val();
+              if (search === undefined) {
+                  search = '';
+              }
+
+              if (search === '') {
+                  return true;
+              }
+
+              let re = new RegExp('^' + search, 'i');
+
+              // Look through each column to find a match
+              for (i = 0; i < data.length; i++) {
+                  // If any column matches then show row
+                  if (re.test(data[i])) {
+                      return true;
+                  }
+              }
+              return false;
+          });
+
+
+      $('input[type = search]').attr('dir', 'left');
+      $('input[type = search]').addClass('text-white');
+
+      var table = $('#dataTable').DataTable({
+          info: false,
+          ordering: false,
+
+          language: {
+              search: "",
+              searchPlaceholder: "Szukaj kwiatu lub rodzaju"
+          },
+          paging: false,
+          initComplete: function () {
+              $('.dt-buttons').removeClass('btn-group');
+              $('.dataTables_filter').children().appendTo('#mytable_length');
+              $("label").attr("id", function (arr) {
+                  return "button_size" + arr;
+              });
+          },
+          columnDefs: [{
+              searchable: false,
+          }],
+          dom: 'Blfrtip',
+          "ordering": false,
+          buttons: [
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: [5, 4, 3, 2, 0]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: [5, 4, 3, 2, 0]
+                  },
+                  customize: function (doc) {
+                      doc.content[1].alignment = 'right';
+                  },
+              },
+          ],
+          "pagingType": "full_numbers",
+
+      });
+      $('.dataTables_wrapper .dataTables_filter').addClass('py-5')
+
+      $('.dataTables_filter input').off();
+
+      $('input[type = search]').on('keyup', function (e) {
+          table.draw();
+      });
+
+
+  });
+
+</script>
   
-<!-- 
+
 <script defer>
   const { createApp, ref, reactive, computed, watch } = Vue
 
   createApp({
     setup() {
-      const message = ref('Hello vue!');
-      const nazwa_kwiatu = ref('');
-      const grupy = reactive( {{ kwiat.kategorie_i_kolory_list |safe}} );
 
-      const grupy_string = computed(() => {
-        return JSON.stringify(grupy)
-      })
-      function dodajGrupe(nazwa_grupy, kolory_grupy) {
-          grupy.push({
-          nazwa: '',
-          kolory: []
-        })
-      }
-      // Watch for changes in each grupa.nazwa and filter out '&'
-      watch(() => grupy.map(grupa => grupa.nazwa), (newValues, oldValues) => {
-        newValues.forEach((value, index) => {
-          if(value.includes('&')){
-            grupy[index].nazwa = value.replace(/&/g, ''); // replace '&' with empty string
-          }
-        });
-      }, { deep: true });
-      function usunGrupe(counter){
-        grupy.splice(counter, 1);
+      const formData = ref({
+        {% for kwiat in kwiaty %}
+          '{{kwiat.name}}': {
+            {% for kat_kol in kwiat.kategorie_i_kolory_list %}
+              '{{kat_kol.nazwa}}': {
+                {% for kolor in kat_kol.kolory %}
+                  '{{kolor}}': 0,
+                {% endfor %}
+              },
+            {% endfor %}
+          },
+        {% endfor %}
+      });
+      const formattedJson = computed(() => {
+        return JSON.stringify(formData.value, null, 2);
+      });
+      function show_data() {
+        console.log(JSON.stringify(formData.value))
+
       }
       return {
-        message,
-        grupy,
-        grupy_string,
-        nazwa_kwiatu,
-        dodajGrupe,
-        usunGrupe
+        show_data,
+        formattedJson,
+        formData
       }
     }
   }).mount('#app')
-</script> -->
+</script>
 
 {% endblock content %}
