@@ -143,9 +143,9 @@
                                {{ value.ilosc }}</div>
                             </button>
                             <!-- Repeat buttons for "odlozone", "kupione", "odebrane" -->
-                            <button id="dropdown-{{ nazwa|cut:' '|cut:'/'|cut:'\' }}-{{ rodzaj|cut:' '|cut:'/'|cut:'\' }}-{{ key|cut:' '|cut:'/'|cut:'\' }}" 
+                            <button id="dropdown-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
                             data-dropdown-placement="right"
-                            data-dropdown-toggle="dropdown-menu-{{ nazwa|cut:' '|cut:'/'|cut:'\' }}-{{ rodzaj|cut:' '|cut:'/'|cut:'\' }}-{{ key|cut:' '|cut:'/'|cut:'\' }}"  
+                            data-dropdown-toggle="dropdown-menu-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}"  
                             class="w-38  text-white bg-white-700 border hover:bg-white-800 focus:ring-4 focus:outline-none focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-white-600 dark:hover:bg-white-700 dark:focus:ring-white-800" 
                             type="button">
                         <span 
@@ -159,7 +159,7 @@
                           style=" width: 80px"
                         {% endif %}
 
-                        id="button-text-{{ nazwa|cut:' '|cut:'/'|cut:'\' }}-{{ rodzaj|cut:' '|cut:'/'|cut:'\' }}-{{ key|cut:' '|cut:'/'|cut:'\' }}">
+                        id="button-text-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}">
                           {% if value.status %}
                             {{ value.status }}
                           {% else %}
@@ -172,24 +172,24 @@
                       </button>
                     
                     <!-- Dropdown menu -->
-                    <div id="dropdown-menu-{{ nazwa|cut:' '|cut:'/'|cut:'\' }}-{{ rodzaj|cut:' '|cut:'/'|cut:'\' }}-{{ key|cut:' '|cut:'/'|cut:'\' }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700">
-                      <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-{{ nazwa|cut:' '|cut:'/'|cut:'\' }}-{{ rodzaj|cut:' '|cut:'/'|cut:'\' }}-{{ key|cut:' '|cut:'/'|cut:'\' }}">
+                    <div id="dropdown-menu-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700">
+                      <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}">
                         <li style="cursor: pointer">
                           <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=kupione" 
                              hx-trigger="click" 
-                             hx-target="#button-text-{{ nazwa|cut:' '|cut:'/'|cut:'\' }}-{{ rodzaj|cut:' '|cut:'/'|cut:'\' }}-{{ key|cut:' '|cut:'/'|cut:'\' }}" 
+                             hx-target="#button-text-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
                              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Kupione</a>
                         </li>
                         <li style="cursor: pointer"> 
                           <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=odlozone" 
                              hx-trigger="click" 
-                             hx-target="#button-text-{{ nazwa|cut:' '|cut:'/'|cut:'\' }}-{{ rodzaj|cut:' '|cut:'/'|cut:'\' }}-{{ key|cut:' '|cut:'/'|cut:'\' }}" 
+                             hx-target="#button-text-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
                              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odłożone</a>
                         </li>
                         <li style="cursor: pointer">
                           <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=odebrane" 
                              hx-trigger="click" 
-                             hx-target="#button-text-{{ nazwa|cut:' '|cut:'/'|cut:'\' }}-{{ rodzaj|cut:' '|cut:'/'|cut:'\' }}-{{ key|cut:' '|cut:'/'|cut:'\' }}" 
+                             hx-target="#button-text-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
                              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odebrane</a>
                         </li>
                       </ul>
