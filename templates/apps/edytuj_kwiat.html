@@ -78,8 +78,6 @@
     <div class="overflow-x-auto">
       <div class="inline-block min-w-full align-middle">
         <div class="overflow-hidden shadow container mx-auto px-96">
-       
-           
             <form method="post" class="px-16" >
                 <div class="pt-8 px-16 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
                   <button 
@@ -87,37 +85,15 @@
                     class="text-white justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-primary-800">
                     Potwierdź zmiany
                   </button>
-                 
-                  <!-- <a href="/">
-                  <button type="button" data-drawer-dismiss="drawer-create-product-default"
-                    aria-controls="drawer-create-product-default"
-                    class="inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                    <svg aria-hidden="true" class="w-5 h-5 -ml-1 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                    Anuluj
-                  </button>
-                </a> -->
-
                 </div>
                   {% csrf_token %}
-            
                   <div class="space-y-4 pt-24 px-8">
-            
-                    <!-- {% for field in form %}
-                    <div>
-                      <label for="{{ field.name }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ field.label }}</label>
-                      {{ field }}
-                    </div>
-                    {% endfor %} -->
                     <input hidden v-model="grupy"  name="grupy_i_kolory" />
                     <div class="mb-6">
                       <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nazwa kwiatu</label>
                       <input type="text" id="email" name="nazwa_kwiatu" value="{{kwiat.name}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" >
                     </div>
-            
-            
+
                     <input type="text" hidden name="grupy-json" v-model="grupy_string">
                     <div v-for="(grupa, counter) in grupy"
                       v-bind:key="counter"> 
@@ -131,14 +107,12 @@
                           <div class="flex items-center mb-4 mr-4">
                             <input 
                               v-model="grupa.kolory" 
-                              id="{{ kolor.name }}-checkbox" 
                               value="{{ kolor.name }}" 
                               type="checkbox" 
                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" 
                             >
                             <label 
-                              for="{{ kolor.name }}-checkbox" 
-                              class="ml-2 p-1 flex items-center"
+                              class="ml-2 p-1 flex items-center rounded"
                               {% if 'tla' in kolor_hex|get_item:kolor.name %}
                               style="background-image: url('{{ kolor_hex|get_item:kolor.name }}');"
                               {% else %} 
@@ -151,15 +125,11 @@
                         {% endfor %}
                       </div>
                       
-
                       <div @click="usunGrupe(counter)" class=" text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  sm:w-auto px-5 py-2.5 my-4 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Usuń rodzaj</div>
             
-            
                     </div>
-                    
                
                     <div @click="dodajGrupe" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Dodaj rodzaj</div>
-            
                
                 </form>
         </div>
@@ -213,12 +183,3 @@
 </script>
 
 {% endblock content %}
-
-{% comment %}
- {% block extra_js %}
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.tailwindcss.min.js"></script>
-<script src="https://cdn.tailwindcss.com/3.3.3"></script>
-
-{% endcomment %}
