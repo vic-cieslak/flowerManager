@@ -262,8 +262,6 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
 
   createApp({
     setup() {
-      // const isLoading = ref(true);
-      // const isHidden = ref(true);
 
       const showApp = () => {
         const appElement = document.getElementById('app');
@@ -278,20 +276,8 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
           loaderElement.remove();
         }
       };
-      // You would then call this method when your app is initialized
-      // const hideLoader = () => {
-      //   isLoading.value = false;
-      // };
 
-      // When the component has been mounted, which means the app is initialized, hide the loader.
-      // onMounted(() => {
-      //   // Simulate a delay for initialization
-      //   setTimeout(() => {
-      //     hideLoader();
-      //   }, 1000); // Wait 1 second before hiding the loader, you can adjust this to your needs
-      // });
       var openTab = ref(1);
-      console.log('started fomrdata')
       const formData = ref({
         {% for kwiat in kwiaty %}
           '{{kwiat.name}}': {
@@ -307,9 +293,6 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
         {% endfor %}
       });
       
-      console.log(formData)
-      console.log(JSON.stringify(formData))
-
       const handleSubmit = async () => {
         const csrfInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
         const csrfToken = csrfInput ? csrfInput.value : '';
@@ -351,7 +334,6 @@ tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
         document.getElementById('dalej-'+kwiatID).classList.remove("hidden");
         document.getElementById('chce-'+kwiatID).classList.add("hidden");
         document.getElementById('niechce-'+kwiatID).classList.add("hidden");
-        // remove class hidden kwiatydiv-kwiatID
         // openTab.value = tabNumber;
       }
       // remove hidden from id=app

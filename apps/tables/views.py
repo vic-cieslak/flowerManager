@@ -279,6 +279,14 @@ def lista_zamowien(request):
 
 
 # @login_required(login_url='/users/signin/')
+def usun_zamowienie(request, id):
+    zamowienie = Zamowienie.objects.get(id=id)
+    zamowienie.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+
+# @login_required(login_url='/users/signin/')
 def archiwum_zamowien(request):
   zamowienia = Zamowienie.objects.all().order_by('termin_dostarczenia')
   return render(request, 'apps/lista_zamowien.html', {'zamowienia': zamowienia})

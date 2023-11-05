@@ -12,6 +12,7 @@ urlpatterns = [
     path("archiwum_zamowien", views.archiwum_zamowien, name="archiwum_zamowien"),
     path("lista_zamowien", views.lista_zamowien, name="lista_zamowien"),
     path("usun_raport/<int:id>/", views.usun_raport, name="usun_raport"),
+    path("usun_zamowienie/<int:id>/", views.usun_zamowienie, name="usun_zamowienie"),
     path("delete-kolor/<int:id>/", views.delete_kolor, name="delete_kolor"),
     path("czytaj_raport/<int:id>/", views.czytaj_raport, name="czytaj_raport"),
     path("zmien_status/<int:id>/", views.zmien_status, name="zmien_status"),
