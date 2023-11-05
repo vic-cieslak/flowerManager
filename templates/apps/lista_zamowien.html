@@ -97,7 +97,7 @@
                 </th>
               
                 <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
-                  <div class="text-left">Na kiedy</div>
+                  <div class="text-left">Info</div>
                 </th>
                 
                 <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
@@ -144,25 +144,26 @@
                             </button>
                             <!-- Repeat buttons for "odlozone", "kupione", "odebrane" -->
                             <button id="dropdown-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}" 
+                            data-dropdown-placement="right"
                             data-dropdown-toggle="dropdown-menu-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}"  
                             class="w-38  text-white bg-white-700 border hover:bg-white-800 focus:ring-4 focus:outline-none focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-white-600 dark:hover:bg-white-700 dark:focus:ring-white-800" 
                             type="button">
                         <span 
                         {% if value.status == 'odebrane' %}
-                          style="color: #4287f5;font-weight: bold; width: 60px"
-                        {% endif %}
-                        {% if value.status == 'odlozone' %} 
-                          style="color: #12ff26;font-weight: bold; width: 60px;"
-                        {% endif %}
-                        {% if value.status == 'kupione' %}
-                          style="color: #ff1249;font-weight: bold; width: 60px"
+                          style="color: #4287f5;font-weight: bold; width: 80px"
+                        {% elif value.status == 'odlozone' %} 
+                          style="color: #12ff26;font-weight: bold; width: 80px;"
+                        {% elif value.status == 'kupione' %}
+                          style="color: #ff1249;font-weight: bold; width: 80px"
+                         {% else %}
+                          style=" width: 80px"
                         {% endif %}
 
                         id="button-text-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}">
                           {% if value.status %}
                             {{ value.status }}
                           {% else %}
-                            Brak statusu
+                            brak statusu
                           {% endif %}
                         </span>
                         <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -173,19 +174,19 @@
                     <!-- Dropdown menu -->
                     <div id="dropdown-menu-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700">
                       <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}">
-                        <li>
+                        <li style="cursor: pointer">
                           <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=kupione" 
                              hx-trigger="click" 
                              hx-target="#button-text-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}" 
                              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Kupione</a>
                         </li>
-                        <li>
+                        <li style="cursor: pointer"> 
                           <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=odlozone" 
                              hx-trigger="click" 
                              hx-target="#button-text-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}" 
                              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odłożone</a>
                         </li>
-                        <li>
+                        <li style="cursor: pointer">
                           <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=odebrane" 
                              hx-trigger="click" 
                              hx-target="#button-text-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}" 
@@ -210,66 +211,16 @@
                 
                 </td>
                 
-                
-                <!-- <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
-             
-                  {% for rodzaj, kolory in zamowienie.produkty.items %}
-                  <ul class="flex flex-wrap justify-left items-center ">
-                  <div class="grow  border-2 pb-4 border-[#6b7280] ">
-            
-                    <div class="flex justify-center flex-wrap">
-                        {% for rodzaj, details in kolory.items %}
-                          <p class="font-bold text-xl text-center py-2 dark:text-white">{{rodzaj}}</p>
-
-                          {% for key, value in details.items %}
-                          
-                          {% if value.ilosc %}
-                          <li class=" px-4 text-center rounded text-black font-bold my-2 mx-1" >
-
-                          <span>status: {{ value.status }}</span>
-                           <button type="button" {% if 'tla' in kolor_hex|get_item:key %}
-                           style="background-image: url('{{kolor_hex|get_item:key}}');" {% else %} style="background-color: {{kolor_hex|get_item:key}};" {% endif %}
-                           class="relative inline-flex items-center px-3 mx-1 py-1 text-sm font-bold text-center text-black  rounded-lg focus:ring-4 focus:outline-none">
-                           {{ key }}
-                           <span class="sr-only">Notifications</span>
-                           <div
-                               class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
-                               {{ value.ilosc }}</div>
-                           </button>
-                          
-                           <button 
-                           class="text-white  text-center justify-center bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-primary-800"
-                           type="button" >
-                           odlozone
-                           </button>
-                           <button 
-                           class="text-white  text-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800"
-                           type="button" >
-                           kupione
-                           </button>
-                           <button 
-                           class="text-white  text-center justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-primary-800"
-                           type="button" >
-                           odebrane
-                           </button>
-                          </li>
-                          {% endif %}
-
-                           {% endfor %}
-                        
-                        {% endfor %}
-
-                    </div>
-                  </div>
-                </ul>
-
-                {% endfor %}
-
-                </td> -->
-                
            
                 <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
+                  Na: 
                   {{ zamowienie.termin_dostarczenia|date:"j E Y" }}
+                  <br>
+                  Notatka:
+                  {{ zamowienie.notatka }}
+                  <br>
+                  <img width="250px" src="{{zamowienie.zdjecie.url}}">
+
 
                 </td>
                 <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
