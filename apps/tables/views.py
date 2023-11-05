@@ -8,7 +8,7 @@ from apps.tables.utils import product_filter
 import json
 from django.contrib import messages
 from django.db.models.functions import Lower
-
+from django.utils.html import format_html
 
 def remove_zeros(d):
     keys_to_delete = []
@@ -284,6 +284,34 @@ def usun_zamowienie(request, id):
     zamowienie.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
+
+# @login_required(login_url='/users/signin/')
+def zmien_status_zamowienia(request, id):
+    zamowienie = Zamowienie.objects.get(id=id)
+    if 'HX-Request' in request.headers:
+        # Return a simple string response
+
+        print(request.GET)
+        nazwa = request.GET.get('nazwa')
+        rodzaj = request.GET.get('rodzaj')
+        kolor = request.GET.get('kolor')
+        new_status = request.GET.get('new_status')
+        zamowienie.produkty[nazwa][rodzaj][kolor]['status'] = new_status
+        zamowienie.save()
+
+        if new_status == 'kupione':
+          style = "color: #ff1249;font-weight: bold; width: 60px"
+        elif new_status == 'odebrane':
+          style = "color: #4287f5;font-weight: bold; width: 60px"
+        elif new_status == 'odlozone':
+          style = "color: #12ff26;font-weight: bold; width: 60px;"
+
+        # Create the span element with the custom class and new status
+        span_html = format_html('<div style="{}">{}</div>', style, new_status)
+        return HttpResponse(span_html)
+
+    else:
+      pass
 
 
 # @login_required(login_url='/users/signin/')

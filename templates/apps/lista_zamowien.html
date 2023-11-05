@@ -3,11 +3,10 @@
 {% load color_tags %}
 
 {% block content %}
-<script src="{% static 'dist/vue.global.js' %}"></script>
 <script src="{% static 'dist/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'dist/jquery.dataTables.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'dist/jquery.dataTables.min.css' %}" />
-
+<script src="https://unpkg.com/htmx.org"></script>
 
 </style>
 
@@ -120,8 +119,8 @@
 
 
                 <td class="max-w-sm border-2 border-gray-600 p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400 " >
-
                   {% for nazwa, kolory in zamowienie.produkty.items %}
+                  
                   <div class="flex flex-col ">
                     {% for rodzaj, details in kolory.items %}
 
@@ -144,33 +143,60 @@
                                {{ value.ilosc }}</div>
                             </button>
                             <!-- Repeat buttons for "odlozone", "kupione", "odebrane" -->
-                            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                              {% if value.status %}
-                                {{ value.status }}
-                              {% else %}
-                                Brak statusu
-                              {% endif %}
-                              
-                              <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                            </svg>
-                          </button>
-                          
-                          <!-- Dropdown menu -->
-                          <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                              <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                <li>
-                                  <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Kupione</a>
-                                </li>
-                                <li>
-                                  <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odłożone</a>
-                                </li>
-                                <li>
-                                  <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odebrane</a>
-                                </li>
-                              
-                              </ul>
-                          </div>
+                            <button id="dropdown-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}" 
+                            data-dropdown-toggle="dropdown-menu-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}"  
+                            class="w-38  text-white bg-white-700 border hover:bg-white-800 focus:ring-4 focus:outline-none focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-white-600 dark:hover:bg-white-700 dark:focus:ring-white-800" 
+                            type="button">
+                        <span 
+                        {% if value.status == 'odebrane' %}
+                          style="color: #4287f5;font-weight: bold; width: 60px"
+                        {% endif %}
+                        {% if value.status == 'odlozone' %} 
+                          style="color: #12ff26;font-weight: bold; width: 60px;"
+                        {% endif %}
+                        {% if value.status == 'kupione' %}
+                          style="color: #ff1249;font-weight: bold; width: 60px"
+                        {% endif %}
+
+                        id="button-text-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}">
+                          {% if value.status %}
+                            {{ value.status }}
+                          {% else %}
+                            Brak statusu
+                          {% endif %}
+                        </span>
+                        <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                      </button>
+                    
+                    <!-- Dropdown menu -->
+                    <div id="dropdown-menu-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700">
+                      <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}">
+                        <li>
+                          <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=kupione" 
+                             hx-trigger="click" 
+                             hx-target="#button-text-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}" 
+                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Kupione</a>
+                        </li>
+                        <li>
+                          <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=odlozone" 
+                             hx-trigger="click" 
+                             hx-target="#button-text-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}" 
+                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odłożone</a>
+                        </li>
+                        <li>
+                          <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=odebrane" 
+                             hx-trigger="click" 
+                             hx-target="#button-text-{{ nazwa|cut:' ' }}-{{ rodzaj|cut:' ' }}-{{ key|cut:' ' }}" 
+                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odebrane</a>
+                        </li>
+                      </ul>
+                    </div>
+                    
+
+
+
                           </div>
                           
                         </div>
@@ -456,12 +482,3 @@
   
 {% endblock content %}
 
-{% comment %} {% block extra_js %}
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.tailwindcss.min.js"></script>
-<script src="https://cdn.tailwindcss.com/3.3.3"></script>
-
-
-
-{% endcomment %}
