@@ -113,8 +113,14 @@
               {% for zamowienie in zamowienia %}
               <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 ">
                
-                <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                <td class="p-4    whitespace-nowrap ">
                   <div class="text-base text-xl font-semibold text-center text-gray-900 dark:text-white">{{ zamowienie.odbiorca }}</div>
+                  
+                  <div class="text-xl font-semibold text-center text-red-600">
+                    {{ zamowienie.termin_dostarczenia|date:"j E Y" }}
+                  </div>
+
+                  
                 </td>     
 
 
@@ -135,7 +141,7 @@
                             <span class="font-bold text-xl w-64 text-left dark:text-white">{{nazwa}} - {{ rodzaj }}</span>
                             <button type="button" {% if 'tla' in kolor_hex|get_item:key %}
                             style="background-image: url('{{kolor_hex|get_item:key}}');" {% else %} style="background-color: {{kolor_hex|get_item:key}};" {% endif %}
-                            class="relative w-32 inline-flex items-center px-3 mx-1 py-1 text-sm font-bold text-center text-black  rounded-lg focus:ring-4 focus:outline-none">
+                            class="relative w-32 h-8 inline-flex items-center px-3 mx-1 py-1 text-sm font-bold text-center text-black  rounded-lg focus:ring-4 focus:outline-none">
                               {{ key }}
                               <span class="sr-only">Notifications</span>
                            <div
@@ -146,15 +152,15 @@
                             <button id="dropdown-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
                             data-dropdown-placement="right"
                             data-dropdown-toggle="dropdown-menu-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}"  
-                            class="w-38  text-white bg-white-700 border hover:bg-white-800 focus:ring-4 focus:outline-none focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-white-600 dark:hover:bg-white-700 dark:focus:ring-white-800" 
+                            class="w-38 h-8 text-white bg-white-700 border hover:bg-white-800 focus:ring-4 focus:outline-none focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-white-600 dark:hover:bg-white-700 dark:focus:ring-white-800" 
                             type="button">
                         <span 
                         {% if value.status == 'odebrane' %}
-                          style="color: #4287f5;font-weight: bold; width: 80px"
-                        {% elif value.status == 'odlozone' %} 
+                          style="color: #3499fd;font-weight: bold; width: 80px"
+                        {% elif value.status == 'odłożone' %} 
                           style="color: #12ff26;font-weight: bold; width: 80px;"
                         {% elif value.status == 'kupione' %}
-                          style="color: #ff1249;font-weight: bold; width: 80px"
+                          style="color: #fdec34;font-weight: bold; width: 80px"
                          {% else %}
                           style=" width: 80px"
                         {% endif %}
@@ -181,7 +187,7 @@
                              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Kupione</a>
                         </li>
                         <li style="cursor: pointer"> 
-                          <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=odlozone" 
+                          <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=odłożone" 
                              hx-trigger="click" 
                              hx-target="#button-text-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
                              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odłożone</a>
@@ -213,8 +219,7 @@
                 
            
                 <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
-                  Na: 
-                  {{ zamowienie.termin_dostarczenia|date:"j E Y" }}
+                  
                   <br>
                   {% if zamowienie.notatka %}
                   Notatka:

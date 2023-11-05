@@ -300,10 +300,10 @@ def zmien_status_zamowienia(request, id):
         zamowienie.save()
 
         if new_status == 'kupione':
-          style = "color: #ff1249;font-weight: bold; width: 80px"
+          style = "color: #fdec34;font-weight: bold; width: 80px"
         elif new_status == 'odebrane':
-          style = "color: #4287f5;font-weight: bold; width: 80px"
-        elif new_status == 'odlozone':
+          style = "color: #3499fd;font-weight: bold; width: 80px"
+        elif new_status == 'odłożone':
           style = "color: #12ff26;font-weight: bold; width: 80px;"
 
         # Create the span element with the custom class and new status

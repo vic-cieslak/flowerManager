@@ -45,13 +45,17 @@
                     clip-rule="evenodd"></path>
                 </svg>
                 <span class="ml-1 text-gray-400 md:ml-2 dark:text-gray-500" aria-current="page">Kolory</span>
+                  <button id="createProductButton"
+                  class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800"
+                  type="button" data-drawer-target="drawer-create-product-default"
+                  data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default"
+                  data-drawer-placement="right">
+                  Dodaj nowy kolor
+                </button>
               </div>
             </li>
           </ol>
         </nav>
-        <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Wszystkie Kolory
-          
-        </h1>
       </div>
       <div class="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
         <div class="flex items-center mb-4 sm:mb-0">
@@ -100,13 +104,6 @@
             </div> -->
           </div>
         </div>
-        <button id="createProductButton"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800"
-          type="button" data-drawer-target="drawer-create-product-default"
-          data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default"
-          data-drawer-placement="right">
-          Dodaj nowy kolor
-        </button>
       </div>
     </div>
   </div>
@@ -142,11 +139,6 @@
               {% for kolor in kolory %}
               <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                 <td class="w-4 p-4">
-                  <!-- <div class="flex items-center">
-                    <input id="checkbox-194556" aria-describedby="checkbox-1" type="checkbox"
-                      class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
-                    <label for="checkbox-194556" class="sr-only">checkbox</label>
-                  </div> -->
                 </td>
                 <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                   <div class="text-base font-semibold text-gray-900 dark:text-white">{{ kolor.name }}</div>

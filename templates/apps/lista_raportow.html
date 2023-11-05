@@ -11,7 +11,7 @@
   <div id="app">
 
   <div
-    class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
+    class="px-4 pt-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
     <div class="w-full mb-1">
       <div class="mb-4">
         <nav class="flex mb-5" aria-label="Breadcrumb">
@@ -48,21 +48,8 @@
                     clip-rule="evenodd"></path>
                 </svg>
                 <span class="ml-1 text-gray-400 md:ml-2 dark:text-gray-500" aria-current="page">Raporty</span>
-              </div>
-            </li>
-          </ol>
-        </nav>
-        <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Raporty
-  
-        </h1>
-      </div>
-      <div class="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
-        <div class="flex items-center  sm:mb-0">
-          <div class="flex items-center w-full sm:justify-end">
-            
-          </div>
-        </div>
-        <a href="{% url 'raport_start'%}">
+
+        <a class="pl-4" href="{% url 'raport_start'%}">
 
           <button id="createProductButton"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800"
@@ -70,7 +57,18 @@
           Zacznij nowy raport
         </button>
         </a>
+              </div>
+            </li>
+          </ol>
+        </nav>
       </div>
+      <!-- <div class="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
+        <div class="flex items-center  sm:mb-0">
+          <div class="flex items-center w-full sm:justify-end">
+            
+          </div>
+        </div>
+      </div> -->
     </div>
   </div>
   <div class="flex flex-col">
