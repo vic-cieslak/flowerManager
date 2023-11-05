@@ -216,11 +216,15 @@
                   Na: 
                   {{ zamowienie.termin_dostarczenia|date:"j E Y" }}
                   <br>
+                  {% if zamowienie.notatka%}
                   Notatka:
                   {{ zamowienie.notatka }}
-                  <br>
-                  <img width="250px" src="{{zamowienie.zdjecie.url}}">
+                  {% endif }
 
+                  <br>
+                  {% if zamowienie.zdjecie %}
+                  <img width="250px" src="{{zamowienie.zdjecie.url}}">
+                  {% endif }
 
                 </td>
                 <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
