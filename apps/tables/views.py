@@ -266,7 +266,8 @@ def edytuj_kwiat(request, id):
 
 # @login_required(login_url='/users/signin/')
 def lista_zamowien(request):
-  zamowienia = Zamowienie.objects.all().order_by('termin_dostarczenia')
+  zamowienia = Zamowienie.objects.filter(status='').order_by('termin_dostarczenia')
+
   kolory = Kolory.objects.all()
   
   kolor_hex = {}
@@ -275,13 +276,44 @@ def lista_zamowien(request):
       kolor_hex[kolor.name] = kolor.custom_background.url
     else:
       kolor_hex[kolor.name] = kolor.hex_kolor
-  return render(request, 'apps/lista_zamowien.html', {'zamowienia': zamowienia, 'kolor_hex': kolor_hex})
+  return render(request, 'apps/lista_zamowien.html', 
+  {'zamowienia': zamowienia, 'kolor_hex': kolor_hex, 'btn_text': 'Przenieś do archiwum'})
+
+
+# @login_required(login_url='/users/signin/')
+def archiwum_zamowien(request):
+  zamowienia = Zamowienie.objects.filter(status='archiwum').order_by('termin_dostarczenia')
+  kolory = Kolory.objects.all()
+  
+  kolor_hex = {}
+  for kolor in kolory:
+    if kolor.custom_background:
+      kolor_hex[kolor.name] = kolor.custom_background.url
+    else:
+      kolor_hex[kolor.name] = kolor.hex_kolor
+  return render(request, 'apps/lista_zamowien.html', 
+  {'zamowienia': zamowienia, 'kolor_hex': kolor_hex, 'btn_text': 'Przywróć'})
+
 
 
 # @login_required(login_url='/users/signin/')
 def usun_zamowienie(request, id):
     zamowienie = Zamowienie.objects.get(id=id)
     zamowienie.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+# @login_required(login_url='/users/signin/')
+def przenies_do_archiwum(request, id):
+    zamowienie = Zamowienie.objects.get(id=id)
+    status = zamowienie.status
+
+    if status == 'archiwum':
+      zamowienie.status = ''
+    else:
+      zamowienie.status = 'archiwum'
+
+    zamowienie.save()
+
     return redirect(request.META.get('HTTP_REFERER'))
 
 
@@ -313,11 +345,6 @@ def zmien_status_zamowienia(request, id):
     else:
       pass
 
-
-# @login_required(login_url='/users/signin/')
-def archiwum_zamowien(request):
-  zamowienia = Zamowienie.objects.all().order_by('termin_dostarczenia')
-  return render(request, 'apps/lista_zamowien.html', {'zamowienia': zamowienia})
 
 
 # @login_required(login_url='/users/signin/')

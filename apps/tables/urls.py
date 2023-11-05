@@ -14,6 +14,7 @@ urlpatterns = [
     path("usun_raport/<int:id>/", views.usun_raport, name="usun_raport"),
     path("usun_zamowienie/<int:id>/", views.usun_zamowienie, name="usun_zamowienie"),
     path("zmien_status_zamowienia/<int:id>/", views.zmien_status_zamowienia, name="zmien_status_zamowienia"),
+    path("przenies_do_archiwum/<int:id>/", views.przenies_do_archiwum, name="przenies_do_archiwum"),
     path("delete-kolor/<int:id>/", views.delete_kolor, name="delete_kolor"),
     path("czytaj_raport/<int:id>/", views.czytaj_raport, name="czytaj_raport"),
     path("zmien_status/<int:id>/", views.zmien_status, name="zmien_status"),
