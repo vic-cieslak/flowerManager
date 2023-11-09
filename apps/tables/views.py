@@ -23,7 +23,7 @@ def remove_zeros(d):
 
 
 # Create your views here.
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def datatables(request):
   filters = product_filter(request)
   kwiaty_list = Kwiat.objects.filter(**filters).order_by(Lower('name'))
@@ -68,7 +68,7 @@ def datatables(request):
 
 
 # Create your views here.
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def kolory(request):
   kolory = Kolory.objects.all().order_by('name')
   form = KoloryForm()
@@ -100,7 +100,7 @@ def kolory(request):
   }
   
   return render(request, 'apps/kolory.html', context)
-
+@login_required(login_url='/users/signin/')
 def kolejnosc(request):
   if request.method == "GET":
     kwiaty = Kwiat.objects.filter(aktywny=True).order_by('kolejnosc')
@@ -118,7 +118,7 @@ def kolejnosc(request):
     pass
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def czytaj_raport(request, id):
   raport = Raport.objects.get(id=id)
   dane = json.loads(raport.wartosc)
@@ -134,7 +134,7 @@ def czytaj_raport(request, id):
   return render(request, 'apps/czytaj_raport.html', {'raport': raport, 'dane': dane, 'kolor_hex': kolor_hex})
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def raport_start(request):
     if request.method == "GET":
 
@@ -168,28 +168,28 @@ def raport_start(request):
     else:
         pass
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def lista_raportow(request):
   raporty = Raport.objects.all().order_by('-data_utworzenia')
   # print(raporty)
   return render(request, 'apps/lista_raportow.html', {'raporty': raporty})
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def delete_kolor(request, id):
     kolor = Kolory.objects.get(id=id)
     kolor.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def usun_raport(request, id):
     raport = Raport.objects.get(id=id)
     raport.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def update_kolor(request, id):
     update_kolor = Kolory.objects.get(id=id)
     if request.method == 'POST':
@@ -203,20 +203,20 @@ def update_kolor(request, id):
         update_kolor.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def post_request_handling(request, form):
     form.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def delete_product(request, id):
     product = Product.objects.get(id=id)
     product.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def zmien_status(request, id):
     kwiat = Kwiat.objects.get(id=id)
     if kwiat.aktywny:
@@ -229,7 +229,7 @@ def zmien_status(request, id):
 
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def delete_kwiat(request, id):
     kwiat = Kwiat.objects.get(id=id)
     kwiat.delete()
@@ -237,7 +237,7 @@ def delete_kwiat(request, id):
 
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def edytuj_kwiat(request, id):
     if request.method == 'GET':
         kwiat = Kwiat.objects.get(id=id)
@@ -264,7 +264,7 @@ def edytuj_kwiat(request, id):
         return HttpResponseRedirect(reverse('datatables'))
         
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def lista_zamowien(request):
   zamowienia = Zamowienie.objects.filter(status='').order_by('termin_dostarczenia')
 
@@ -280,7 +280,7 @@ def lista_zamowien(request):
   {'zamowienia': zamowienia, 'kolor_hex': kolor_hex, 'btn_text': 'Przenieś do archiwum'})
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def archiwum_zamowien(request):
   zamowienia = Zamowienie.objects.filter(status='archiwum').order_by('termin_dostarczenia')
   kolory = Kolory.objects.all()
@@ -296,13 +296,13 @@ def archiwum_zamowien(request):
 
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def usun_zamowienie(request, id):
     zamowienie = Zamowienie.objects.get(id=id)
     zamowienie.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def przenies_do_archiwum(request, id):
     zamowienie = Zamowienie.objects.get(id=id)
     status = zamowienie.status
@@ -317,7 +317,7 @@ def przenies_do_archiwum(request, id):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def zmien_status_zamowienia(request, id):
     zamowienie = Zamowienie.objects.get(id=id)
     if 'HX-Request' in request.headers:
@@ -347,7 +347,7 @@ def zmien_status_zamowienia(request, id):
 
 
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def dodaj_zamowienie(request, id=None):
     if request.method == 'GET':
         kwiaty = Kwiat.objects.all()
@@ -378,7 +378,7 @@ def dodaj_zamowienie(request, id=None):
         z.save()
         return HttpResponseRedirect(reverse('lista_zamowien'))
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def odswiez_kolory(request, id):
   kwiat = Kwiat.objects.get(id=id)
   kolory = Kolory.objects.all()
@@ -403,7 +403,7 @@ def odswiez_kolory(request, id):
 
   return HttpResponseRedirect(reverse('edytuj_kwiat', kwargs={'id': id}))
 
-# @login_required(login_url='/users/signin/')
+@login_required(login_url='/users/signin/')
 def update_product(request, id):
     product = Product.objects.get(id=id)
     if request.method == 'POST':
