@@ -96,12 +96,12 @@
 
                 </th>
               
-                <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
-                  <div class="text-left">Info</div>
+                <th scope="col" class="p-4   text-xs font-medium  uppercase dark:text-gray-400">
+                  <div class=" text-center">Info</div>
                 </th>
                 
                 <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
-                  <div class="text-left">akcje</div>
+                  <div class=" text-center">akcje</div>
                 </th>
                 
              
@@ -124,7 +124,7 @@
                 </td>     
 
 
-                <td class="max-w-sm border-2 border-gray-600 p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400 " >
+                <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400 " >
                   {% for nazwa, kolory in zamowienie.produkty.items %}
                   
                   <div class="flex flex-col ">
@@ -169,7 +169,7 @@
                           {% if value.status %}
                             {{ value.status }}
                           {% else %}
-                            brak statusu
+                            ustal status
                           {% endif %}
                         </span>
                         <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -222,7 +222,6 @@
                   
                   <br>
                   {% if zamowienie.notatka %}
-                  Notatka:
                   {{ zamowienie.notatka }}
                   {% endif %}
 
