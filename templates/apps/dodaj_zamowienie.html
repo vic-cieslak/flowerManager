@@ -145,25 +145,18 @@
             
             <div class="overflow-hidden shadow">
               
-              <table id="dataTable" class=" divide-gray-200  dark:divide-gray-600">
-                <thead class="bg-gray-100 dark:bg-gray-700 flex-row">
-                  <tr class=" justify-center">
+              <table id="dataTable" class="table-fixed divide-gray-200  dark:divide-gray-600">
+                <thead class="bg-gray-100 dark:bg-gray-700 ">
+                  <tr class=" ">
                    
-                    <th scope="col" class="p-4 w-24 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                      
+                    <th scope="col" class="p-4 w-32 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                       <div class="text-center">Produkt</div>
-                      
                     </th>
                    
-                  
                     <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
                       <div class="text-left">Rodzaj i kolory</div>
                     </th>
                     
-                    <!-- <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
-                      <div class="text-left">akcje</div>
-                    </th>
-                     -->
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200  dark:bg-gray-800 dark:divide-gray-700">
@@ -174,15 +167,13 @@
                     <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                       <div class="text-base text-xl font-semibold text-center text-gray-900 dark:text-white">{{ kwiat.name }}</div>
                     </td>     
-    
-                
                
                     <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
                       {% for kat_kol in kwiat.kategorie_i_kolory_list %}
                       <ul class="flex flex-wrap justify-left items-center ">
-                        <p class="font-bold text-xl text-center py-2 dark:text-white w-64">{{kat_kol.nazwa}}</p>
+                        <p class="font-bold text-xl text-center py-2 dark:text-white w-32">{{kat_kol.nazwa}}</p>
                           {% for kolor in kat_kol.kolory %}
-                          <li class=" px-4 text-center rounded text-black font-bold my-2 mx-1" 
+                          <li class="w-28 truncate h-32 px-4 pt-4  text-center rounded text-black font-bold my-2 mx-1" 
                   
                           {% if 'tla' in kolor_hex|get_item:kolor %}
                           style="background-image: url('{{kolor_hex|get_item:kolor}}');"
@@ -190,10 +181,10 @@
                               style="background-color: {{kolor_hex|get_item:kolor}};"
                           {% endif %}
                   
-                          >{{kolor}}       
-                           <div>
-                            <label for="first_name" class="block mb-2 text-sm font-medium text-black">Ilość</label>
-                            <input type="number" id="first_name" v-model="formData['{{kwiat.name}}']['{{kat_kol.nazwa}}']['{{kolor}}']['ilosc']" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
+                          >{{ kolor }}      
+                           <div class="">
+                            <label class="block mb-2 text-sm font-medium text-black">ilość</label>
+                            <input type="number"  v-model="formData['{{kwiat.name}}']['{{kat_kol.nazwa}}']['{{kolor}}']['ilosc']" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
                             
                           </div> 
                          </li>
