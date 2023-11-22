@@ -394,14 +394,14 @@ def odswiez_kolory(request, id):
           print('removing ', kolor)
           kwiat_['kolory'].remove(kolor)
 
-  print('nowe : ', kategorie_i_kolory_list)
-  nowe = json.dumps(kategorie_i_kolory_list)
+  # print('nowe : ', kategorie_i_kolory_list)
+  # nowe = json.dumps(kategorie_i_kolory_list)
 
-  print('nowe_string', nowe)
-  print(type(nowe))
-  print('nowe nowe ', json.dumps(nowe))
-  nowe_nowe = json.dumps(nowe)
-  kwiat.kategorie_i_kolory = nowe_nowe 
+  # print('nowe_string', nowe)
+  # print(type(nowe))
+  # print('nowe nowe ', json.dumps(nowe))
+  # nowe_nowe = json.dumps(nowe)
+  kwiat.kategorie_i_kolory = kategorie_i_kolory_list 
   kwiat.save()
 
   return HttpResponseRedirect(reverse('edytuj_kwiat', kwargs={'id': id}))
