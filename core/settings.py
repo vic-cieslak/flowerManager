@@ -115,6 +115,7 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB", "hello"),
         "USER": os.getenv("POSTGRES_USER", "hello"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "password"),
+        # "HOST": os.getenv("POSTGRES_HOST", "172.22.0.3"),
         "HOST": os.getenv("POSTGRES_HOST", "postgres"),
         "PORT": os.getenv("POSTGRES_PORT", "5432"),
     }
@@ -144,7 +145,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 
-TIME_ZONE = "UTC"
+# TIME_ZONE = "UTC"
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
