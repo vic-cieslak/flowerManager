@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse
-from apps.tables.forms import ProductForm, KoloryForm
-from apps.common.models import Product, Zamowienie, Kolory, Kwiat, Raport
+from apps.tables.forms import  KoloryForm
+from apps.common.models import Zamowienie, Kolory, Kwiat, Raport
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from apps.tables.utils import product_filter
@@ -29,7 +29,6 @@ def datatables(request):
   kwiaty_list = Kwiat.objects.filter(**filters).order_by(Lower('name'))
   kolory = Kolory.objects.all()
   
-  
   kolor_hex = {}
   for kolor in kolory:
     if kolor.custom_background:
@@ -39,7 +38,7 @@ def datatables(request):
       
   for kwiat in kwiaty_list:
     print(kwiat)
-    kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+    kwiat.kategorie_i_kolory_list = kwiat.kategorie_i_kolory
 
 
   page = request.GET.get('page', 1)
@@ -49,8 +48,8 @@ def datatables(request):
   if request.method == 'POST':
     nazwa_kwiatu = request.POST.get('nazwa_kwiatu')
     grupy_json = request.POST.get('grupy-json')
-    grupy_json_string = json.dumps(grupy_json)
-    nowy_kwiat = Kwiat(name=nazwa_kwiatu, kategorie_i_kolory=grupy_json_string)
+    grupy_json_dict = json.loads(grupy_json)
+    nowy_kwiat = Kwiat(name=nazwa_kwiatu, kategorie_i_kolory=grupy_json_dict)
     nowy_kwiat.save()
     return HttpResponseRedirect(reverse('datatables'))
 
@@ -63,8 +62,6 @@ def datatables(request):
   }
   
   return render(request, 'apps/datatables.html', context)
-
-
 
 
 # Create your views here.
@@ -121,8 +118,11 @@ def kolejnosc(request):
 @login_required(login_url='/users/signin/')
 def czytaj_raport(request, id):
   raport = Raport.objects.get(id=id)
-  dane = json.loads(raport.wartosc)
-  print(dane)
+  dane = raport.wartosc
+  if type(dane) == str:
+    dane = json.loads(raport.wartosc)
+
+  # print(dane)
   kolory = Kolory.objects.all()
   kolor_hex = {}
   for kolor in kolory:
@@ -150,7 +150,7 @@ def raport_start(request):
 
       kwiaty = Kwiat.objects.filter(aktywny=True).order_by('kolejnosc')
       for kwiat in kwiaty:
-        kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+        kwiat.kategorie_i_kolory_list = kwiat.kategorie_i_kolory
 
       # jakbym mial tu gotowego jsona do raportu to moze by bylo łatwiej?
       # cloned_kwiaty = [kwiat for kwiat in kwiaty for _ in range(10)]
@@ -159,10 +159,9 @@ def raport_start(request):
     elif request.method == "POST":
       data = json.loads(request.body)
       print(data)
-      dane_json = json.dumps(data)
-      raport = Raport(wartosc=dane_json)
+      # dane_json = json.loads(data)
+      raport = Raport(wartosc=data)
       raport.save()
-      # TODO redirect to raport ?
       return HttpResponseRedirect(reverse('lista_raportow'))
 
     else:
@@ -242,7 +241,7 @@ def edytuj_kwiat(request, id):
     if request.method == 'GET':
         kwiat = Kwiat.objects.get(id=id)
         kolory = Kolory.objects.all()
-        kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+        kwiat.kategorie_i_kolory_list = kwiat.kategorie_i_kolory
         kolor_hex = {}
         for kolor in kolory:
           if kolor.custom_background:
@@ -255,10 +254,10 @@ def edytuj_kwiat(request, id):
     elif request.method == 'POST':
         nazwa_kwiatu = request.POST.get('nazwa_kwiatu')
         grupy_json = request.POST.get('grupy-json')
-        grupy_json_string = json.dumps(grupy_json)
+        grupy_json_dict = json.loads(grupy_json)
         kwiat = Kwiat.objects.filter(id=id).first()
         kwiat.name = nazwa_kwiatu
-        kwiat.kategorie_i_kolory = grupy_json_string
+        kwiat.kategorie_i_kolory = grupy_json_dict
         kwiat.save()
         messages.success(request, 'Kwiat zaktualizowany!')
         return HttpResponseRedirect(reverse('datatables'))
@@ -365,7 +364,7 @@ def dodaj_zamowienie(request, id=None):
             kolor_hex[kolor.name] = kolor.hex_kolor
             
         for kwiat in kwiaty:
-          kwiat.kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+          kwiat.kategorie_i_kolory_list = kwiat.kategorie_i_kolory
 
         return render(request, 'apps/dodaj_zamowienie.html', {'kwiaty': kwiaty, 'kolor_hex': kolor_hex})
     elif request.method == 'POST':
@@ -387,7 +386,7 @@ def odswiez_kolory(request, id):
   kwiat = Kwiat.objects.get(id=id)
   kolory = Kolory.objects.all()
   nazwy_kolorow = [kolor.name for kolor in kolory]
-  kategorie_i_kolory_list = json.loads(json.loads(kwiat.kategorie_i_kolory))
+  kategorie_i_kolory_list = kwiat.kategorie_i_kolory
   # print(kategorie_i_kolory_list)
   for kwiat_ in kategorie_i_kolory_list:
     for kolor in kwiat_['kolory']:
