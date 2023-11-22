@@ -15,7 +15,7 @@
   <div id="app">
 
   <div
-    class="px-4 bg-white block sm:flex items-center justify-between border-b border-gray-200  dark:bg-gray-800 dark:border-gray-700">
+    class="px-4 bg-white block sm:flex items-center justify-between  dark:bg-gray-800 ">
     <div class="w-full m">
       <div class="">
         <nav class="flex mb-2 mt-2" aria-label="Breadcrumb">
@@ -81,7 +81,7 @@
         
         <div class="overflow-hidden shadow">
           
-          <table id="dataTable" class=" divide-gray-200  dark:divide-gray-600">
+          <table id="dataTable"   class="row-border  divide-gray-200  dark:divide-gray-600 ">
             <thead class="bg-gray-100 dark:bg-gray-700 flex-row">
               <tr class=" justify-center">
                
@@ -97,7 +97,7 @@
                 </th>
               
                 <th scope="col" class="p-4   text-xs font-medium  uppercase dark:text-gray-400">
-                  <div class=" text-center">Info</div>
+                  <div class=" text-center">Notatka</div>
                 </th>
                 
                 <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
@@ -108,16 +108,16 @@
                 
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200  dark:bg-gray-800 dark:divide-gray-700">
+            <tbody class="bg-white dark:bg-gray-800 ">
 
               {% for zamowienie in zamowienia %}
               <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 ">
                
-                <td class="p-4    whitespace-nowrap ">
+                <td class="p-4  whitespace-nowrap ">
                   <div class="text-base text-xl font-semibold text-center text-gray-900 dark:text-white">{{ zamowienie.odbiorca }}</div>
                   
                   <div class="text-xl font-semibold text-center text-red-600">
-                    {{ zamowienie.termin_dostarczenia|date:"j E Y" }}
+                    {{ zamowienie.termin_dostarczenia|date:"j E Y l" }}
                   </div>
 
                   
@@ -156,20 +156,20 @@
                             type="button">
                         <span 
                         {% if value.status == 'odebrane' %}
-                          style="color: #3499fd;font-weight: bold; width: 80px"
+                          style="color: #3499fd;font-weight: bold; width: 90px"
                         {% elif value.status == 'odłożone' %} 
-                          style="color: #12ff26;font-weight: bold; width: 80px;"
+                          style="color: #12ff26;font-weight: bold; width: 90px;"
                         {% elif value.status == 'kupione' %}
-                          style="color: #fdec34;font-weight: bold; width: 80px"
+                          style="color: #fdec34;font-weight: bold; width: 90px"
                          {% else %}
-                          style=" width: 80px"
+                          style=" width: 90px"
                         {% endif %}
 
                         id="button-text-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}">
                           {% if value.status %}
                             {{ value.status }}
                           {% else %}
-                            ustal status
+                            brak statusu
                           {% endif %}
                         </span>
                         <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -184,19 +184,26 @@
                           <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=kupione" 
                              hx-trigger="click" 
                              hx-target="#button-text-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
-                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Kupione</a>
+                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><span style="color: #fdec34;font-weight: bold;">Kupione</span></a>
                         </li>
                         <li style="cursor: pointer"> 
                           <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=odłożone" 
                              hx-trigger="click" 
                              hx-target="#button-text-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
-                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odłożone</a>
+                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                            <span style="color: #12ff26;font-weight: bold;"> Odłożone</span></a>
                         </li>
                         <li style="cursor: pointer">
                           <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=odebrane" 
                              hx-trigger="click" 
                              hx-target="#button-text-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
-                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odebrane</a>
+                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><span style="color: #3499fd;font-weight: bold;">Odebrane</span></a>
+                        </li>
+                        <li style="cursor: pointer">
+                          <a hx-get="/zmien_status_zamowienia/{{ zamowienie.id }}/?nazwa={{nazwa}}&rodzaj={{rodzaj}}&kolor={{key}}&new_status=" 
+                             hx-trigger="click" 
+                             hx-target="#button-text-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
+                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><span style="font-weight: bold;">Brak statusu</span></a>
                         </li>
                       </ul>
                     </div>
@@ -383,6 +390,7 @@
               search: "",
               searchPlaceholder: "Szukaj zamówienia"
           },
+
           paging: false,
           initComplete: function () {
               $('.dt-buttons').removeClass('btn-group');
@@ -443,6 +451,13 @@
 </script>
 
 <style>
+
+.even td {
+  border-bottom: 3px solid #374151;
+}
+.odd td {
+  border-bottom: 3px solid #374151;
+}
   .dataTables_wrapper .dataTables_filter {
       float: none;
       text-align: center;
