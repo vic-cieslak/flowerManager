@@ -85,22 +85,22 @@
             <thead class="bg-gray-100 dark:bg-gray-700 flex-row">
               <tr class=" justify-center">
                
-                <th scope="col" class="p-4  text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                <th scope="col" class="p-4  text-sm font-medium text-left text-gray-500 uppercase dark:text-white">
                   
                   <div class="text-center">Kto</div>
                   
                 </th>
-                <th scope="col" class="p-4   text-xs font-medium text-center  text-gray-500 uppercase dark:text-gray-400">
+                <th scope="col" class="p-4   text-sm font-medium text-center  text-gray-500 uppercase dark:text-white">
                   
                   <div class="text-center">Co</div>
 
                 </th>
               
-                <th scope="col" class="p-4   text-xs font-medium  uppercase dark:text-gray-400">
+                <th scope="col" class="p-4   text-sm font-medium  uppercase dark:text-white">
                   <div class=" text-center">Notatka</div>
                 </th>
                 
-                <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
+                <th scope="col" class="p-4  text-sm font-medium  uppercase dark:text-white">
                   <div class=" text-center">akcje</div>
                 </th>
                 
@@ -116,8 +116,8 @@
                 <td class="p-4  whitespace-nowrap ">
                   <div class="text-base text-xl font-semibold text-center text-gray-900 dark:text-white">{{ zamowienie.odbiorca }}</div>
                   
-                  <div class="text-xl font-semibold text-center text-red-600">
-                    {{ zamowienie.termin_dostarczenia|date:"j E Y l" }}
+                  <div class="text-xl text-center text-red-600">
+                    {{ zamowienie.termin_dostarczenia|date:"j E l" }}
                   </div>
 
                   
@@ -258,6 +258,16 @@
 
                     </button>
                     
+                  </a>
+                  <a href="{% url 'edytuj_zamowienie' zamowienie.id %}">
+
+                      <button id=""
+                      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800"
+                      type="button" >
+
+                      Edytuj zamowienie
+
+                    </button>
                   </a>
 
 
