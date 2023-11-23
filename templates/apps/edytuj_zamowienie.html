@@ -1,0 +1,360 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load color_tags %}
+
+
+{% block content %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.min.js"></script>
+
+<!-- Include Polish language pack -->
+<script src="https://cdn.jsdelivr.net/npm/air-datepicker/dist/js/i18n/datepicker.pl.js"></script>
+
+<script src="{% static 'dist/vue.global.js' %}"></script>
+<script src="{% static 'dist/jquery.dataTables.js' %}"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'dist/jquery.dataTables.min.css' %}" />
+
+
+<main>
+    
+  <div id="app">
+
+  <div
+    class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
+    <div class="w-full mb-1">
+      <div class="mb-4">
+        <nav class="flex mb-5" aria-label="Breadcrumb">
+          <ol class="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
+            <li class="inline-flex items-center">
+              <a href="#"
+                class="inline-flex items-center text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-white">
+                <svg class="w-5 h-5 mr-2.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                  </path>
+                </svg>
+                Główna
+              </a>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <a href="#"
+                  class="ml-1 text-gray-700 hover:text-primary-600 md:ml-2 dark:text-gray-300 dark:hover:text-white">Dodaj</a>
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="ml-1 text-gray-400 md:ml-2 dark:text-gray-500" aria-current="page">Zamówienie</span>
+              </div>
+            </li>
+          </ol>
+        </nav>
+        <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Dodaj zamówienie
+  
+        </h1>
+       
+      </div>
+      <div class="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
+        <div class="flex items-center  sm:mb-0">
+        
+         
+        </div>
+     
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col">
+    <div class="overflow-x-auto">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden shadow container mx-auto px-96">
+       
+           
+            <form method="post" class="px-16"  enctype="multipart/form-data" >
+                <div class="pt-8 px-16 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
+                  <button 
+                    type="submit"
+                    class="text-white justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-primary-800">
+                    Dodaj zamówienie {{ zamowienie.produkty}}
+                  </button>
+
+                </div>
+                  {% csrf_token %}
+            
+                  <div class="space-y-4 pt-24 px-8">
+            
+                 
+                    <input hidden   name="grupy_i_kolory" />
+
+                    <div class="mb-6">
+                      <label for="odbiorca" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kto</label>
+                      <input autocomplete="off" type="text" id="odbiorca" name="odbiorca" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" >
+                    </div>
+            
+                    
+                    <div class="mb-6">
+                      <label for="data" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Na kiedy</label>
+                      <input autocomplete="off" data-language='pl' type="text" id="data" name="data" value="" class="datepicker-here bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" >
+                    </div>
+            
+                    
+                    
+                    <div class="mb-6 hidden">
+                      <label for="produkty" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Produkty</label>
+                      <textarea rows="5" type="textarea" v-model="formattedJson" id="produkty" name="produkty"  class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" ></textarea>
+                    </div>
+            
+                    <div class="mb-6">
+                      <label for="notatka" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notatka</label>
+                      <textarea rows="5" type="textarea" id="notatka" name="notatka" value="" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" ></textarea>
+                    </div>
+                    
+                    <div class="mb-6">
+                      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Dodaj zdjęcie</label>
+                      <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="zdjecie" name="zdjecie" type="file">
+                      <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+                     </div>
+
+                  
+                    <input type="text" hidden name="grupy-json" >
+               
+                </form>
+        </div>
+        
+      </div>
+      <div class="">
+    
+        <div class="overflow-x-auto">
+          
+          <div class="w-full ">
+            
+            <div class="overflow-hidden shadow">
+              
+              <table id="dataTable" class="table-fixed divide-gray-200  dark:divide-gray-600">
+                <thead class="bg-gray-100 dark:bg-gray-700 ">
+                  <tr class=" ">
+                   
+                    <th scope="col" class="p-4 w-32 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                      <div class="text-center">Produkt</div>
+                    </th>
+                   
+                    <th scope="col" class="p-4  text-xs font-medium  uppercase dark:text-gray-400">
+                      <div class="text-left">Rodzaj i kolory</div>
+                    </th>
+                    
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200  dark:bg-gray-800 dark:divide-gray-700">
+    
+                  {% for kwiat in kwiaty %}
+                  <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 ">
+                   
+                    <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                      <div class="text-base text-xl font-semibold text-center text-gray-900 dark:text-white">{{ kwiat.name }}</div>
+                    </td>     
+               
+                    <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
+                      {% for kat_kol in kwiat.kategorie_i_kolory_list %}
+                      <ul class="flex flex-wrap justify-left items-center ">
+                        <p class="font-bold text-xl text-center py-2 dark:text-white w-32">{{kat_kol.nazwa}}</p>
+                          {% for kolor in kat_kol.kolory %}
+                          <li class="w-28 truncate h-32 px-4 pt-4  text-center rounded text-black font-bold my-2 mx-1" 
+                  
+                          {% if 'tla' in kolor_hex|get_item:kolor %}
+                          style="background-image: url('{{kolor_hex|get_item:kolor}}');"
+                          {% else %}
+                              style="background-color: {{kolor_hex|get_item:kolor}};"
+                          {% endif %}
+                  
+                          >{{ kolor }}      
+                           <div class="">
+                            <label class="block mb-2 text-sm font-medium text-black">ilość</label>
+                            <input type="number"  v-model="formData['{{kwiat.name}}']['{{kat_kol.nazwa}}']['{{kolor}}']['ilosc']" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
+                            
+                          </div> 
+                         </li>
+                          {% endfor %}
+                      </ul>
+                      {% endfor %}
+                  </td>
+             
+
+                  </tr>
+               
+                  {% endfor %}
+    
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</main>
+<style>
+  .dataTables_wrapper .dataTables_filter {
+      float: none;
+      text-align: center;
+      color: white;
+  }
+  .dataTables_wrapper div.dataTables_filter input {
+        width: 30%;
+  }
+  </style>
+<script>
+  // Initialize the datepicker with Polish language
+  $(document).ready(function() {
+      $('.datepicker-here').datepicker({
+          language: 'pl',
+          isMobile: true,
+         autoClose: true,
+      });
+  });
+</script>
+
+
+<script defer>
+
+  $(document).ready(function () {
+      $.fn.dataTable.ext.search.push(
+          function (settings, data, dataIndex) {
+
+              // Get the search input value
+              let search = $('.dataTables_filter input').val();
+              if (search === undefined) {
+                  search = '';
+              }
+
+              if (search === '') {
+                  return true;
+              }
+
+              let re = new RegExp('^' + search, 'i');
+
+              // Look through each column to find a match
+              for (i = 0; i < data.length; i++) {
+                  // If any column matches then show row
+                  if (re.test(data[i])) {
+                      return true;
+                  }
+              }
+              return false;
+          });
+
+
+      $('input[type = search]').attr('dir', 'left');
+      $('input[type = search]').addClass('text-white');
+
+      var table = $('#dataTable').DataTable({
+          info: false,
+          ordering: false,
+
+          language: {
+              search: "",
+              searchPlaceholder: "Szukaj kwiatu lub rodzaju"
+          },
+          paging: false,
+          initComplete: function () {
+              $('.dt-buttons').removeClass('btn-group');
+              $('.dataTables_filter').children().appendTo('#mytable_length');
+              $("label").attr("id", function (arr) {
+                  return "button_size" + arr;
+              });
+          },
+          columnDefs: [{
+              searchable: false,
+          }],
+          dom: 'Blfrtip',
+          "ordering": false,
+          buttons: [
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: [5, 4, 3, 2, 0]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: [5, 4, 3, 2, 0]
+                  },
+                  customize: function (doc) {
+                      doc.content[1].alignment = 'right';
+                  },
+              },
+          ],
+          "pagingType": "full_numbers",
+
+      });
+      $('.dataTables_wrapper .dataTables_filter').addClass('py-5')
+
+      $('.dataTables_filter input').off();
+
+      $('input[type = search]').on('keyup', function (e) {
+          table.draw();
+      });
+
+
+  });
+
+</script>
+  
+
+<script defer>
+  const { createApp, ref, reactive, computed, watch } = Vue
+
+  createApp({
+    setup() {
+
+      const formData = ref({
+        {% for kwiat in kwiaty %}
+          '{{kwiat.name}}': {
+            {% for kat_kol in kwiat.kategorie_i_kolory_list %}
+              '{{kat_kol.nazwa}}': {
+                {% for kolor in kat_kol.kolory %}
+                  '{{kolor}}': {
+                    'ilosc': 0,
+                    // 'status': 'brak',
+                    },
+                {% endfor %}
+              },
+            {% endfor %}
+          },
+        {% endfor %}
+      });
+      const formattedJson = computed(() => {
+        return JSON.stringify(formData.value, null, 2);
+      });
+      function show_data() {
+        console.log(JSON.stringify(formData.value))
+
+      }
+      return {
+        show_data,
+        formattedJson,
+        formData
+      }
+    }
+  }).mount('#app')
+</script>
+
+{% endblock content %}

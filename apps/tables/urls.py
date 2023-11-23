@@ -21,6 +21,7 @@ urlpatterns = [
     path('update-kolor/<int:id>/', views.update_kolor, name="update_kolor"),
     path('delete-kwiat/<int:id>/', views.delete_kwiat, name="delete_kwiat"),
     path('edytuj-kwiat/<int:id>/', views.edytuj_kwiat, name="edytuj_kwiat"),
+    path('edytuj-zamowienie/<int:id>/', views.edytuj_zamowienie, name="edytuj_zamowienie"),
     path('odswiez-kolory/<int:id>/', views.odswiez_kolory, name="odswiez_kolory"),
     path('update-product/<int:id>/', views.update_product, name="update_product"),
 ]

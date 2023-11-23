@@ -130,8 +130,16 @@ def czytaj_raport(request, id):
       kolor_hex[kolor.name] = kolor.custom_background.url
     else:
       kolor_hex[kolor.name] = kolor.hex_kolor
-      
-  return render(request, 'apps/czytaj_raport.html', {'raport': raport, 'dane': dane, 'kolor_hex': kolor_hex})
+  # print(dane)
+  def sort_dict(d):
+      if isinstance(d, dict):
+          return {k: sort_dict(d[k]) for k in sorted(d)}
+      return d
+
+
+  sorted_dane = sort_dict(dane)
+
+  return render(request, 'apps/czytaj_raport.html', {'raport': raport, 'dane': sorted_dane, 'kolor_hex': kolor_hex})
 
 
 @login_required(login_url='/users/signin/')
@@ -262,6 +270,44 @@ def edytuj_kwiat(request, id):
         messages.success(request, 'Kwiat zaktualizowany!')
         return HttpResponseRedirect(reverse('datatables'))
         
+
+
+@login_required(login_url='/users/signin/')
+def edytuj_zamowienie(request, id):
+
+    if request.method == 'GET':
+        zamowienie = Zamowienie.objects.filter(id=id).first()
+        kwiaty = Kwiat.objects.all()
+        kolory = Kolory.objects.all()
+        
+        kolor_hex = {}
+        for kolor in kolory:
+          if kolor.custom_background:
+            kolor_hex[kolor.name] = kolor.custom_background.url
+          else:
+            kolor_hex[kolor.name] = kolor.hex_kolor
+            
+        for kwiat in kwiaty:
+          kwiat.kategorie_i_kolory_list = kwiat.kategorie_i_kolory
+
+        return render(request, 'apps/edytuj_zamowienie.html',
+         {'kwiaty': kwiaty, 'kolor_hex': kolor_hex, 'zamowienie': zamowienie})
+
+    elif request.method == 'POST':
+        z = Zamowienie()
+        produkty = request.POST.get('produkty')
+        produkty = json.loads(produkty)
+        cleaned_produkty = remove_zeros(produkty)
+        z.odbiorca = request.POST.get('odbiorca')
+        z.produkty = cleaned_produkty
+        # z.status = 'Kupione'
+        z.termin_dostarczenia = request.POST.get('data')
+        z.notatka = request.POST.get('notatka')
+        z.zdjecie = request.FILES.get('zdjecie')
+        z.save()
+        return HttpResponseRedirect(reverse('lista_zamowien'))
+
+
 
 @login_required(login_url='/users/signin/')
 def lista_zamowien(request):
