@@ -17,6 +17,7 @@ urlpatterns = [
     path("przenies_do_archiwum/<int:id>/", views.przenies_do_archiwum, name="przenies_do_archiwum"),
     path("delete-kolor/<int:id>/", views.delete_kolor, name="delete_kolor"),
     path("czytaj_raport/<int:id>/", views.czytaj_raport, name="czytaj_raport"),
+    path("czytaj_raport/<int:id>/kupic", views.czytaj_raport_do_kupienia, name="czytaj_raport_do_kupienia"),
     path("zmien_status/<int:id>/", views.zmien_status, name="zmien_status"),
     path('update-kolor/<int:id>/', views.update_kolor, name="update_kolor"),
     path('delete-kwiat/<int:id>/', views.delete_kwiat, name="delete_kwiat"),

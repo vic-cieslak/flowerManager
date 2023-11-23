@@ -15,14 +15,39 @@
 
 <main>
 
+      {% if tylko_do_kupienia %}
+        <div style="z-index: 10000;" class = "group fixed bottom-0 right-0 p-2  flex items-end justify-end w-24 h-24 ">
+            <a href="{% url 'czytaj_raport' raport.id %}">
+                <button 
+                class="text-white  text-center justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                type="button" >
+                wszystkie
+                </button>
+              </a>
+            </div>
+
+        {% else %}
+        <div style="z-index: 10000;" class = "group fixed bottom-0 right-0 p-2  flex items-end justify-end w-24 h-24 ">
+            <a href="{% url 'czytaj_raport_do_kupienia' raport.id %}">
+                <button 
+                class="text-white  text-center justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-primary-800"
+                type="button" >
+                tylko do kupienia
+                </button>
+              </a>
+            </div>
+        {% endif %}
+
     <div id="app">
         <div class="flex flex-col">
             <div class="overflow-x-auto">
                 <div class="inline-block min-w-full align-middle">
                     <div class="overflow-hidden shadow">
 
+                      
                         <table id="dataTable"
                             class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+                            
                             <thead class="">
                                 <tr>
                                     <th scope="col"
@@ -34,9 +59,11 @@
                                     </th>
 
                                 </tr>
+                                
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-
+                                
+                                    
                                 {% for kwiat in dane %}
                                 <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <td
@@ -160,7 +187,7 @@
         $('input[type = search]').attr('dir', 'left');
         var table = $('#dataTable').DataTable({
             info: false,
-            ordering: false,
+            // ordering: false,
 
             language: {
                 search: "",

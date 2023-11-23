@@ -143,6 +143,39 @@ def czytaj_raport(request, id):
 
 
 @login_required(login_url='/users/signin/')
+def czytaj_raport_do_kupienia(request, id):
+  raport = Raport.objects.get(id=id)
+  dane = raport.wartosc
+  if type(dane) == str:
+    dane = json.loads(raport.wartosc)
+
+  # print(dane)
+  kolory = Kolory.objects.all()
+  kolor_hex = {}
+  for kolor in kolory:
+    if kolor.custom_background:
+      kolor_hex[kolor.name] = kolor.custom_background.url
+    else:
+      kolor_hex[kolor.name] = kolor.hex_kolor
+  # print(dane)
+  def sort_dict(d):
+      if isinstance(d, dict):
+          return {k: sort_dict(d[k]) for k in sorted(d)}
+      return d
+
+
+  sorted_dane = sort_dict(dane)
+  def remove_zeros_and_negatives_from_dict(d):
+      if isinstance(d, dict):
+          return {k: remove_zeros_and_negatives_from_dict(v) for k, v in d.items() if v not in [0, -1] and remove_zeros_and_negatives_from_dict(v)}
+      else:
+          return d
+
+  dane = remove_zeros_and_negatives_from_dict(sorted_dane) 
+  return render(request, 'apps/czytaj_raport.html', {'tylko_do_kupienia': True, 'raport': raport, 'dane': dane, 'kolor_hex': kolor_hex})
+
+
+@login_required(login_url='/users/signin/')
 def raport_start(request):
     if request.method == "GET":
 
