@@ -355,7 +355,7 @@ def lista_zamowien(request):
     else:
       kolor_hex[kolor.name] = kolor.hex_kolor
   return render(request, 'apps/lista_zamowien.html', 
-  {'zamowienia': zamowienia, 'kolor_hex': kolor_hex, 'btn_text': 'Przenieś do archiwum'})
+  {'zamowienia': zamowienia, 'kolor_hex': kolor_hex, 'btn_text': 'Archiwum'})
 
 
 @login_required(login_url='/users/signin/')

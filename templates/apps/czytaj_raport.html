@@ -10,34 +10,16 @@
 {% block content %}
 
 <script src="{% static 'dist/jquery-3.7.1.min.js' %}"></script>
-<script src="{% static 'dist/jquery.dataTables.js' %}"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'dist/jquery.dataTables.min.css' %}" />
+<!-- <script defer src="{% static 'dist/jquery.dataTables.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'dist/jquery.dataTables.min.css' %}" /> -->
+
+<link href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/date-1.5.1/r-2.5.0/rr-1.4.1/sl-1.7.0/datatables.min.css" rel="stylesheet">
+ 
+<script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/date-1.5.1/r-2.5.0/rr-1.4.1/sl-1.7.0/datatables.min.js"></script>
 
 <main>
 
-      {% if tylko_do_kupienia %}
-        <div style="z-index: 10000;" class = "group fixed bottom-0 right-0 p-2  flex items-end justify-end w-24 h-24 ">
-            <a href="{% url 'czytaj_raport' raport.id %}">
-                <button 
-                class="text-white  text-center justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                type="button" >
-                wszystkie
-                </button>
-              </a>
-            </div>
-
-        {% else %}
-        <div style="z-index: 10000;" class = "group fixed bottom-0 right-0 p-2  flex items-end justify-end w-24 h-24 ">
-            <a href="{% url 'czytaj_raport_do_kupienia' raport.id %}">
-                <button 
-                class="text-white  text-center justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-primary-800"
-                type="button" >
-                tylko do kupienia
-                </button>
-              </a>
-            </div>
-        {% endif %}
-
+  
     <div id="app">
         <div class="flex flex-col">
             <div class="overflow-x-auto">
@@ -153,6 +135,7 @@
     .dataTables_wrapper div.dataTables_filter input {
         width: 50%;
     }
+ 
 </style>
 
 <script defer>
@@ -184,56 +167,82 @@
             });
 
 
-        $('input[type = search]').attr('dir', 'left');
+        // $('input[type = search]').attr('dir', 'left');
         var table = $('#dataTable').DataTable({
             info: false,
             // ordering: false,
-
+            // dom: 'Bfrtip',
+            // buttons: [
+           
+            // ],
             language: {
                 search: "",
                 searchPlaceholder: "Szukaj kwiatu lub rodzaju"
             },
             paging: false,
             initComplete: function () {
-                $('.dt-buttons').removeClass('btn-group');
-                $('.dataTables_filter').children().appendTo('#mytable_length');
-                $("label").attr("id", function (arr) {
-                    return "button_size" + arr;
-                });
+                // $('.dt-buttons').removeClass('btn-group');
+                // $('.dataTables_filter').children().appendTo('#mytable_length');
+                // $("label").attr("id", function (arr) {
+                //     return "button_size" + arr;
+                // });
             },
             columnDefs: [{
                 searchable: false,
             }],
             dom: 'Blfrtip',
             "ordering": false,
+
             buttons: [
                 {
-                    extend: 'excelHtml5',
-                    exportOptions: {
-                        columns: [5, 4, 3, 2, 0]
+                    {% if tylko_do_kupienia %}
+                    
+                    text: 'wszystkie',
+                    {% else %}
+                    text: 'tylko do kupienia',
+                    
+                    {% endif %}
+
+                    className: 'text-white ml-10 mt-4 text-center justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800', 
+                    action: function (e, dt, node, config) {
+                        // Replace 'http://example.com' with the URL you want to redirect to
+                        {% if tylko_do_kupienia %}
+                        window.location.href = "{% url 'czytaj_raport' raport.id %}";
+
+                        {% else %}
+                        window.location.href = "{% url 'czytaj_raport_do_kupienia' raport.id %}";
+                        
+                        {% endif %}
+                        
                     }
                 },
-                {
-                    extend: 'pdfHtml5',
-                    exportOptions: {
-                        columns: [5, 4, 3, 2, 0]
-                    },
-                    customize: function (doc) {
-                        doc.content[1].alignment = 'right';
-                    },
-                },
+                // {
+                //     extend: 'excelHtml5',
+                //     exportOptions: {
+                //         columns: [5, 4, 3, 2, 0]
+                //     }
+                // },
+                // {
+                //     extend: 'pdfHtml5',
+                //     exportOptions: {
+                //         columns: [5, 4, 3, 2, 0]
+                //     },
+                //     customize: function (doc) {
+                //         doc.content[1].alignment = 'right';
+                //     },
+                // },
             ],
-            "pagingType": "full_numbers",
+            // "pagingType": "full_numbers",
 
         });
         $('.dataTables_wrapper .dataTables_filter').addClass('pt-5')
 
-        $('.dataTables_filter input').off();
+        // $('.dataTables_filter input').off();
 
         $('input[type = search]').on('keyup', function (e) {
             table.draw();
         });
-
+        table.buttons().nodes().removeClass('dt-button');
 
     });
 
