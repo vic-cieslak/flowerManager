@@ -18,9 +18,11 @@ try:
 except admin.sites.NotRegistered:
     pass
     
-# @admin.register(User)
-# class UserAdmin(BaseUserAdmin, ModelAdmin):
-#     pass
+admin.site.unregister(User)
+
+@admin.register(User)
+class UserAdmin(BaseUserAdmin, ModelAdmin):
+    pass
     
     
 @admin.register(Kolory)
