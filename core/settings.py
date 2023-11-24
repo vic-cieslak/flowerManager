@@ -44,6 +44,14 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
+    "django_celery_results",
+
+    "unfold",  # before django.contrib.admin
+    "unfold.contrib.filters",  # optional, if special filters are needed
+    "unfold.contrib.forms",  # optional, if special form elements are needed
+    "unfold.contrib.import_export",  # optional, if django-import-export package is used
+    "unfold.contrib.guardian",  # optional, if django-guardian package is used
+    "unfold.contrib.simple_history",  # optional, if django-simple-history package is used
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -59,7 +67,6 @@ INSTALLED_APPS = [
     "apps.tables",
     "apps.tasks",
 
-    "django_celery_results",
 
     'django_api_gen',
     'rest_framework',
