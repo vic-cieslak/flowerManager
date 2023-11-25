@@ -25,12 +25,12 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
     pass
     
     
-@admin.register(Kolory)
-class KoloryAdmin(ModelAdmin):
-    list_display = (
-        "name",
-        "hex_kolor",
-    )
+# @admin.register(Kolory)
+# class KoloryAdmin(ModelAdmin):
+#     list_display = (
+#         "name",
+#         "hex_kolor",
+#     )
     
 @admin.register(Raport)
 class RaportAdmin(ModelAdmin):
