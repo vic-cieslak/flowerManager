@@ -22,6 +22,17 @@ def remove_zeros(d):
     return {k: v for k, v in d.items() if v}  # Remove empty dictionaries
 
 
+def merge_dictionaries(dict1, dict2):
+    for key, value in dict1.items():
+        if key in dict2:
+            for inner_key, inner_value in value.items():
+                if inner_key in dict2[key]:
+                    for attribute_key in inner_value:
+                        if attribute_key in dict2[key][inner_key]:
+                            dict2[key][inner_key][attribute_key] = inner_value[attribute_key]
+    return dict2
+
+
 # Create your views here.
 @login_required(login_url='/users/signin/')
 def datatables(request):
@@ -233,7 +244,7 @@ def usun_raport(request, id):
 def update_kolor(request, id):
     update_kolor = Kolory.objects.get(id=id)
     if request.method == 'POST':
-        update_kolor.name = request.POST.get('name')
+        # update_kolor.name = request.POST.get('name')
         update_kolor.hex_kolor = request.POST.get('hex_kolor')
         tlo = request.FILES.get('tlo')
         # print(request.POST.get('tlo'))
@@ -319,24 +330,46 @@ def edytuj_zamowienie(request, id):
             kolor_hex[kolor.name] = kolor.custom_background.url
           else:
             kolor_hex[kolor.name] = kolor.hex_kolor
-            
+
+        transient_dict = {}
         for kwiat in kwiaty:
           kwiat.kategorie_i_kolory_list = kwiat.kategorie_i_kolory
+          transient_dict[kwiat.name] = {}
+          for rodzaj in kwiat.kategorie_i_kolory:
+            transient_dict[kwiat.name][rodzaj['nazwa']] = {}
+            for kolor in rodzaj['kolory']:
+              transient_dict[kwiat.name][rodzaj['nazwa']][kolor] = {'ilosc': 0, 'status': '', 'typ': ''}
 
+      
+        merged = merge_dictionaries(zamowienie.produkty, transient_dict)
+        print(merged)
+
+        # TODO those two need to be merged and new approriate 
+        # vue rendering code needs to be made
+        # TODO FIX CODE FOR ITERATING OVER FLOWERS
+        # TODO THIS PART SHOULD BE FINE
+        # NOW POST DOESNT WORK
+        #
         return render(request, 'apps/edytuj_zamowienie.html',
-         {'kwiaty': kwiaty, 'kolor_hex': kolor_hex, 'zamowienie': zamowienie})
+         {'kwiaty': kwiaty, 'kolor_hex': kolor_hex, 'zamowienie': zamowienie, 'merged': merged})
 
     elif request.method == 'POST':
-        z = Zamowienie()
+        # TODO UPDATE ME
+        z = Zamowienie.objects.filter(id=id).first()
+
         produkty = request.POST.get('produkty')
         produkty = json.loads(produkty)
         cleaned_produkty = remove_zeros(produkty)
+        print(cleaned_produkty)
         z.odbiorca = request.POST.get('odbiorca')
         z.produkty = cleaned_produkty
         # z.status = 'Kupione'
         z.termin_dostarczenia = request.POST.get('data')
         z.notatka = request.POST.get('notatka')
-        z.zdjecie = request.FILES.get('zdjecie')
+        nowe_zdjecie = request.FILES.get('zdjecie')
+        if nowe_zdjecie:
+          z.zdjecie = nowe_zdjecie
+          
         z.save()
         return HttpResponseRedirect(reverse('lista_zamowien'))
 
@@ -451,6 +484,7 @@ def dodaj_zamowienie(request, id=None):
         produkty = request.POST.get('produkty')
         produkty = json.loads(produkty)
         cleaned_produkty = remove_zeros(produkty)
+        print(cleaned_produkty)
         z.odbiorca = request.POST.get('odbiorca')
         z.produkty = cleaned_produkty
         # z.status = 'Kupione'

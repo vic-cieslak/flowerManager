@@ -90,7 +90,7 @@
                   <button 
                     type="submit"
                     class="text-white justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-primary-800">
-                    Dodaj zamówienie {{ zamowienie.produkty}}
+                    Aktualizuj
                   </button>
 
                 </div>
@@ -98,18 +98,19 @@
             
                   <div class="space-y-4 pt-24 px-8">
             
-                 
+                    <!-- <input type="hidden" id="defaultDate" value="{{ zamowienie.termin_dostarczenia|date:'Y-m-d' }}"> -->
+
                     <input hidden   name="grupy_i_kolory" />
 
                     <div class="mb-6">
                       <label for="odbiorca" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kto</label>
-                      <input autocomplete="off" type="text" id="odbiorca" name="odbiorca" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" >
+                      <input autocomplete="off" type="text" id="odbiorca" name="odbiorca" value="{{zamowienie.odbiorca}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" >
                     </div>
             
                     
                     <div class="mb-6">
                       <label for="data" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Na kiedy</label>
-                      <input autocomplete="off" data-language='pl' type="text" id="data" name="data" value="" class="datepicker-here bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" >
+                      <input autocomplete="off" data-language='pl' type="text" id="data" name="data" value="" class="datepicker-element bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" >
                     </div>
             
                     
@@ -121,11 +122,19 @@
             
                     <div class="mb-6">
                       <label for="notatka" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notatka</label>
-                      <textarea rows="5" type="textarea" id="notatka" name="notatka" value="" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" ></textarea>
+                      <textarea rows="5" type="textarea" id="notatka" name="notatka" value="{{zamowienie.notatka}}" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" ></textarea>
                     </div>
-                    
+
+                    {% if zamowienie.zdjecie %}
                     <div class="mb-6">
-                      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Dodaj zdjęcie</label>
+                      <label for="zdjecie" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Obcecne zdjecie</label>
+                      <img id="obrazek" style="width: 250px; height: 250px;" src="{{zamowienie.zdjecie.url}}">
+                    </div>
+                    {% endif %}
+
+
+                    <div class="mb-6">
+                      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Dodaj nowe zdjęcie</label>
                       <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="zdjecie" name="zdjecie" type="file">
                       <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                      </div>
@@ -161,18 +170,21 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200  dark:bg-gray-800 dark:divide-gray-700">
     
-                  {% for kwiat in kwiaty %}
+
+
+
+                  {% for kwiat, categories in merged.items %}
                   <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 ">
                    
                     <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                      <div class="text-base text-xl font-semibold text-center text-gray-900 dark:text-white">{{ kwiat.name }}</div>
+                      <div class="text-base text-xl font-semibold text-center text-gray-900 dark:text-white">{{ kwiat }}</div>
                     </td>     
                
                     <td class="max-w-sm p-4 text-base font-normal text-gray-500 xl:max-w-xs dark:text-gray-400">
-                      {% for kat_kol in kwiat.kategorie_i_kolory_list %}
+                      {% for rodzaj, colors in categories.items %}
                       <ul class="flex flex-wrap justify-left items-center ">
-                        <p class="font-bold text-xl text-center py-2 dark:text-white w-32">{{kat_kol.nazwa}}</p>
-                          {% for kolor in kat_kol.kolory %}
+                        <p class="font-bold text-xl text-center py-2 dark:text-white w-32">{{rodzaj}}</p>
+                          {% for kolor, details in colors.items %}
                           <li class="w-28 truncate h-32 px-4 pt-4  text-center rounded text-black font-bold my-2 mx-1" 
                   
                           {% if 'tla' in kolor_hex|get_item:kolor %}
@@ -183,8 +195,12 @@
                   
                           >{{ kolor }}      
                            <div class="">
-                            <label class="block mb-2 text-sm font-medium text-black">ilość</label>
-                            <input type="number"  v-model="formData['{{kwiat.name}}']['{{kat_kol.nazwa}}']['{{kolor}}']['ilosc']" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
+                            <select  v-model="formData['{{kwiat}}']['{{rodzaj}}']['{{kolor}}']['typ']"  style="background-color: transparent; border: none;" class="">
+                              <option value="szt">szt.</option>
+                              <option value="hob">hob.</option>
+                              <option value="paczk">paczk.</option>
+                            </select>
+                            <input type="number"  v-model="formData['{{kwiat}}']['{{rodzaj}}']['{{kolor}}']['ilosc']" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
                             
                           </div> 
                          </li>
@@ -223,11 +239,22 @@
 <script>
   // Initialize the datepicker with Polish language
   $(document).ready(function() {
-      $('.datepicker-here').datepicker({
+      // var defaultDate = $('#defaultDate').val() || new Date(); // Fallback to current date if empty
+      // 02/11/2023
+      // let startDate = new Date('2021-07-20');
+      // console.log(defaultDate)
+
+      let defaultDate = new Date('{{ zamowienie.termin_dostarczenia|date:"Y-m-d" }}');
+      // let defaultDate = new Date('2023-02-02');
+      // console.log(defaultDate2)
+      console.log(defaultDate)
+      $('.datepicker-element').datepicker({
           language: 'pl',
+          startDate: defaultDate,
           isMobile: true,
          autoClose: true,
       });
+      $('.datepicker-element').data('datepicker').selectDate(defaultDate);
   });
 </script>
 
@@ -326,14 +353,15 @@
     setup() {
 
       const formData = ref({
-        {% for kwiat in kwiaty %}
-          '{{kwiat.name}}': {
-            {% for kat_kol in kwiat.kategorie_i_kolory_list %}
-              '{{kat_kol.nazwa}}': {
-                {% for kolor in kat_kol.kolory %}
+        {% for flower, categories in merged.items %}
+          '{{ flower }}': {
+            {% for rodzaj, colors in categories.items %}
+              '{{rodzaj}}': {
+                {% for kolor, details in colors.items %}
                   '{{kolor}}': {
-                    'ilosc': 0,
-                    // 'status': 'brak',
+                    'ilosc': '{{ details.ilosc }}',
+                    'status': '{{ details.status }}',
+                    'typ': '{{ details.typ }}',
                     },
                 {% endfor %}
               },

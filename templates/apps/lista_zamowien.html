@@ -154,10 +154,9 @@
                             style="background-image: url('{{kolor_hex|get_item:key}}');" {% else %} style="background-color: {{kolor_hex|get_item:key}};" {% endif %}
                             class="relative w-32 h-8 inline-flex items-center px-3 mx-1 py-1 text-sm font-bold text-center text-black  rounded-lg focus:ring-4 focus:outline-none">
                               {{ key }}
-                              <span class="sr-only">Notifications</span>
                            <div
-                               class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
-                               {{ value.ilosc }}</div>
+                               class="absolute  inline-flex items-center justify-center w-16 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -right-0 dark:border-gray-900">
+                               {{ value.ilosc }} {{ value.typ }}.</div>
                             </button>
                             <!-- Repeat buttons for "odlozone", "kupione", "odebrane" -->
                             <button id="dropdown-{{ nazwa|cut_multiple:' /\\\\' }}-{{ rodzaj|cut_multiple:' /\\\\' }}-{{ key|cut_multiple:' /\\\\' }}" 
