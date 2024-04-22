@@ -3,15 +3,65 @@
 
 ## Overview
 
-**Flower Manager** streamlines inventory management for florists preparing for rapid Dutch flower auctions. This essential tool enables users to create detailed inventory reports on a tablet while in the warehouse, identifying flowers that are in low stock. These reports can then be conveniently accessed and searched on a PC, allowing users to efficiently plan which flowers to bid on at auctions. Simplify your inventory process and ensure you never miss an opportunity at the auctions with Flower Manager.
+**Flower Manager** streamlines inventory management for florists preparing for rapid Dutch flower auctions. This essential tool enables users to create detailed inventory reports on a tablet while in the warehouse, identifying flowers that are in low stock. These reports can then be conveniently accessed and searched on a PC, allowing users to efficiently plan which flowers to bid on at auctions. Simplify your inventory process and ensure you never miss an opportunity at the auctions, say goodbye to manual spreadsheets and handwritten notes.
+
+Note:
+
+Project is POC built with Django and Vuejs for dynamic bits. Code is messy at places and requires refactor / cleanup, but is fully functional and useful.
+
 ## Features
 
-- **Inventory Tracking**: Use your tablet to walk through the warehouse, mark stock levels for low stock flowers, and finalize reports with custom notes.
-- **Dynamic Search and Reports**: Access reports on your PC, input search queries to see which flowers are currently in demand at auctions, and adjust flower visibility in reports.
+- **Inventory Tracking**: Use your tablet to walk through the warehouse, mark stock levels for low stock flowers and add notes.
+- **Dynamic Search and Reports**: Access reports on your PC, input search queries to see which flowers are you interested in bidding on.
 - **Visual Management**: Add colors using HEX codes or images for each flower type for better management and visual appeal. Each flower can be activated or deactivated, added, edited, or deleted.
-- **Order Management**: Includes a basic order management system that allows for managing flower deliveries, complete with search functionality and separate color tagging for each order.
 - **Customizable Report Ordering**: Control the display order of flowers in reports to match your workflow needs.
+- **Order Management**: Includes a basic order management system that allows for managing flower deliveries, complete with search functionality and separate color tagging for each order.
 
+## Features Demo
+
+- **Flower management (overview + search)**
+
+
+https://github.com/vic-developer/flowerManager/assets/11517372/6f0e9739-3963-4929-b4d7-a9f8e8e3dc05
+
+
+
+- **Add flowers, colors and variations**
+
+
+https://github.com/vic-developer/flowerManager/assets/11517372/8827b372-a5fa-4e7c-b552-bfe313d8030e
+
+
+- **Edit flowers**
+
+
+https://github.com/vic-developer/flowerManager/assets/11517372/a354d668-6cba-4665-b236-dc01d511cf09
+
+
+- **Start report (tablet view)**
+
+those are links (github sucks with mp4 videos sometimes)
+
+
+[start-report.webm](https://github.com/vic-developer/flowerManager/assets/11517372/9dcde6f6-71a3-451a-b5c8-0cbd23ae6404)
+
+
+
+- **Read report**
+
+
+[read-report.webm](https://github.com/vic-developer/flowerManager/assets/11517372/fcd8800f-f036-47d1-8a23-62a8c35d3941)
+
+
+
+
+- **Color management**
+
+- **Change order of flowers in report**
+
+- **Order manager list**
+
+- **Add new order**
 
 
 ## Installation
