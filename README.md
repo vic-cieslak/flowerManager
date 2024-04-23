@@ -40,7 +40,6 @@ https://github.com/vic-developer/flowerManager/assets/11517372/a354d668-6cba-466
 
 - **Start report (tablet view)**
 
-those are links (github sucks with mp4 videos sometimes)
 
 
 [start-report.webm](https://github.com/vic-developer/flowerManager/assets/11517372/9dcde6f6-71a3-451a-b5c8-0cbd23ae6404)
