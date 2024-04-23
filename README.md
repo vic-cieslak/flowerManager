@@ -57,11 +57,29 @@ those are links (github sucks with mp4 videos sometimes)
 
 - **Color management**
 
+
+[Screencast from 2024-04-23 08-29-41.webm](https://github.com/vic-developer/flowerManager/assets/11517372/6acbc234-b569-41f6-8691-e2e8a2daf679)
+
+
+
 - **Change order of flowers in report**
+
+
+[Screencast from 2024-04-23 08-30-28.webm](https://github.com/vic-developer/flowerManager/assets/11517372/4427e75f-2378-4233-b93a-24fb0716871a)
+
+
 
 - **Order manager list**
 
+[Screencast from 2024-04-23 08-31-22.webm](https://github.com/vic-developer/flowerManager/assets/11517372/aa336e88-f095-48de-b185-3401a6aa2666)
+
+
+
 - **Add new order**
+
+
+[Screencast from 2024-04-23 08-31-47.webm](https://github.com/vic-developer/flowerManager/assets/11517372/8f68bddf-50bf-422b-9ec8-16e5ecb16204)
+
 
 
 ## Installation
