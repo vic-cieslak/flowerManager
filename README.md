@@ -7,7 +7,7 @@
 
 Note:
 
-Project is POC built with Django and Vuejs for dynamic bits. Code is messy at places and requires refactor / cleanup, but is fully functional and useful.
+Project is POC built with Django and Vuejs for dynamic bits. 
 
 ## Features
 
